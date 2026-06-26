@@ -27,9 +27,7 @@
   --font-en: 'Inter', sans-serif;
   --font-zh: 'Noto Sans TC', sans-serif;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
 body {
   font-family: var(--font-zh);
   background: var(--bg);
@@ -38,10 +36,8 @@ body {
   min-height: 100dvh;
   overscroll-behavior: none;
 }
-
 .app { max-width: 720px; margin: 0 auto; padding: 0 16px 100px; }
 
-/* Header */
 .hub-header {
   text-align: center;
   padding: 40px 0 12px;
@@ -49,319 +45,140 @@ body {
 }
 .hub-header .icon { font-size: 2rem; margin-bottom: 6px; }
 .hub-header h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 1.6rem; font-weight: 700;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   letter-spacing: 1px;
 }
 .hub-header p { color: var(--text3); font-size: 0.85rem; margin-top: 6px; }
 
-/* Stats */
 .stats { display: flex; justify-content: center; gap: 16px; margin: 16px 0 28px; }
 .stat-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 24px;
-  text-align: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 24px; text-align: center;
 }
 .stat-num { font-size: 1.5rem; font-weight: 700; color: var(--accent); font-family: var(--font-en); }
 .stat-label { font-size: 0.75rem; color: var(--text2); }
 
-/* Empty state */
-.empty {
-  text-align: center;
-  padding: 48px 20px;
-  background: var(--surface);
-  border-radius: 14px;
-  border: 1px solid var(--border);
-}
-.empty .emoji { font-size: 2.5rem; margin-bottom: 12px; }
-.empty p { color: var(--text2); font-size: 0.95rem; margin-bottom: 4px; }
-.empty .sub { color: var(--text3); font-size: 0.82rem; margin-bottom: 20px; }
-
-/* Buttons */
-.btn-primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-zh);
-  transition: transform 0.1s;
-}
-.btn-primary:active { transform: scale(0.97); }
-
-.btn-secondary {
-  padding: 7px 14px;
-  background: var(--surface2);
-  color: var(--text2);
-  border: none;
-  border-radius: 7px;
-  font-size: 0.78rem;
-  cursor: pointer;
-  font-family: var(--font-zh);
-  transition: all 0.15s;
-}
-
-/* Card */
 .page-list { display: flex; flex-direction: column; gap: 10px; }
 .page-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   transition: all 0.15s;
+  cursor: pointer;
 }
 .page-card:active { transform: scale(0.99); }
 .card-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.card-info { flex: 1; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+.card-info { flex: 1; display: flex; align-items: center; gap: 10px; }
 .card-icon { font-size: 1.3rem; }
 .card-name { font-size: 1rem; font-weight: 600; color: var(--accent); }
-.card-date { font-size: 0.72rem; color: var(--text3); margin-top: 2px; font-family: var(--font-en); }
-.card-actions { display: flex; gap: 4px; flex-shrink: 0; }
-.card-actions button { padding: 7px 10px; border: none; border-radius: 7px; font-size: 0.78rem; cursor: pointer; }
+.card-file { font-size: 0.72rem; color: var(--text3); margin-top: 2px; font-family: var(--font-en); }
 
 .btn-open {
-  padding: 7px 14px !important;
+  padding: 7px 14px;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  font-weight: 600;
+  color: #fff; border: none; border-radius: 7px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
   font-family: var(--font-zh);
+  flex-shrink: 0;
 }
-.btn-edit { background: var(--surface2); color: var(--text2); }
-.btn-del { background: var(--surface2); color: var(--text3); }
-.btn-del.confirm { background: var(--red); color: #fff; }
+.btn-open:active { transform: scale(0.95); }
 
-/* Add form */
-.add-form {
-  background: var(--surface);
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
-.add-form-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.add-form-header h3 { font-size: 1rem; font-weight: 600; }
-.close-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text3); }
-.form-label { display: block; font-size: 0.8rem; color: var(--text2); margin-bottom: 6px; }
-
-.form-input {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-family: var(--font-zh);
-  margin-bottom: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  background: var(--surface);
-  color: var(--text);
-}
-.form-input:focus { border-color: var(--accent); }
-
-.form-textarea {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.82rem;
-  font-family: var(--font-en), monospace;
-  margin-bottom: 16px;
-  outline: none;
-  resize: vertical;
-  min-height: 120px;
-  color: var(--text2);
-  background: var(--surface);
-}
-.form-textarea:focus { border-color: var(--accent); }
-
-.upload-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-.upload-btn {
-  padding: 6px 14px;
-  border: 1px solid var(--border);
-  background: var(--surface2);
-  border-radius: 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  font-family: var(--font-zh);
-  color: var(--text2);
-}
-.upload-status { font-size: 0.78rem; color: var(--green); }
-
-.form-actions { display: flex; gap: 10px; justify-content: flex-end; }
-.btn-cancel {
-  padding: 10px 20px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  font-family: var(--font-zh);
-  color: var(--text2);
-}
-.btn-save {
-  padding: 10px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-zh);
-}
-.btn-save.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
-.btn-save.disabled { background: var(--border); color: var(--text3); cursor: not-allowed; }
-
-/* Edit inline */
-.edit-row { display: flex; gap: 8px; align-items: center; }
-.edit-input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-family: var(--font-zh);
-  outline: none;
-}
-.edit-ok { padding: 8px 14px; background: var(--green); color: #fff; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; }
-.edit-cancel { padding: 8px 14px; background: var(--surface2); color: var(--text2); border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; }
-
-/* FAB */
-.fab {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  bottom: max(24px, env(safe-area-inset-bottom, 24px));
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  border: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(196,122,26,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 300;
-  line-height: 1;
-  z-index: 50;
-  transition: transform 0.15s;
-}
-.fab:active { transform: scale(0.92); }
-
-/* Viewer overlay */
+/* Viewer */
 .viewer {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: #000;
+  position: fixed; inset: 0; z-index: 9999; background: #000;
 }
 .viewer-bar {
-  position: absolute;
-  top: 0; left: 0; right: 0;
+  position: absolute; top: 0; left: 0; right: 0;
   height: 48px;
   padding-top: env(safe-area-inset-top, 0);
   background: rgba(44,44,44,0.95);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-  padding-right: 16px;
-  gap: 12px;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  display: flex; align-items: center;
+  padding-left: 16px; padding-right: 16px; gap: 12px;
   z-index: 10;
 }
 .viewer-bar .back-btn {
-  background: rgba(255,255,255,0.12);
-  border: none;
-  color: #fff;
-  padding: 6px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-family: var(--font-zh);
+  background: rgba(255,255,255,0.12); border: none; color: #fff;
+  padding: 6px 16px; border-radius: 6px; cursor: pointer;
+  font-size: 0.85rem; font-family: var(--font-zh);
 }
+.viewer-bar .back-btn:active { background: rgba(255,255,255,0.2); }
 .viewer-bar .page-title {
-  color: rgba(255,255,255,0.8);
-  font-size: 0.85rem;
-  font-family: var(--font-zh);
+  color: rgba(255,255,255,0.8); font-size: 0.85rem;
+  font-family: var(--font-zh); overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
 }
 .viewer iframe {
   position: absolute;
-  top: 48px;
-  top: calc(48px + env(safe-area-inset-top, 0px));
-  left: 0;
-  width: 100%;
+  top: 48px; top: calc(48px + env(safe-area-inset-top, 0px));
+  left: 0; width: 100%;
   height: calc(100% - 48px - env(safe-area-inset-top, 0px));
   border: none;
 }
 
-/* Drag overlay */
-.drag-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(196,122,26,0.15);
-  border: 3px dashed var(--accent);
-  border-radius: 16px;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: var(--accent);
-  font-weight: 600;
+/* Loading & error */
+.status-msg {
+  text-align: center; padding: 48px 20px;
+  background: var(--surface); border-radius: 14px;
+  border: 1px solid var(--border);
+}
+.status-msg .emoji { font-size: 2.5rem; margin-bottom: 12px; }
+.status-msg p { color: var(--text2); font-size: 0.95rem; }
+.status-msg .sub { color: var(--text3); font-size: 0.82rem; margin-top: 4px; }
+
+.refresh-btn {
+  margin-top: 16px;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; border: none; border-radius: 10px;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  font-family: var(--font-zh);
 }
 
 /* Install banner */
 .install-banner {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 18px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 18px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
 }
 .install-banner p { font-size: 0.82rem; color: var(--text2); flex: 1; }
 .install-banner .install-btn {
   padding: 8px 16px;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-zh);
-  white-space: nowrap;
+  color: #fff; border: none; border-radius: 8px;
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  font-family: var(--font-zh); white-space: nowrap;
 }
 .install-banner .dismiss-btn {
-  background: none;
-  border: none;
-  color: var(--text3);
-  font-size: 1rem;
-  cursor: pointer;
+  background: none; border: none; color: var(--text3);
+  font-size: 1rem; cursor: pointer;
+}
+
+/* How-to section */
+.howto {
+  margin-top: 24px; padding: 18px 20px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.howto summary {
+  font-size: 0.85rem; font-weight: 600; color: var(--text2);
+  cursor: pointer; list-style: none;
+}
+.howto summary::before { content: '📌 '; }
+.howto .howto-body {
+  margin-top: 12px; font-size: 0.82rem; color: var(--text2); line-height: 1.8;
+}
+.howto code {
+  background: var(--surface2); padding: 2px 6px; border-radius: 4px;
+  font-size: 0.78rem; font-family: var(--font-en), monospace;
 }
 
 .hidden { display: none !important; }
 </style>
 </head>
 <body>
-
-<!-- Drag overlay -->
-<div id="dragOverlay" class="drag-overlay hidden">拖放 HTML 檔案到此處</div>
 
 <!-- Viewer -->
 <div id="viewer" class="viewer hidden">
@@ -373,7 +190,6 @@ body {
 </div>
 
 <div class="app">
-  <!-- Header -->
   <div class="hub-header">
     <div class="icon">📚</div>
     <h1>TOEFL 練習工具庫</h1>
@@ -387,254 +203,102 @@ body {
     <button class="dismiss-btn" onclick="dismissInstall()">✕</button>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
     <div class="stat-box">
-      <div class="stat-num" id="pageCount">0</div>
+      <div class="stat-num" id="pageCount">-</div>
       <div class="stat-label">練習頁面</div>
     </div>
   </div>
 
-  <!-- Add form (hidden by default) -->
-  <div id="addForm" class="add-form hidden">
-    <div class="add-form-header">
-      <h3>新增練習頁面</h3>
-      <button class="close-btn" onclick="hideAddForm()">✕</button>
-    </div>
-    <label class="form-label">名稱（例如：20260625-20260626）</label>
-    <input id="newName" class="form-input" placeholder="輸入日期或名稱">
-    <label class="form-label">HTML 內容</label>
-    <div class="upload-row">
-      <button class="upload-btn" onclick="document.getElementById('fileInput').click()">📁 選擇 HTML 檔案</button>
-      <input id="fileInput" type="file" accept=".html,.htm" style="display:none" onchange="handleFile(this)">
-      <span id="uploadStatus" class="upload-status hidden">✓ 已載入</span>
-    </div>
-    <textarea id="newHtml" class="form-textarea" placeholder="貼上 HTML 原始碼，或用上方按鈕選擇檔案" rows="6"></textarea>
-    <div class="form-actions">
-      <button class="btn-cancel" onclick="hideAddForm()">取消</button>
-      <button id="saveBtn" class="btn-save disabled" onclick="addPage()">儲存</button>
-    </div>
-  </div>
-
-  <!-- Content area -->
   <div id="content"></div>
+
+  <!-- How to add pages -->
+  <details class="howto">
+    <summary>如何新增練習頁面？</summary>
+    <div class="howto-body">
+      ① 從 Claude 對話下載新的 HTML 練習檔<br>
+      ② 到 GitHub repo 的 <code>pages/</code> 資料夾上傳該檔案<br>
+      ③ 編輯根目錄的 <code>pages.json</code>，加上一筆：<br>
+      <code>{"name": "日期名稱", "file": "檔案名.html"}</code><br>
+      ④ Commit 後兩邊裝置都能看到！
+    </div>
+  </details>
 </div>
 
-<!-- FAB -->
-<button id="fab" class="fab hidden" onclick="showAddForm()">+</button>
-
 <script>
-// ── Storage ──
-const PAGES_KEY = 'toefl-hub-pages';
-
-function loadPages() {
-  try {
-    return JSON.parse(localStorage.getItem(PAGES_KEY) || '[]');
-  } catch { return []; }
-}
-
-function savePages(pages) {
-  localStorage.setItem(PAGES_KEY, JSON.stringify(pages));
-}
-
-function saveHtml(id, html) {
-  localStorage.setItem('toefl-hub-html-' + id, html);
-}
-
-function getHtml(id) {
-  return localStorage.getItem('toefl-hub-html-' + id);
-}
-
-function deleteHtml(id) {
-  localStorage.removeItem('toefl-hub-html-' + id);
-}
-
-function genId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-}
-
-// ── State ──
-let pages = loadPages();
-let editingId = null;
-let deleteTarget = null;
-
-// ── Render ──
-function render() {
+// Fetch pages list from pages.json (same origin, GitHub Pages)
+async function loadPages() {
   const content = document.getElementById('content');
-  document.getElementById('pageCount').textContent = pages.length;
+  const countEl = document.getElementById('pageCount');
 
-  if (pages.length === 0 && document.getElementById('addForm').classList.contains('hidden')) {
-    document.getElementById('fab').classList.add('hidden');
-    content.innerHTML = `
-      <div class="empty">
-        <div class="emoji">🎯</div>
-        <p>還沒有練習頁面</p>
-        <p class="sub">點擊下方按鈕新增你的第一個練習工具</p>
-        <button class="btn-primary" onclick="showAddForm()">＋ 新增頁面</button>
-      </div>`;
-    return;
-  }
+  content.innerHTML = '<div class="status-msg"><div class="emoji">⏳</div><p>載入中...</p></div>';
 
-  document.getElementById('fab').classList.toggle('hidden', pages.length === 0);
+  try {
+    const res = await fetch('./pages.json?t=' + Date.now());
+    if (!res.ok) throw new Error('Failed to load pages.json');
+    const pages = await res.json();
 
-  if (pages.length === 0) { content.innerHTML = ''; return; }
+    countEl.textContent = pages.length;
 
-  content.innerHTML = '<div class="page-list">' + pages.map(p => {
-    if (editingId === p.id) {
-      return `<div class="page-card">
-        <div class="edit-row">
-          <input class="edit-input" id="editInput" value="${esc(p.name)}"
-            onkeydown="if(event.key==='Enter')saveEdit('${p.id}');if(event.key==='Escape')cancelEdit();">
-          <button class="edit-ok" onclick="saveEdit('${p.id}')">✓</button>
-          <button class="edit-cancel" onclick="cancelEdit()">✕</button>
-        </div>
-      </div>`;
+    if (pages.length === 0) {
+      content.innerHTML = `
+        <div class="status-msg">
+          <div class="emoji">🎯</div>
+          <p>還沒有練習頁面</p>
+          <p class="sub">點下方說明了解如何新增</p>
+        </div>`;
+      return;
     }
 
-    const dateStr = new Date(p.createdAt).toLocaleDateString('zh-TW');
-    const delClass = deleteTarget === p.id ? 'btn-del confirm' : 'btn-del';
-    const delText = deleteTarget === p.id ? '確定?' : '🗑';
-
-    return `<div class="page-card">
-      <div class="card-row">
-        <div class="card-info" onclick="openPage('${p.id}')">
-          <span class="card-icon">📝</span>
-          <div>
-            <div class="card-name">${esc(p.name)}</div>
-            <div class="card-date">${dateStr}</div>
+    content.innerHTML = '<div class="page-list">' + pages.map((p, i) => `
+      <div class="page-card" onclick="openPage('${esc(p.file)}', '${esc(p.name)}')">
+        <div class="card-row">
+          <div class="card-info">
+            <span class="card-icon">📝</span>
+            <div>
+              <div class="card-name">${esc(p.name)}</div>
+              <div class="card-file">${esc(p.file)}</div>
+            </div>
           </div>
-        </div>
-        <div class="card-actions">
-          <button class="btn-open" onclick="openPage('${p.id}')">開啟</button>
-          <button class="btn-edit" onclick="startEdit('${p.id}')">✏️</button>
-          <button class="${delClass}" onclick="confirmDelete('${p.id}')">${delText}</button>
-          ${deleteTarget === p.id ? `<button class="btn-del confirm" onclick="doDelete('${p.id}')">刪除</button>` : ''}
+          <button class="btn-open" onclick="event.stopPropagation();openPage('${esc(p.file)}', '${esc(p.name)}')">開啟</button>
         </div>
       </div>
-    </div>`;
-  }).join('') + '</div>';
+    `).join('') + '</div>';
 
-  if (editingId) {
-    const el = document.getElementById('editInput');
-    if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+  } catch (e) {
+    countEl.textContent = '!';
+    content.innerHTML = `
+      <div class="status-msg">
+        <div class="emoji">⚠️</div>
+        <p>無法載入頁面清單</p>
+        <p class="sub">請確認 pages.json 已上傳到 GitHub repo</p>
+        <button class="refresh-btn" onclick="loadPages()">重新載入</button>
+      </div>`;
   }
 }
 
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-// ── Add ──
-function showAddForm() {
-  document.getElementById('addForm').classList.remove('hidden');
-  document.getElementById('fab').classList.add('hidden');
-  document.getElementById('newName').focus();
-  updateSaveBtn();
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function hideAddForm() {
-  document.getElementById('addForm').classList.add('hidden');
-  document.getElementById('newName').value = '';
-  document.getElementById('newHtml').value = '';
-  document.getElementById('uploadStatus').classList.add('hidden');
-  render();
-}
+// Open a page
+async function openPage(file, name) {
+  document.getElementById('viewerTitle').textContent = name;
+  const viewer = document.getElementById('viewer');
+  const frame = document.getElementById('viewerFrame');
 
-function updateSaveBtn() {
-  const name = document.getElementById('newName').value.trim();
-  const html = document.getElementById('newHtml').value.trim();
-  const btn = document.getElementById('saveBtn');
-  if (name && html) {
-    btn.className = 'btn-save active';
-  } else {
-    btn.className = 'btn-save disabled';
+  try {
+    const res = await fetch('./pages/' + file + '?t=' + Date.now());
+    if (!res.ok) throw new Error('Not found');
+    const html = await res.text();
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    frame.src = url;
+    viewer.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  } catch (e) {
+    alert('無法載入 ' + file + '\n請確認檔案已上傳到 pages/ 資料夾');
   }
-}
-
-document.getElementById('newName').addEventListener('input', updateSaveBtn);
-document.getElementById('newHtml').addEventListener('input', updateSaveBtn);
-
-function handleFile(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    document.getElementById('newHtml').value = e.target.result;
-    const status = document.getElementById('uploadStatus');
-    status.textContent = `✓ 已載入 (${Math.round(e.target.result.length / 1024)}KB)`;
-    status.classList.remove('hidden');
-    if (!document.getElementById('newName').value.trim()) {
-      document.getElementById('newName').value = file.name.replace(/\.html?$/, '');
-    }
-    updateSaveBtn();
-  };
-  reader.readAsText(file);
-  input.value = '';
-}
-
-function addPage() {
-  const name = document.getElementById('newName').value.trim();
-  const html = document.getElementById('newHtml').value.trim();
-  if (!name || !html) return;
-
-  const id = genId();
-  const entry = { id, name, createdAt: new Date().toISOString() };
-  pages.unshift(entry);
-  savePages(pages);
-  saveHtml(id, html);
-  hideAddForm();
-}
-
-// ── Edit ──
-function startEdit(id) {
-  editingId = id;
-  deleteTarget = null;
-  render();
-}
-
-function saveEdit(id) {
-  const input = document.getElementById('editInput');
-  const name = input.value.trim();
-  if (!name) return;
-  pages = pages.map(p => p.id === id ? { ...p, name } : p);
-  savePages(pages);
-  editingId = null;
-  render();
-}
-
-function cancelEdit() {
-  editingId = null;
-  render();
-}
-
-// ── Delete ──
-function confirmDelete(id) {
-  if (deleteTarget === id) {
-    deleteTarget = null;
-  } else {
-    deleteTarget = id;
-  }
-  render();
-}
-
-function doDelete(id) {
-  pages = pages.filter(p => p.id !== id);
-  savePages(pages);
-  deleteHtml(id);
-  deleteTarget = null;
-  render();
-}
-
-// ── View ──
-function openPage(id) {
-  const html = getHtml(id);
-  const page = pages.find(p => p.id === id);
-  if (!html || !page) return;
-
-  document.getElementById('viewerTitle').textContent = page.name;
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  document.getElementById('viewerFrame').src = url;
-  document.getElementById('viewer').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
 }
 
 function closeViewer() {
@@ -645,37 +309,8 @@ function closeViewer() {
   document.body.style.overflow = '';
 }
 
-// ── Drag & Drop ──
-document.body.addEventListener('dragover', e => {
-  e.preventDefault();
-  document.getElementById('dragOverlay').classList.remove('hidden');
-});
-document.getElementById('dragOverlay').addEventListener('dragleave', () => {
-  document.getElementById('dragOverlay').classList.add('hidden');
-});
-document.body.addEventListener('drop', e => {
-  e.preventDefault();
-  document.getElementById('dragOverlay').classList.add('hidden');
-  const file = e.dataTransfer.files[0];
-  if (file && /\.html?$/i.test(file.name)) {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      document.getElementById('newHtml').value = ev.target.result;
-      document.getElementById('uploadStatus').textContent = `✓ 已載入 (${Math.round(ev.target.result.length / 1024)}KB)`;
-      document.getElementById('uploadStatus').classList.remove('hidden');
-      if (!document.getElementById('newName').value.trim()) {
-        document.getElementById('newName').value = file.name.replace(/\.html?$/, '');
-      }
-      showAddForm();
-      updateSaveBtn();
-    };
-    reader.readAsText(file);
-  }
-});
-
-// ── PWA Install ──
+// PWA Install
 let deferredPrompt = null;
-
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredPrompt = e;
@@ -699,13 +334,13 @@ function dismissInstall() {
   localStorage.setItem('toefl-hub-dismiss-install', '1');
 }
 
-// ── Service Worker ──
+// Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
-// ── Init ──
-render();
+// Init
+loadPages();
 </script>
 </body>
 </html>
