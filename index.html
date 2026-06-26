@@ -3,27 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#c47a1a">
+<meta name="theme-color" content="#f0f5ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="TOEFL Hub">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TOEFL Garden">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>TOEFL 練習工具庫</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<title>TOEFL 知識花園</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f5f3ee;
+  --bg: #f4f7f2;
+  --bg2: #ffffff;
   --surface: #ffffff;
-  --surface2: #edeae4;
-  --accent: #c47a1a;
-  --accent2: #d95a1a;
-  --green: #1a9960;
-  --red: #d44040;
-  --text: #2c2c2c;
-  --text2: #5c5c5c;
-  --text3: #8a8a8a;
-  --border: #ddd8cf;
+  --surface2: #eef3eb;
+  --green: #3aab5c;
+  --green2: #2d8f4a;
+  --green-light: #d4edda;
+  --green-pale: #e8f5e9;
+  --sage: #7ca982;
+  --peach: #f2a07b;
+  --peach2: #e8895f;
+  --peach-light: #fde8d8;
+  --coral: #e07b5a;
+  --cream: #fdfaf5;
+  --brown: #6b5240;
+  --brown2: #8a7060;
+  --text: #2d3a2e;
+  --text2: #5a6b5c;
+  --text3: #94a396;
+  --border: #d8e2d4;
+  --border2: #c5d4be;
   --font-en: 'Inter', sans-serif;
   --font-zh: 'Noto Sans TC', sans-serif;
 }
@@ -32,83 +42,178 @@ body {
   font-family: var(--font-zh);
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100vh; min-height: 100dvh;
   overscroll-behavior: none;
 }
-.app { max-width: 720px; margin: 0 auto; padding: 0 16px 100px; }
+.app { max-width: 720px; margin: 0 auto; padding: 0 16px 80px; }
 
+/* Decorative background */
+body::before {
+  content: '';
+  position: fixed; top: -60px; right: -80px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(58,171,92,0.06), transparent 70%);
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed; bottom: -40px; left: -60px;
+  width: 250px; height: 250px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,160,123,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+/* Header */
 .hub-header {
   text-align: center;
-  padding: 40px 0 12px;
-  padding-top: max(40px, env(safe-area-inset-top, 40px));
+  padding: 36px 0 6px;
+  padding-top: max(36px, env(safe-area-inset-top, 36px));
+  position: relative; z-index: 1;
 }
-.hub-header .icon { font-size: 2rem; margin-bottom: 6px; }
+.hub-header .garden-icon { font-size: 2.2rem; margin-bottom: 4px; }
 .hub-header h1 {
-  font-size: 1.6rem; font-weight: 700;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  letter-spacing: 1px;
+  font-size: 1.45rem; font-weight: 700;
+  color: var(--green2);
+  letter-spacing: 0.5px;
 }
-.hub-header p { color: var(--text3); font-size: 0.85rem; margin-top: 6px; }
+.hub-header p { color: var(--text3); font-size: 0.82rem; margin-top: 4px; }
 
-.stats { display: flex; justify-content: center; gap: 16px; margin: 16px 0 28px; }
-.stat-box {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 10px 24px; text-align: center;
+/* Level card */
+.level-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 22px 18px;
+  margin: 18px 0;
+  position: relative; z-index: 1;
+  box-shadow: 0 2px 12px rgba(45,58,46,0.05);
+  overflow: hidden;
 }
-.stat-num { font-size: 1.5rem; font-weight: 700; color: var(--accent); font-family: var(--font-en); }
-.stat-label { font-size: 0.75rem; color: var(--text2); }
-
-.page-list { display: flex; flex-direction: column; gap: 10px; }
-.page-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  transition: all 0.15s;
-  cursor: pointer;
+.level-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--peach));
 }
-.page-card:active { transform: scale(0.99); }
-.card-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.card-info { flex: 1; display: flex; align-items: center; gap: 10px; }
-.card-icon { font-size: 1.3rem; }
-.card-name { font-size: 1rem; font-weight: 600; color: var(--accent); }
-.card-file { font-size: 0.72rem; color: var(--text3); margin-top: 2px; font-family: var(--font-en); }
-
-.btn-open {
-  padding: 7px 14px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff; border: none; border-radius: 7px;
-  font-size: 0.78rem; font-weight: 600; cursor: pointer;
-  font-family: var(--font-zh);
+.level-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.level-badge {
+  width: 54px; height: 54px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem;
   flex-shrink: 0;
 }
-.btn-open:active { transform: scale(0.95); }
+.level-info { flex: 1; }
+.level-name {
+  font-size: 0.95rem; font-weight: 700; color: var(--text);
+}
+.level-title { font-size: 0.78rem; color: var(--text3); margin-top: 1px; font-family: var(--font-en); }
+.level-words {
+  font-family: var(--font-en);
+  font-size: 0.75rem; color: var(--text3);
+  text-align: right;
+}
+.level-words strong {
+  font-size: 1.4rem; font-weight: 800; color: var(--green);
+  display: block;
+}
+
+/* Progress */
+.progress-wrap { margin-top: 2px; }
+.progress-label {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.7rem; color: var(--text3); margin-bottom: 6px;
+}
+.progress-bar {
+  width: 100%; height: 10px;
+  background: var(--surface2);
+  border-radius: 10px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 10px;
+  background: linear-gradient(90deg, var(--green), var(--sage), var(--peach));
+  transition: width 0.8s ease;
+}
+
+/* Stats */
+.stats-row {
+  display: flex; gap: 10px; margin-bottom: 18px;
+  position: relative; z-index: 1;
+}
+.stat-box {
+  flex: 1; background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 12px 10px; text-align: center;
+  box-shadow: 0 1px 4px rgba(45,58,46,0.04);
+}
+.stat-num { font-size: 1.3rem; font-weight: 700; font-family: var(--font-en); }
+.stat-num.green { color: var(--green); }
+.stat-num.peach { color: var(--peach2); }
+.stat-num.sage { color: var(--sage); }
+.stat-label { font-size: 0.7rem; color: var(--text3); margin-top: 2px; }
+
+/* Page list */
+.section-title {
+  font-size: 0.82rem; font-weight: 600; color: var(--text2);
+  margin-bottom: 10px; padding-left: 4px;
+  position: relative; z-index: 1;
+}
+.page-list {
+  display: flex; flex-direction: column; gap: 8px;
+  position: relative; z-index: 1;
+}
+.page-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 4px rgba(45,58,46,0.04);
+}
+.page-card:hover { border-color: var(--border2); box-shadow: 0 2px 8px rgba(45,58,46,0.08); }
+.page-card:active { transform: scale(0.99); }
+.card-row { display: flex; align-items: center; gap: 10px; }
+.card-info { flex: 1; display: flex; align-items: center; gap: 10px; }
+.card-icon { font-size: 1.2rem; }
+.card-name { font-size: 0.92rem; font-weight: 600; color: var(--text); }
+.card-meta { font-size: 0.7rem; color: var(--text3); margin-top: 1px; font-family: var(--font-en); }
+.card-words {
+  font-size: 0.73rem; color: var(--green2);
+  font-family: var(--font-en); font-weight: 600;
+  background: var(--green-pale);
+  padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+}
+.btn-open {
+  padding: 7px 14px;
+  background: var(--green);
+  color: #fff; border: none; border-radius: 10px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  font-family: var(--font-zh);
+  margin-left: 6px; flex-shrink: 0;
+}
+.btn-open:active { transform: scale(0.95); background: var(--green2); }
 
 /* Viewer */
-.viewer {
-  position: fixed; inset: 0; z-index: 9999; background: #000;
-}
+.viewer { position: fixed; inset: 0; z-index: 9999; background: #fff; }
 .viewer-bar {
   position: absolute; top: 0; left: 0; right: 0;
   height: 48px;
   padding-top: env(safe-area-inset-top, 0);
-  background: rgba(44,44,44,0.95);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  background: rgba(244,247,242,0.95);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   display: flex; align-items: center;
-  padding-left: 16px; padding-right: 16px; gap: 12px;
-  z-index: 10;
+  padding-left: 16px; padding-right: 16px; gap: 12px; z-index: 10;
+  border-bottom: 1px solid var(--border);
 }
 .viewer-bar .back-btn {
-  background: rgba(255,255,255,0.12); border: none; color: #fff;
-  padding: 6px 16px; border-radius: 6px; cursor: pointer;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+  padding: 6px 16px; border-radius: 8px; cursor: pointer;
   font-size: 0.85rem; font-family: var(--font-zh);
 }
-.viewer-bar .back-btn:active { background: rgba(255,255,255,0.2); }
+.viewer-bar .back-btn:active { background: var(--border); }
 .viewer-bar .page-title {
-  color: rgba(255,255,255,0.8); font-size: 0.85rem;
-  font-family: var(--font-zh); overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap;
+  color: var(--text2); font-size: 0.85rem; font-family: var(--font-zh);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .viewer iframe {
   position: absolute;
@@ -118,36 +223,52 @@ body {
   border: none;
 }
 
-/* Loading & error */
+/* Status */
 .status-msg {
   text-align: center; padding: 48px 20px;
-  background: var(--surface); border-radius: 14px;
-  border: 1px solid var(--border);
+  background: var(--surface); border-radius: 16px;
+  border: 1px solid var(--border); position: relative; z-index: 1;
+  box-shadow: 0 2px 12px rgba(45,58,46,0.05);
 }
 .status-msg .emoji { font-size: 2.5rem; margin-bottom: 12px; }
-.status-msg p { color: var(--text2); font-size: 0.95rem; }
+.status-msg p { color: var(--text2); font-size: 0.92rem; }
 .status-msg .sub { color: var(--text3); font-size: 0.82rem; margin-top: 4px; }
-
 .refresh-btn {
-  margin-top: 16px;
-  padding: 10px 24px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff; border: none; border-radius: 10px;
-  font-size: 0.85rem; font-weight: 600; cursor: pointer;
-  font-family: var(--font-zh);
+  margin-top: 16px; padding: 10px 24px;
+  background: var(--green); color: #fff; border: none; border-radius: 10px;
+  font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: var(--font-zh);
+}
+
+/* How-to */
+.howto {
+  margin-top: 18px; padding: 16px 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; position: relative; z-index: 1;
+}
+.howto summary {
+  font-size: 0.82rem; font-weight: 600; color: var(--text2);
+  cursor: pointer; list-style: none;
+}
+.howto summary::before { content: '📌 '; }
+.howto .howto-body {
+  margin-top: 12px; font-size: 0.8rem; color: var(--text3); line-height: 1.8;
+}
+.howto code {
+  background: var(--green-pale); padding: 2px 6px; border-radius: 4px;
+  font-size: 0.76rem; font-family: var(--font-en), monospace; color: var(--green2);
 }
 
 /* Install banner */
 .install-banner {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 14px 18px; margin-bottom: 16px;
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 14px; padding: 14px 18px; margin-bottom: 14px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  position: relative; z-index: 1;
 }
 .install-banner p { font-size: 0.82rem; color: var(--text2); flex: 1; }
 .install-banner .install-btn {
-  padding: 8px 16px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff; border: none; border-radius: 8px;
+  padding: 8px 16px; background: var(--green); color: #fff;
+  border: none; border-radius: 10px;
   font-size: 0.8rem; font-weight: 600; cursor: pointer;
   font-family: var(--font-zh); white-space: nowrap;
 }
@@ -156,23 +277,17 @@ body {
   font-size: 1rem; cursor: pointer;
 }
 
-/* How-to section */
-.howto {
-  margin-top: 24px; padding: 18px 20px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px;
+/* Floating leaves animation */
+.leaf {
+  position: fixed; pointer-events: none; z-index: 0;
+  animation: fall linear infinite;
+  opacity: 0.15;
 }
-.howto summary {
-  font-size: 0.85rem; font-weight: 600; color: var(--text2);
-  cursor: pointer; list-style: none;
-}
-.howto summary::before { content: '📌 '; }
-.howto .howto-body {
-  margin-top: 12px; font-size: 0.82rem; color: var(--text2); line-height: 1.8;
-}
-.howto code {
-  background: var(--surface2); padding: 2px 6px; border-radius: 4px;
-  font-size: 0.78rem; font-family: var(--font-en), monospace;
+@keyframes fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
 .hidden { display: none !important; }
@@ -180,10 +295,13 @@ body {
 </head>
 <body>
 
+<!-- Floating leaves -->
+<div id="leaves"></div>
+
 <!-- Viewer -->
 <div id="viewer" class="viewer hidden">
   <div class="viewer-bar">
-    <button class="back-btn" onclick="closeViewer()">← 返回主頁</button>
+    <button class="back-btn" onclick="closeViewer()">← 返回花園</button>
     <span class="page-title" id="viewerTitle"></span>
   </div>
   <iframe id="viewerFrame" sandbox="allow-scripts allow-same-origin"></iframe>
@@ -191,88 +309,184 @@ body {
 
 <div class="app">
   <div class="hub-header">
-    <div class="icon">📚</div>
-    <h1>TOEFL 練習工具庫</h1>
-    <p>收藏所有練習網頁，隨時開啟複習</p>
+    <div class="garden-icon">🌱</div>
+    <h1>TOEFL 知識花園</h1>
+    <p>每一個單字，都是一顆種子</p>
   </div>
 
-  <!-- Install banner -->
   <div id="installBanner" class="install-banner hidden">
-    <p>📲 安裝到手機主畫面，像 App 一樣使用</p>
+    <p>📲 安裝到主畫面，隨時澆灌你的花園</p>
     <button class="install-btn" onclick="installPWA()">安裝</button>
     <button class="dismiss-btn" onclick="dismissInstall()">✕</button>
   </div>
 
-  <div class="stats">
+  <div id="levelCard" class="level-card"></div>
+
+  <div class="stats-row">
     <div class="stat-box">
-      <div class="stat-num" id="pageCount">-</div>
+      <div class="stat-num green" id="totalWords">-</div>
+      <div class="stat-label">累計單字</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num peach" id="pageCount">-</div>
       <div class="stat-label">練習頁面</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num sage" id="goalPercent">-</div>
+      <div class="stat-label">目標進度</div>
     </div>
   </div>
 
   <div id="content"></div>
 
-  <!-- How to add pages -->
   <details class="howto">
     <summary>如何新增練習頁面？</summary>
     <div class="howto-body">
       ① 從 Claude 對話下載新的 HTML 練習檔<br>
       ② 到 GitHub repo 的 <code>pages/</code> 資料夾上傳該檔案<br>
-      ③ 編輯根目錄的 <code>pages.json</code>，加上一筆：<br>
-      <code>{"name": "日期名稱", "file": "檔案名.html"}</code><br>
-      ④ Commit 後兩邊裝置都能看到！
+      ③ 編輯 <code>pages.json</code>，在最上方加一筆（新的放前面）：<br>
+      <code>{"name":"日期", "file":"檔名.html", "words":單字數}</code><br>
+      ④ Commit → 兩邊裝置都能看到！
     </div>
   </details>
 </div>
 
 <script>
-// Fetch pages list from pages.json (same origin, GitHub Pages)
+// ── Level System: Garden Growth ──
+const LEVELS = [
+  { lv:1, min:0,    max:299,  icon:'🌱', name:'Lv.1 種子萌芽',   title:'Seed',             bg:'#e8f5e9' },
+  { lv:2, min:300,  max:599,  icon:'🌿', name:'Lv.2 嫩芽初長',   title:'Sprout',           bg:'#dcedc8' },
+  { lv:3, min:600,  max:999,  icon:'🪴', name:'Lv.3 小苗成長',   title:'Seedling',         bg:'#c8e6c9' },
+  { lv:4, min:1000, max:1499, icon:'🌳', name:'Lv.4 幼樹茁壯',   title:'Young Tree',       bg:'#fff9c4' },
+  { lv:5, min:1500, max:1999, icon:'🌲', name:'Lv.5 大樹參天',   title:'Tall Tree',        bg:'#f0f4c3' },
+  { lv:6, min:2000, max:2999, icon:'🌸', name:'Lv.6 花園盛開',   title:'Blooming Garden',  bg:'#fce4ec' },
+  { lv:7, min:3000, max:4999, icon:'🌻', name:'Lv.7 花海綻放',   title:'Flower Field',     bg:'#fff3e0' },
+  { lv:8, min:5000, max:7999, icon:'🏡', name:'Lv.8 秘密花園',   title:'Secret Garden',    bg:'#fde8d8' },
+  { lv:9, min:8000, max:10000,icon:'🌈', name:'Lv.9 伊甸園',     title:'Garden of Eden',   bg:'#e1f5fe' },
+];
+
+const GOAL = 10000;
+
+function getLevel(words) {
+  for (let i = LEVELS.length - 1; i >= 0; i--) {
+    if (words >= LEVELS[i].min) return LEVELS[i];
+  }
+  return LEVELS[0];
+}
+
+function renderLevel(totalWords) {
+  const lv = getLevel(totalWords);
+  const progress = totalWords - lv.min;
+  const range = lv.max - lv.min + 1;
+  const pct = Math.min(100, Math.round((progress / range) * 100));
+  const remaining = lv.max + 1 - totalWords;
+
+  const nextMsg = lv.lv < LEVELS.length
+    ? `再 ${remaining} 字升級 ✨`
+    : '🌈 花園已滿開！';
+
+  // Update header icon based on level
+  document.querySelector('.garden-icon').textContent = lv.icon;
+
+  document.getElementById('levelCard').innerHTML = `
+    <div class="level-top">
+      <div class="level-badge" style="background:${lv.bg}; border-radius:16px;">
+        ${lv.icon}
+      </div>
+      <div class="level-info">
+        <div class="level-name">${lv.name}</div>
+        <div class="level-title">${lv.title}</div>
+      </div>
+      <div class="level-words">
+        <strong>${totalWords.toLocaleString()}</strong>
+        words
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>${lv.min}</span>
+        <span>${nextMsg}</span>
+        <span>${lv.max + 1}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${pct}%"></div>
+      </div>
+    </div>`;
+}
+
+// ── Floating Leaves ──
+function createLeaves() {
+  const container = document.getElementById('leaves');
+  const leafEmojis = ['🍃','🌿','☘️','🍀'];
+  for (let i = 0; i < 8; i++) {
+    const leaf = document.createElement('div');
+    leaf.className = 'leaf';
+    leaf.textContent = leafEmojis[i % leafEmojis.length];
+    leaf.style.cssText = `
+      left:${Math.random()*90+5}%;
+      font-size:${14+Math.random()*10}px;
+      animation-duration:${12+Math.random()*10}s;
+      animation-delay:${Math.random()*15}s;
+    `;
+    container.appendChild(leaf);
+  }
+}
+
+// ── Load Pages ──
 async function loadPages() {
   const content = document.getElementById('content');
-  const countEl = document.getElementById('pageCount');
-
-  content.innerHTML = '<div class="status-msg"><div class="emoji">⏳</div><p>載入中...</p></div>';
+  content.innerHTML = '<div class="status-msg"><div class="emoji">🌱</div><p>花園生長中...</p></div>';
 
   try {
     const res = await fetch('./pages.json?t=' + Date.now());
-    if (!res.ok) throw new Error('Failed to load pages.json');
+    if (!res.ok) throw new Error('Failed');
     const pages = await res.json();
 
-    countEl.textContent = pages.length;
+    const totalWords = pages.reduce((sum, p) => sum + (p.words || 0), 0);
+
+    document.getElementById('totalWords').textContent = totalWords.toLocaleString();
+    document.getElementById('pageCount').textContent = pages.length;
+    document.getElementById('goalPercent').textContent = Math.round((totalWords / GOAL) * 100) + '%';
+
+    renderLevel(totalWords);
 
     if (pages.length === 0) {
       content.innerHTML = `
         <div class="status-msg">
-          <div class="emoji">🎯</div>
-          <p>還沒有練習頁面</p>
-          <p class="sub">點下方說明了解如何新增</p>
+          <div class="emoji">🌱</div>
+          <p>花園還是空的</p>
+          <p class="sub">種下第一顆種子，開始你的成長之旅</p>
         </div>`;
       return;
     }
 
-    content.innerHTML = '<div class="page-list">' + pages.map((p, i) => `
-      <div class="page-card" onclick="openPage('${esc(p.file)}', '${esc(p.name)}')">
-        <div class="card-row">
-          <div class="card-info">
-            <span class="card-icon">📝</span>
-            <div>
-              <div class="card-name">${esc(p.name)}</div>
-              <div class="card-file">${esc(p.file)}</div>
+    const icons = ['🌱','🌿','🪴','🌳','🌲','🌸','🌻','🌺','🌼'];
+
+    content.innerHTML =
+      '<div class="section-title">🌿 練習紀錄</div>' +
+      '<div class="page-list">' + pages.map((p, i) => `
+        <div class="page-card" onclick="openPage('${esc(p.file)}', '${esc(p.name)}')">
+          <div class="card-row">
+            <div class="card-info">
+              <span class="card-icon">${icons[i % icons.length]}</span>
+              <div>
+                <div class="card-name">${esc(p.name)}</div>
+                <div class="card-meta">${esc(p.file)}</div>
+              </div>
             </div>
+            <span class="card-words">${p.words || '?'} 字</span>
+            <button class="btn-open" onclick="event.stopPropagation();openPage('${esc(p.file)}','${esc(p.name)}')">開啟</button>
           </div>
-          <button class="btn-open" onclick="event.stopPropagation();openPage('${esc(p.file)}', '${esc(p.name)}')">開啟</button>
-        </div>
-      </div>
-    `).join('') + '</div>';
+        </div>`).join('') + '</div>';
 
   } catch (e) {
-    countEl.textContent = '!';
+    document.getElementById('levelCard').innerHTML = '';
     content.innerHTML = `
       <div class="status-msg">
-        <div class="emoji">⚠️</div>
-        <p>無法載入頁面清單</p>
-        <p class="sub">請確認 pages.json 已上傳到 GitHub repo</p>
-        <button class="refresh-btn" onclick="loadPages()">重新載入</button>
+        <div class="emoji">🥀</div>
+        <p>花園連線中斷</p>
+        <p class="sub">無法載入 pages.json</p>
+        <button class="refresh-btn" onclick="loadPages()">重新連線</button>
       </div>`;
   }
 }
@@ -281,44 +495,35 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// Open a page
+// ── Viewer ──
 async function openPage(file, name) {
   document.getElementById('viewerTitle').textContent = name;
-  const viewer = document.getElementById('viewer');
-  const frame = document.getElementById('viewerFrame');
-
   try {
     const res = await fetch('./pages/' + file + '?t=' + Date.now());
     if (!res.ok) throw new Error('Not found');
     const html = await res.text();
     const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    frame.src = url;
-    viewer.classList.remove('hidden');
+    document.getElementById('viewerFrame').src = URL.createObjectURL(blob);
+    document.getElementById('viewer').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   } catch (e) {
     alert('無法載入 ' + file + '\n請確認檔案已上傳到 pages/ 資料夾');
   }
 }
-
 function closeViewer() {
-  const frame = document.getElementById('viewerFrame');
-  URL.revokeObjectURL(frame.src);
-  frame.src = 'about:blank';
+  const f = document.getElementById('viewerFrame');
+  URL.revokeObjectURL(f.src); f.src = 'about:blank';
   document.getElementById('viewer').classList.add('hidden');
   document.body.style.overflow = '';
 }
 
-// PWA Install
+// ── PWA ──
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (!localStorage.getItem('toefl-hub-dismiss-install')) {
+  e.preventDefault(); deferredPrompt = e;
+  if (!localStorage.getItem('toefl-hub-dismiss-install'))
     document.getElementById('installBanner').classList.remove('hidden');
-  }
 });
-
 function installPWA() {
   if (deferredPrompt) {
     deferredPrompt.prompt();
@@ -328,18 +533,14 @@ function installPWA() {
     });
   }
 }
-
 function dismissInstall() {
   document.getElementById('installBanner').classList.add('hidden');
   localStorage.setItem('toefl-hub-dismiss-install', '1');
 }
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-
-// Init
+// ── Init ──
+createLeaves();
 loadPages();
 </script>
 </body>
