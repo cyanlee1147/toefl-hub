@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深海詞典 Deep Sea Lexicon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --abyss:#031B2E;
+    --deep:#053654;
+    --deep2:#0A4A6E;
+    --surf:#1C7A93;
+    --foam:#EAF6F5;
+    --pearl:#F4FBFA;
+    --coral:#FF7A59;
+    --coral-dim:#D9603F;
+    --seaglow:#4FD9C4;
+    --ink:#0B2438;
+    --ink-dim:#3E5A68;
+    --text-light:#E9F6F5;
+    --text-light-dim:#9FC3CE;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(79,217,196,0.10), transparent 60%),
+      linear-gradient(180deg, var(--abyss) 0%, var(--deep) 45%, var(--deep2) 100%);
+    background-attachment:fixed;
+    color:var(--text-light);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- BUBBLES ---------- */
+  .bubbles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .bubble{
+    position:absolute;
+    bottom:-40px;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.05) 70%);
+    opacity:0.35;
+    animation:rise linear infinite;
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:0.35; }
+    90%{ opacity:0.25; }
+    100%{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
+  }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    z-index:1;
+    padding:60px 24px 0;
+  }
+  .hero-inner{
+    max-width:960px;
+    margin:0 auto;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:32px;
+    flex-wrap:wrap;
+    padding-bottom:44px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--seaglow);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(32px,5.2vw,50px);
+    line-height:1.08;
+    margin:0 0 10px;
+    color:var(--text-light);
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--text-light-dim);
+  }
+  .hero-sub{
+    font-size:14.5px;
+    color:var(--text-light-dim);
+    max-width:48ch;
+    line-height:1.65;
+    margin:0;
+  }
+  .count-block{ text-align:right; flex-shrink:0; }
+  .count-num{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:clamp(52px,8.5vw,80px);
+    line-height:0.85;
+    color:var(--seaglow);
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 24px rgba(79,217,196,0.35);
+  }
+  .count-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-light-dim);
+    margin-top:6px;
+  }
+
+  /* wave divider */
+  .wave-divider{ display:block; width:100%; height:56px; }
+  .wave-divider path{ fill:var(--pearl); }
+
+  /* ---------- TABS ---------- */
+  nav.tabs{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:rgba(3,27,46,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(233,246,245,0.08);
+    padding:14px 24px;
+  }
+  .tabs-inner{
+    max-width:960px;
+    margin:0 auto;
+    display:flex;
+    gap:8px;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:thin;
+    padding-bottom:2px;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    background:transparent;
+    border:1px solid rgba(233,246,245,0.18);
+    color:var(--text-light-dim);
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .tab-btn:hover{ color:var(--text-light); border-color:rgba(233,246,245,0.4); }
+  .tab-btn.active{
+    background:var(--seaglow);
+    border-color:var(--seaglow);
+    color:var(--abyss);
+    font-weight:600;
+  }
+  .tab-btn .n{ opacity:0.65; margin-left:4px; }
+  .tab-btn.active .n{ opacity:0.55; }
+
+  /* ---------- MAIN ---------- */
+  main{
+    position:relative;
+    z-index:1;
+    max-width:960px;
+    margin:0 auto;
+    padding:36px 24px 90px;
+  }
+  .date-section{ margin-bottom:46px; }
+  .date-heading{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:0 0 18px;
+    padding-bottom:8px;
+    border-bottom:1px dashed rgba(233,246,245,0.18);
+  }
+  .date-heading .d{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    color:var(--text-light);
+  }
+  .date-heading .c{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--text-light-dim);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:16px;
+  }
+
+  /* ---------- FLIP CARD ---------- */
+  .flashcard{
+    perspective:1200px;
+    height:170px;
+    cursor:pointer;
+  }
+  .flashcard-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner{ transform:rotateY(180deg); }
+
+  .card-face{
+    position:absolute;
+    inset:0;
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
+    border-radius:10px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .card-front{
+    background:
+      radial-gradient(circle at 85% 15%, rgba(79,217,196,0.18), transparent 55%),
+      linear-gradient(160deg, var(--deep2), var(--surf));
+    border:1px solid rgba(233,246,245,0.18);
+    justify-content:space-between;
+    box-shadow:0 10px 22px -14px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.03);
+  }
+  .front-top{ display:flex; justify-content:flex-end; }
+  .front-top .speak-btn{
+    background:rgba(3,27,46,0.55);
+    color:var(--seaglow);
+  }
+  .front-top .speak-btn:hover{ background:var(--coral-dim); color:#fff; }
+  .front-word{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:21px;
+    line-height:1.25;
+    color:var(--text-light);
+    margin:auto 0;
+  }
+  .flip-hint{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.05em;
+    color:var(--text-light-dim);
+    text-align:right;
+  }
+
+  .card-back{
+    background:var(--pearl);
+    color:var(--ink);
+    transform:rotateY(180deg);
+    border:1px solid #d3e8e6;
+    box-shadow:0 10px 22px -14px rgba(0,0,0,0.5);
+    overflow-y:auto;
+  }
+  .back-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .back-word{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:17px;
+    line-height:1.2;
+    margin:0;
+  }
+  .pos-badge{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.03em;
+    color:#fff;
+    background:var(--surf);
+    padding:2px 6px;
+    border-radius:3px;
+    white-space:nowrap;
+    margin-top:2px;
+    display:inline-block;
+  }
+  .speak-btn{
+    border:none;
+    background:var(--abyss);
+    color:var(--seaglow);
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .speak-btn:hover{ background:var(--coral-dim); transform:scale(1.08); }
+  .speak-btn:active{ transform:scale(0.92); }
+  .speak-btn.playing{ background:var(--coral); color:#fff; }
+  .speak-btn svg{ width:12px; height:12px; }
+
+  .zh-meaning{
+    font-size:13px;
+    color:var(--ink-dim);
+    margin:4px 0 8px;
+    line-height:1.4;
+  }
+  .example-row{
+    display:flex;
+    align-items:flex-start;
+    gap:6px;
+    border-top:1px dashed #d3e8e6;
+    padding-top:8px;
+    margin-top:auto;
+  }
+  .example-text{ flex:1; min-width:0; }
+  .example-en{
+    font-size:11.5px;
+    line-height:1.45;
+    color:#2c4650;
+    margin:0 0 3px;
+  }
+  .example-en mark{
+    background:none;
+    color:var(--coral-dim);
+    font-weight:600;
+    text-decoration:underline;
+    text-decoration-color:rgba(217,96,63,0.4);
+    text-decoration-thickness:2px;
+    text-underline-offset:2px;
+  }
+  .example-zh{
+    font-size:11px;
+    line-height:1.4;
+    color:#6b8088;
+    margin:0;
+  }
+
+  footer{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    padding:28px 24px 40px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--text-light-dim);
+    letter-spacing:0.04em;
+  }
+
+  .no-tts-note{
+    display:none;
+    position:relative;
+    z-index:1;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--coral);
+    text-align:center;
+    padding:6px 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="bubbles" id="bubbles"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">TOEFL_Vocab_Log · 2026.07.01 – 07.31</p>
+      <h1>深海詞典<br><em>Deep Sea Lexicon</em></h1>
+      <p class="hero-sub">七月累積的單字，沉入卡片深處。點一下浮上水面，看見中文與例句翻譯；點喇叭聽發音。</p>
+    </div>
+    <div class="count-block">
+      <div class="count-num" id="totalCount">0</div>
+      <div class="count-label">words logged</div>
+    </div>
+  </div>
+  <svg class="wave-divider" viewBox="0 0 1200 60" preserveAspectRatio="none">
+    <path d="M0,30 C150,60 350,0 600,25 C850,50 1050,10 1200,35 L1200,60 L0,60 Z"></path>
+  </svg>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabBar"></div>
+</nav>
+
+<p class="no-tts-note" id="ttsNote">此瀏覽器不支援語音朗讀（Web Speech API），發音按鈕暫不可用。</p>
+
+<main id="main"></main>
+
+<footer>cyanlee1147 / toefl-hub · generated log</footer>
+
+<script>
+const VOCAB = [{"date": "2026-07-31", "word": "advent", "pos": "n.", "zh": "出現，到來", "en": "The advent of smartphones changed how people communicate forever.", "zhEx": "智慧型手機的出現永遠改變了人們溝通的方式。"}, {"date": "2026-07-31", "word": "laborious", "pos": "adj.", "zh": "費力的，辛苦的", "en": "Cleaning the entire house by hand can be a very laborious task.", "zhEx": "徒手清潔整棟房子可能是一項非常費力的工作。"}, {"date": "2026-07-31", "word": "rendered", "pos": "v.", "zh": "使成為，使得", "en": "The unexpected storm rendered the roads impassable.", "zhEx": "突如其來的暴風雨使道路無法通行。"}, {"date": "2026-07-31", "word": "spurred", "pos": "v.", "zh": "促進，激勵", "en": "The strong quarterly earnings report spurred investors to buy more shares.", "zhEx": "強勁的季度財報促使投資人買進更多股票。"}, {"date": "2026-07-31", "word": "dissemination", "pos": "n.", "zh": "傳播，散佈", "en": "Effective dissemination of public health information is crucial during a pandemic.", "zhEx": "在疫情期間，有效傳播公共衛生資訊至關重要。"}, {"date": "2026-07-28", "word": "fundamentally", "pos": "adv.", "zh": "根本地，從根本上", "en": "The invention of the internet has fundamentally changed how people communicate and access information.", "zhEx": "網路的發明從根本上改變了人們溝通與取得資訊的方式。"}, {"date": "2026-07-28", "word": "scrutinize", "pos": "v.", "zh": "詳細檢查，細看", "en": "The auditor spent hours scrutinizing the financial records for any discrepancies.", "zhEx": "稽核員花了好幾個小時詳細檢查財務紀錄，尋找任何差異。"}, {"date": "2026-07-28", "word": "imbue", "pos": "v.", "zh": "賦予，使充滿", "en": "The artist sought to imbue her sculptures with a sense of peace and tranquility.", "zhEx": "這位藝術家試圖賦予她的雕塑一種平靜與寧靜的感覺。"}, {"date": "2026-07-28", "word": "rigor", "pos": "n.", "zh": "嚴謹，嚴密", "en": "Scientific research requires immense intellectual rigor to ensure accurate and reliable results.", "zhEx": "科學研究需要極高的知識嚴謹度，才能確保結果準確可靠。"}, {"date": "2026-07-28", "word": "dissect", "pos": "v.", "zh": "剖析，分解", "en": "In literature class, students learned to dissect complex novels to understand their underlying themes.", "zhEx": "在文學課上，學生學習剖析複雜的小說，以理解其潛在主題。"}, {"date": "2026-07-28", "word": "transcending", "pos": "v.", "zh": "超越，勝過 (transcend的動名詞)", "en": "The film's powerful message about humanity's resilience is truly transcending cultural barriers.", "zhEx": "這部電影關於人性韌性的強烈訊息，確實超越了文化的隔閡。"}, {"date": "2026-07-28", "word": "convey", "pos": "v.", "zh": "傳達，表達", "en": "The painting successfully conveys the artist's feeling of loneliness and isolation.", "zhEx": "這幅畫成功傳達了藝術家孤獨與疏離的感受。"}, {"date": "2026-07-28", "word": "laid the groundwork", "pos": "phr.", "zh": "為...奠定基礎", "en": "Early theories in physics laid the groundwork for many of the technological advancements we see today.", "zhEx": "早期的物理理論為我們今日所見的許多科技進步奠定了基礎。"}, {"date": "2026-07-24", "word": "deviations", "pos": "n.", "zh": "偏離，偏差", "en": "Minor deviations from the established protocol can sometimes lead to unexpected results.", "zhEx": "微小偏離既定流程有時會導致意想不到的結果。"}, {"date": "2026-07-24", "word": "rationality", "pos": "n.", "zh": "理性", "en": "Economic models often assume that consumers act with perfect rationality, though this is rarely true in practice.", "zhEx": "經濟模型通常假設消費者行為完全理性，但實際上這種情況很少見。"}, {"date": "2026-07-24", "word": "suboptimal", "pos": "adj.", "zh": "次優的，未達到最佳狀態的", "en": "Due to budget constraints, the team had to settle for a suboptimal solution, which still met the basic requirements.", "zhEx": "由於預算限制，團隊只能接受一個次優方案，但它仍符合基本需求。"}, {"date": "2026-07-24", "word": "arbitrary", "pos": "adj.", "zh": "任意的，武斷的", "en": "The starting time for the meeting seemed arbitrary, as there was no clear reason for choosing 9:17 AM.", "zhEx": "會議的開始時間顯得很武斷，因為選擇早上9點17分並沒有明確的理由。"}, {"date": "2026-07-24", "word": "irrelevant", "pos": "adj.", "zh": "不相關的", "en": "Much of the information presented in court was deemed irrelevant to the central argument of the case.", "zhEx": "法庭上提出的許多資訊被認定與案件的核心論點無關。"}, {"date": "2026-07-24", "word": "estimations", "pos": "n.", "zh": "估計，評估", "en": "Initial estimations for the project's completion were overly optimistic, leading to delays.", "zhEx": "專案完成時間的初步估計過於樂觀，導致了延誤。"}, {"date": "2026-07-24", "word": "valuations", "pos": "n.", "zh": "估價，評價", "en": "Real estate agents provide valuations of properties to help buyers and sellers determine fair prices.", "zhEx": "房地產經紀人提供房產估價，協助買賣雙方判斷合理價格。"}, {"date": "2026-07-24", "word": "skew", "pos": "v.", "zh": "使偏斜，扭曲", "en": "Marketing campaigns often skew perceptions of product quality to attract more customers.", "zhEx": "行銷活動常常扭曲人們對產品品質的認知，以吸引更多顧客。"}, {"date": "2026-07-24", "word": "deliberate", "pos": "adj.", "zh": "故意的，深思熟慮的", "en": "The artist's choice of muted colors was a deliberate decision to evoke a sense of calm.", "zhEx": "這位藝術家選用柔和的色調是刻意的決定，為了喚起平靜的感覺。"}, {"date": "2026-07-23", "word": "revival", "pos": "n.", "zh": "復興；復活", "en": "The city has seen a revival of its downtown area, with many new businesses opening.", "zhEx": "這座城市的市中心區域出現復興，許多新商家開始營業。"}, {"date": "2026-07-23", "word": "antiquity", "pos": "n.", "zh": "古代；古物", "en": "Many archaeologists dedicate their lives to studying artifacts from classical antiquity.", "zhEx": "許多考古學家將一生奉獻於研究古典時期的文物。"}, {"date": "2026-07-23", "word": "pivoted", "pos": "v.", "zh": "轉向；以...為中心", "en": "The company pivoted its marketing strategy to focus on a younger demographic.", "zhEx": "這家公司調整了行銷策略，轉而聚焦於較年輕的族群。"}, {"date": "2026-07-23", "word": "patrons", "pos": "n.", "zh": "贊助人；顧客", "en": "Wealthy patrons played a crucial role in funding the construction of grand cathedrals in medieval Europe.", "zhEx": "富有的贊助人在資助中世紀歐洲宏偉大教堂的建造上扮演了關鍵角色。"}, {"date": "2026-07-23", "word": "meticulously", "pos": "adv.", "zh": "一絲不苟地；細緻地", "en": "The scientist meticulously recorded every observation during the experiment to ensure accuracy.", "zhEx": "這位科學家在實驗過程中一絲不苟地記錄每項觀察結果，以確保準確性。"}, {"date": "2026-07-23", "word": "secular", "pos": "adj.", "zh": "世俗的；非宗教的", "en": "The government adopted a secular policy, separating state affairs from religious institutions.", "zhEx": "政府採行世俗化政策，將國家事務與宗教機構分離。"}, {"date": "2026-07-22", "word": "plasticity", "pos": "n.", "zh": "可塑性", "en": "The material's high plasticity allows it to be molded into various intricate shapes.", "zhEx": "這種材料的高可塑性使其能被塑造成各種精緻的形狀。"}, {"date": "2026-07-22", "word": "reorganize", "pos": "v.", "zh": "重組", "en": "After the merger, the company decided to reorganize its departments to improve efficiency.", "zhEx": "合併後，公司決定重組部門以提升效率。"}, {"date": "2026-07-22", "word": "neural connections", "pos": "phr.", "zh": "神經連結", "en": "Learning a new language strengthens existing neural connections and forms new ones.", "zhEx": "學習新語言能強化既有的神經連結，並形成新的連結。"}, {"date": "2026-07-22", "word": "dynamic capacity", "pos": "phr.", "zh": "動態能力", "en": "The software's dynamic capacity allows it to handle fluctuating user loads without crashing.", "zhEx": "該軟體的動態能力使其能在使用者負載波動時不當機。"}, {"date": "2026-07-22", "word": "adapt", "pos": "v.", "zh": "適應", "en": "Many desert animals have developed unique mechanisms to adapt to extreme heat and water scarcity.", "zhEx": "許多沙漠動物發展出獨特機制，以適應極端高溫與缺水。"}, {"date": "2026-07-22", "word": "albeit", "pos": "adv.", "zh": "儘管；雖然", "en": "She accepted the job, albeit with some reservations about the long commuting hours.", "zhEx": "她接受了這份工作，儘管對於漫長的通勤時間有些保留。"}, {"date": "2026-07-22", "word": "cortical regions", "pos": "phr.", "zh": "皮質區域", "en": "Damage to specific cortical regions can impair a person's ability to speak or understand language.", "zhEx": "特定皮質區域受損可能損害一個人說話或理解語言的能力。"}, {"date": "2026-07-22", "word": "compensate", "pos": "v.", "zh": "補償；彌補", "en": "The company offered a bonus to compensate employees for working extra hours during the busy season.", "zhEx": "公司提供獎金，以補償員工在旺季加班的辛勞。"}, {"date": "2026-07-22", "word": "stimulate", "pos": "v.", "zh": "刺激", "en": "Regular exercise can stimulate the release of endorphins, improving mood.", "zhEx": "規律運動能刺激腦內啡的釋放，改善情緒。"}, {"date": "2026-07-21", "word": "Cognitive biases", "pos": "phr.", "zh": "認知偏誤", "en": "Understanding common cognitive biases helps individuals make more rational decisions in complex situations.", "zhEx": "了解常見的認知偏誤有助於人們在複雜情境中做出更理性的決定。"}, {"date": "2026-07-21", "word": "Systematic errors", "pos": "phr.", "zh": "系統性錯誤", "en": "If a measurement device is not calibrated correctly, it will produce systematic errors in all its readings.", "zhEx": "若測量儀器未正確校準，其所有讀數都會產生系統性錯誤。"}, {"date": "2026-07-21", "word": "Solidifying", "pos": "v.", "zh": "鞏固，使堅固", "en": "The company's latest product launch succeeded in solidifying its market position.", "zhEx": "公司最新的產品發表成功鞏固了其市場地位。"}, {"date": "2026-07-21", "word": "Paramount", "pos": "adj.", "zh": "至關重要的，首要的", "en": "In emergency situations, patient safety is of paramount importance.", "zhEx": "在緊急情況下，病患安全是至關重要的。"}, {"date": "2026-07-21", "word": "Entrench", "pos": "v.", "zh": "使根深蒂固，使確立", "en": "The company's strong brand identity is deeply entrenched in the minds of consumers.", "zhEx": "這家公司強大的品牌形象已深深根植於消費者心中。"}, {"date": "2026-07-21", "word": "Polarization", "pos": "n.", "zh": "兩極化", "en": "The debate over the new policy led to increased polarization among the public.", "zhEx": "對新政策的辯論導致民眾之間的兩極化加劇。"}, {"date": "2026-07-20", "word": "comprised", "pos": "v.", "zh": "包含，組成", "en": "The committee comprised members from various departments across the university.", "zhEx": "該委員會由來自大學各部門的成員組成。"}, {"date": "2026-07-20", "word": "self-sufficient", "pos": "adj.", "zh": "自給自足的", "en": "Remote island communities often need to be highly self-sufficient regarding food and resources.", "zhEx": "偏遠島嶼的社區在糧食與資源方面往往需要高度自給自足。"}, {"date": "2026-07-20", "word": "prerequisite", "pos": "n.", "zh": "先決條件", "en": "A strong background in mathematics is a prerequisite for advanced physics courses.", "zhEx": "紮實的數學基礎是修習進階物理課程的先決條件。"}, {"date": "2026-07-20", "word": "eventual", "pos": "adj.", "zh": "最終的，結果的", "en": "Despite initial setbacks, the team's eventual success was a testament to their perseverance.", "zhEx": "儘管最初遭遇挫折，該團隊最終的成功證明了他們的毅力。"}, {"date": "2026-07-20", "word": "agglomeration", "pos": "n.", "zh": "聚集，集聚", "en": "The city's rapid growth led to a massive agglomeration of people and industries.", "zhEx": "這座城市的快速成長導致人口與產業大量聚集。"}, {"date": "2026-07-20", "word": "necessitated", "pos": "v.", "zh": "使…成為必需，使…不得不", "en": "The unexpected changes in regulations necessitated a complete revision of the project plan.", "zhEx": "法規的意外變動使得專案計畫必須全面修訂。"}, {"date": "2026-07-20", "word": "novel", "pos": "adj.", "zh": "新穎的，新的", "en": "Scientists are exploring novel approaches to combat antibiotic-resistant bacteria.", "zhEx": "科學家正在探索新穎的方法，以對抗具抗藥性的細菌。"}, {"date": "2026-07-20", "word": "stratification", "pos": "n.", "zh": "分層，層次劃分", "en": "Sociologists often study social stratification to understand inequality within societies.", "zhEx": "社會學家經常研究社會分層，以了解社會中的不平等現象。"}, {"date": "2026-07-19", "word": "gained prominence", "pos": "phr.", "zh": "獲得重視/知名度", "en": "The new sustainable energy technology quickly gained prominence in the global market.", "zhEx": "這項新的永續能源技術迅速在全球市場中獲得重視。"}, {"date": "2026-07-19", "word": "predetermined nature", "pos": "phr.", "zh": "預先決定的本質", "en": "Many philosophers debate whether human behavior is a result of free will or a predetermined nature.", "zhEx": "許多哲學家爭論人類行為究竟是出於自由意志，還是一種預先決定的本質。"}, {"date": "2026-07-19", "word": "emphasizes", "pos": "v.", "zh": "強調", "en": "The professor emphasizes the importance of critical thinking in academic writing.", "zhEx": "這位教授強調批判性思考在學術寫作中的重要性。"}, {"date": "2026-07-19", "word": "anguish", "pos": "n.", "zh": "極度痛苦，煎熬", "en": "The patient's family endured great anguish during his long illness.", "zhEx": "病患家屬在他漫長的病程中承受了極大的痛苦。"}, {"date": "2026-07-19", "word": "necessity", "pos": "n.", "zh": "必要性", "en": "Clean water is a basic necessity for all living organisms.", "zhEx": "乾淨的水是所有生物的基本必需品。"}, {"date": "2026-07-19", "word": "distinct", "pos": "adj.", "zh": "明顯不同的，有區別的", "en": "The two species are distinct in their migratory patterns and breeding habits.", "zhEx": "這兩個物種在遷徙模式與繁殖習性上明顯不同。"}, {"date": "2026-07-19", "word": "approaches", "pos": "n.", "zh": "方法，途徑", "en": "There are several different approaches to solving this complex mathematical problem.", "zhEx": "解決這個複雜的數學問題有好幾種不同的方法。"}, {"date": "2026-07-19", "word": "championed", "pos": "v.", "zh": "擁護，支持", "en": "The senator has long championed policies aimed at environmental protection.", "zhEx": "這位參議員長期以來一直擁護以環境保護為目標的政策。"}, {"date": "2026-07-19", "word": "confronted with", "pos": "phr.", "zh": "面對著", "en": "Scientists are increasingly confronted with the challenges of climate change.", "zhEx": "科學家日益面對氣候變遷帶來的挑戰。"}, {"date": "2026-07-19", "word": "meaninglessness", "pos": "n.", "zh": "無意義，空虛", "en": "Some artists explore themes of alienation and meaninglessness in modern urban life.", "zhEx": "有些藝術家探索現代都市生活中疏離與無意義感的主題。"}, {"date": "2026-07-18", "word": "revolt", "pos": "n.", "zh": "反叛；起義", "en": "The factory workers staged a revolt against the unfair labor practices.", "zhEx": "工廠工人發起反抗，抗議不公平的勞動措施。"}, {"date": "2026-07-18", "word": "established", "pos": "adj.", "zh": "既定的；已確立的", "en": "The company has an established reputation for quality products.", "zhEx": "這家公司在優質產品方面已建立了穩固的聲譽。"}, {"date": "2026-07-18", "word": "prioritized", "pos": "v.", "zh": "優先考慮；按優先順序處理", "en": "The project manager prioritized tasks to ensure the most critical ones were completed first.", "zhEx": "專案經理將任務排列優先順序，確保最關鍵的任務優先完成。"}, {"date": "2026-07-18", "word": "meticulous", "pos": "adj.", "zh": "一絲不苟的；細緻的", "en": "Her meticulous research uncovered details that others had missed.", "zhEx": "她一絲不苟的研究揭露了其他人忽略的細節。"}, {"date": "2026-07-18", "word": "distinctive", "pos": "adj.", "zh": "獨特的；有特色的", "en": "The restaurant is known for its distinctive fusion cuisine.", "zhEx": "這家餐廳以其獨特的融合料理聞名。"}, {"date": "2026-07-18", "word": "atmospheric", "pos": "adj.", "zh": "有氛圍的；製造氣氛的", "en": "The old mansion had an eerie and atmospheric quality, especially at night.", "zhEx": "這棟老宅邸有種詭異又有氛圍的特質，尤其是在夜晚。"}, {"date": "2026-07-18", "word": "dismissed", "pos": "v.", "zh": "不予理會；駁回；解散", "en": "The judge dismissed the case due to lack of evidence.", "zhEx": "法官因證據不足而駁回此案。"}, {"date": "2026-07-18", "word": "adhered to", "pos": "phr.", "zh": "堅持；遵守；附著於", "en": "The team strictly adhered to the safety regulations during the experiment.", "zhEx": "團隊在實驗過程中嚴格遵守安全規範。"}, {"date": "2026-07-18", "word": "trajectory", "pos": "n.", "zh": "軌跡；彈道；發展方向", "en": "The company's innovative product launch changed its growth trajectory significantly.", "zhEx": "公司創新的產品發表大幅改變了其成長軌跡。"}, {"date": "2026-07-17", "word": "lithosphere", "pos": "n.", "zh": "岩石圈", "en": "Earthquakes occur when stress in the lithosphere is suddenly released.", "zhEx": "當岩石圈中的應力突然釋放時，就會發生地震。"}, {"date": "2026-07-17", "word": "convection currents", "pos": "phr.", "zh": "對流", "en": "Heat transfer in oceans and atmosphere also involves convection currents.", "zhEx": "海洋與大氣中的熱傳遞也涉及對流。"}, {"date": "2026-07-17", "word": "mantle", "pos": "n.", "zh": "地函", "en": "Scientists study seismic waves to learn about the composition of the Earth's mantle.", "zhEx": "科學家研究地震波，藉此了解地函的組成。"}, {"date": "2026-07-17", "word": "unleashed", "pos": "v.", "zh": "釋放，發動", "en": "The storm unleashed its full fury on the coastal town.", "zhEx": "這場暴風雨對這座沿海小鎮釋放出全部的威力。"}, {"date": "2026-07-17", "word": "prominent", "pos": "adj.", "zh": "顯著的，突出的", "en": "The professor is a prominent figure in the field of quantum physics.", "zhEx": "這位教授是量子物理領域中的傑出人物。"}, {"date": "2026-07-17", "word": "divergent", "pos": "adj.", "zh": "發散的，分離的", "en": "Their opinions on the project became increasingly divergent.", "zhEx": "他們對這個專案的意見變得越來越分歧。"}, {"date": "2026-07-17", "word": "convergent", "pos": "adj.", "zh": "聚合的，會聚的", "en": "The two roads are convergent at the intersection ahead.", "zhEx": "這兩條道路在前方的交叉口會合。"}, {"date": "2026-07-17", "word": "subducts", "pos": "v.", "zh": "俯衝", "en": "When one tectonic plate subducts beneath another, deep ocean trenches are formed.", "zhEx": "當一個板塊俯衝到另一個板塊之下時，就會形成深海海溝。"}, {"date": "2026-07-17", "word": "correlates", "pos": "v.", "zh": "相關聯，有關係", "en": "High levels of stress often correlates with poor sleep quality.", "zhEx": "高壓力程度往往與較差的睡眠品質相關。"}, {"date": "2026-07-16", "word": "hampered", "pos": "v.", "zh": "阻礙；妨礙", "en": "The heavy snowfall hampered rescue efforts in the remote mountain region.", "zhEx": "大雪阻礙了偏遠山區的救援行動。"}, {"date": "2026-07-16", "word": "confirms", "pos": "v.", "zh": "證實；確認", "en": "Recent archaeological findings confirm the existence of an ancient civilization in the valley.", "zhEx": "近期的考古發現證實了這座山谷中曾存在一個古老文明。"}, {"date": "2026-07-16", "word": "orbital plane", "pos": "n. phr.", "zh": "軌道平面", "en": "Satellites must be launched into a specific orbital plane to achieve their mission objectives.", "zhEx": "衛星必須被發射進入特定的軌道平面，才能達成任務目標。"}, {"date": "2026-07-16", "word": "wobbles", "pos": "n.", "zh": "擺動；搖晃", "en": "The old table has a slight wobble, making it unstable.", "zhEx": "這張舊桌子有點搖晃，不太穩固。"}, {"date": "2026-07-16", "word": "tug", "pos": "n.", "zh": "拉；拽；猛拉", "en": "She felt a gentle tug on her fishing line, signaling a bite.", "zhEx": "她感覺到釣魚線被輕輕一拉，代表魚上鉤了。"}, {"date": "2026-07-16", "word": "subtle", "pos": "adj.", "zh": "微妙的；不明顯的", "en": "The painting had a subtle blend of colors, creating a calming effect.", "zhEx": "這幅畫的色彩調和得很微妙，營造出一種平靜的效果。"}, {"date": "2026-07-16", "word": "spectrum", "pos": "n.", "zh": "光譜；範圍", "en": "The full spectrum of sunlight includes colors from red to violet.", "zhEx": "完整的太陽光譜包含從紅色到紫色的所有顏色。"}, {"date": "2026-07-16", "word": "Doppler effect", "pos": "n. phr.", "zh": "都卜勒效應", "en": "The Doppler effect explains why a siren sounds higher in pitch as it approaches and lower as it moves away.", "zhEx": "都卜勒效應解釋了為何警笛聲在接近時音調較高，遠離時音調較低。"}, {"date": "2026-07-16", "word": "orbital period", "pos": "n. phr.", "zh": "軌道週期", "en": "The orbital period of the Moon around the Earth is approximately 27.3 days.", "zhEx": "月球繞地球的軌道週期約為27.3天。"}, {"date": "2026-07-16", "word": "observational techniques", "pos": "n. phr.", "zh": "觀測技術", "en": "Scientists are always developing new observational techniques to study distant galaxies.", "zhEx": "科學家不斷發展新的觀測技術，以研究遙遠的星系。"}, {"date": "2026-07-15", "word": "tendency", "pos": "n.", "zh": "傾向；趨勢", "en": "There is a growing tendency among young people to pursue entrepreneurial careers.", "zhEx": "年輕人追求創業生涯的傾向日益增加。"}, {"date": "2026-07-15", "word": "notions", "pos": "n.", "zh": "觀念；看法", "en": "Many old notions about gender roles are being challenged today.", "zhEx": "許多關於性別角色的舊觀念如今正受到挑戰。"}, {"date": "2026-07-15", "word": "simultaneously", "pos": "adv.", "zh": "同時地", "en": "The orchestra played two different melodies simultaneously, creating a rich harmony.", "zhEx": "管弦樂團同時演奏兩段不同的旋律，創造出豐富的和聲。"}, {"date": "2026-07-15", "word": "subtly", "pos": "adv.", "zh": "精微地；巧妙地；不易察覺地", "en": "The artist subtly blended colors to create a sense of depth in the painting.", "zhEx": "這位藝術家巧妙地調和色彩，在畫作中營造出深度感。"}, {"date": "2026-07-15", "word": "steered", "pos": "v.", "zh": "操控；引導", "en": "The captain steered the ship safely through the narrow channel.", "zhEx": "船長安全地將船隻操控穿過狹窄的水道。"}, {"date": "2026-07-15", "word": "flawed", "pos": "adj.", "zh": "有缺陷的；有錯誤的", "en": "The initial design for the bridge was flawed, requiring significant revisions.", "zhEx": "這座橋的初步設計有缺陷，需要大幅修改。"}, {"date": "2026-07-15", "word": "evaluations", "pos": "n.", "zh": "評估；評價", "en": "Employee performance evaluations are conducted annually to provide feedback and set goals.", "zhEx": "員工績效評估每年進行一次，以提供回饋並設定目標。"}, {"date": "2026-07-14", "word": "propelled", "pos": "v.", "zh": "推動；驅使", "en": "The company's success was largely propelled by its innovative marketing strategies.", "zhEx": "這家公司的成功很大程度上是由其創新行銷策略所推動的。"}, {"date": "2026-07-14", "word": "Humanism", "pos": "n.", "zh": "人文主義", "en": "Renaissance Humanism advocated for the study of classical antiquity to improve the human condition.", "zhEx": "文藝復興時期的人文主義提倡研究古典時代，以改善人類處境。"}, {"date": "2026-07-14", "word": "dignity", "pos": "n.", "zh": "尊嚴；高貴", "en": "Every individual deserves to be treated with dignity and respect, regardless of their background.", "zhEx": "無論背景如何，每個人都應受到有尊嚴且受尊重的對待。"}, {"date": "2026-07-14", "word": "preoccupation", "pos": "n.", "zh": "全神貫注；主要考慮的事", "en": "His constant preoccupation with work left him little time for hobbies.", "zhEx": "他持續全神貫注於工作，幾乎沒有時間從事嗜好。"}, {"date": "2026-07-14", "word": "unparalleled", "pos": "adj.", "zh": "無與倫比的；空前的", "en": "The athlete achieved an unparalleled level of success in her sport, winning multiple championships.", "zhEx": "這位運動員在她的項目中達到了無與倫比的成就，贏得多項冠軍。"}, {"date": "2026-07-14", "word": "empirical", "pos": "adj.", "zh": "憑經驗的；實證的", "en": "Scientists often rely on empirical data to support their theories.", "zhEx": "科學家經常依賴實證數據來支持他們的理論。"}, {"date": "2026-07-14", "word": "discernible", "pos": "adj.", "zh": "可辨別的；可識別的", "en": "Despite the fog, a faint outline of the building was discernible in the distance.", "zhEx": "儘管有霧，遠處建築物的輪廓依稀可辨。"}, {"date": "2026-07-14", "word": "reverence", "pos": "n.", "zh": "崇敬；敬意", "en": "The ancient temple was built with deep reverence for the gods it honored.", "zhEx": "這座古老的神廟是懷著對所敬奉神祇的深切崇敬所建造的。"}, {"date": "2026-07-14", "word": "verisimilitude", "pos": "n.", "zh": "逼真；貌似真實", "en": "The novel achieved remarkable verisimilitude through its detailed descriptions of historical events.", "zhEx": "這部小說透過對歷史事件的細膩描寫，達到了驚人的逼真感。"}, {"date": "2026-07-14", "word": "embody", "pos": "v.", "zh": "體現；具體表現", "en": "The monument was designed to embody the nation's struggle for independence.", "zhEx": "這座紀念碑的設計旨在體現這個國家爭取獨立的奮鬥。"}, {"date": "2026-07-12", "word": "ornamentation", "pos": "n.", "zh": "裝飾音；裝飾", "en": "The architect used minimal ornamentation, preferring clean lines and functional design for the modern building.", "zhEx": "這位建築師使用極少的裝飾，偏好簡潔線條與實用設計來打造這棟現代建築。"}, {"date": "2026-07-12", "word": "counterpoint", "pos": "n.", "zh": "對位法（一種作曲技巧）", "en": "Learning to compose good counterpoint is a fundamental skill for aspiring classical musicians.", "zhEx": "學習寫出好的對位法是有志成為古典音樂家的基本技能。"}, {"date": "2026-07-12", "word": "ushered in", "pos": "phr.", "zh": "開啟；開創（新時期、新事物）", "en": "The invention of the internet ushered in a new era of global communication.", "zhEx": "網路的發明開啟了全球通訊的新時代。"}, {"date": "2026-07-12", "word": "aesthetic", "pos": "n.", "zh": "美學；審美觀", "en": "The restaurant's minimalist aesthetic appealed to a broad range of urban diners.", "zhEx": "這家餐廳極簡的美學風格吸引了廣大的都會食客。"}, {"date": "2026-07-12", "word": "polyphonic", "pos": "adj.", "zh": "複音的（指多個獨立聲部同時進行的音樂）", "en": "Medieval church music often featured complex polyphonic arrangements performed by choirs.", "zhEx": "中世紀教堂音樂經常以合唱團演唱複雜的複音編曲為特色。"}, {"date": "2026-07-12", "word": "homophonic", "pos": "adj.", "zh": "主調音樂的；同音的（指單一旋律線由和聲伴奏的音樂）", "en": "Most pop songs are written in a homophonic style, with a clear melody supported by chords.", "zhEx": "大多數流行歌曲以主調音樂風格寫成，由和絃支撐清晰的旋律。"}, {"date": "2026-07-12", "word": "adherence", "pos": "n.", "zh": "堅守；遵守", "en": "Strict adherence to safety regulations is crucial in laboratories to prevent accidents.", "zhEx": "在實驗室中嚴格遵守安全規範對於防止意外至關重要。"}, {"date": "2026-07-12", "word": "understated", "pos": "adj.", "zh": "低調的；不張揚的", "en": "Despite his wealth, the millionaire preferred an understated lifestyle and simple clothing.", "zhEx": "儘管很富有，這位百萬富翁偏好低調的生活方式與簡樸的穿著。"}, {"date": "2026-07-12", "word": "restraint", "pos": "n.", "zh": "節制；克制", "en": "The politician showed great restraint when responding to the journalist's provocative questions.", "zhEx": "這位政治人物在回應記者挑釁的問題時展現出高度克制。"}, {"date": "2026-07-12", "word": "patronage", "pos": "n.", "zh": "贊助；資助", "en": "Historically, many artists relied on royal patronage to support their creative endeavors.", "zhEx": "歷史上，許多藝術家依賴皇室的贊助來支持他們的創作。"}, {"date": "2026-07-11", "word": "cognitive heuristic", "pos": "phr.", "zh": "認知啟發式 (一種心理捷徑)", "en": "Relying solely on a cognitive heuristic can sometimes lead to quick decisions but also to systematic errors.", "zhEx": "完全依賴認知捷徑有時能帶來快速的決定，但也可能導致系統性錯誤。"}, {"date": "2026-07-11", "word": "pre-existing beliefs", "pos": "phr.", "zh": "既有信念", "en": "It can be challenging to change someone's mind, especially when their views are rooted in strong pre-existing beliefs.", "zhEx": "要改變一個人的想法可能很困難，尤其當他們的觀點根植於強烈的既有信念時。"}, {"date": "2026-07-11", "word": "opinion formation", "pos": "phr.", "zh": "觀點形成", "en": "Public debates play a crucial role in opinion formation on political issues.", "zhEx": "公開辯論在政治議題的觀點形成上扮演著關鍵角色。"}, {"date": "2026-07-11", "word": "corroborating evidence", "pos": "phr.", "zh": "佐證證據；確鑿證據", "en": "The detective searched for corroborating evidence to support the witness's testimony.", "zhEx": "偵探尋找佐證證據以支持目擊者的證詞。"}, {"date": "2026-07-11", "word": "proliferation", "pos": "n.", "zh": "激增；迅速擴散", "en": "The proliferation of smartphones has changed how people communicate and access information.", "zhEx": "智慧型手機的激增改變了人們溝通與取得資訊的方式。"}, {"date": "2026-07-11", "word": "algorithms", "pos": "n.", "zh": "演算法", "en": "Search engine algorithms constantly evolve to provide more relevant results to users.", "zhEx": "搜尋引擎演算法不斷演進，以提供使用者更相關的結果。"}, {"date": "2026-07-11", "word": "echo chambers", "pos": "phr.", "zh": "同溫層；迴聲室效應 (指只接觸與自己觀點相似的資訊環境)", "en": "Engaging only with news sources that confirm your views can lead to living in an echo chamber.", "zhEx": "只接觸支持自己觀點的新聞來源，可能導致陷入同溫層。"}, {"date": "2026-07-11", "word": "critical discourse", "pos": "phr.", "zh": "批判性論述；嚴謹討論", "en": "Healthy democracies require robust critical discourse on important social and political matters.", "zhEx": "健全的民主需要對重要的社會與政治議題進行強而有力的批判性討論。"}, {"date": "2026-07-10", "word": "monumental", "pos": "adj.", "zh": "巨大的，紀念性的", "en": "The discovery of the ancient city was a monumental achievement for archaeology.", "zhEx": "這座古城的發現是考古學上一項巨大的成就。"}, {"date": "2026-07-10", "word": "characteristic", "pos": "adj.", "zh": "特有的，典型的", "en": "The ability to use tools is a characteristic trait of human beings.", "zhEx": "使用工具的能力是人類的一項典型特徵。"}, {"date": "2026-07-10", "word": "respective", "pos": "adj.", "zh": "各自的，分別的", "en": "The students returned to their respective classrooms after the assembly.", "zhEx": "集會結束後，學生們各自回到自己的教室。"}, {"date": "2026-07-10", "word": "receding", "pos": "adj.", "zh": "後退的，逐漸縮小的", "en": "The receding hairline is often a sign of aging.", "zhEx": "後退的髮際線通常是老化的徵兆。"}, {"date": "2026-07-10", "word": "summit", "pos": "n.", "zh": "頂峰，最高點", "en": "Climbing to the summit of Mount Everest requires extreme endurance.", "zhEx": "攀登聖母峰的頂峰需要極強的耐力。"}, {"date": "2026-07-10", "word": "patron deity", "pos": "phr.", "zh": "守護神祇", "en": "Athena was the patron deity of the city of Athens in ancient Greece.", "zhEx": "雅典娜是古希臘雅典城的守護神祇。"}, {"date": "2026-07-10", "word": "ritual functions", "pos": "phr.", "zh": "儀式功能", "en": "Many ancient temples served various important ritual functions for the community.", "zhEx": "許多古代神廟為社群提供了各種重要的儀式功能。"}, {"date": "2026-07-10", "word": "mediate", "pos": "v.", "zh": "調解，居中協調", "en": "The diplomat tried to mediate a peace agreement between the two warring nations.", "zhEx": "這位外交官試圖在兩個交戰國之間調解和平協議。"}, {"date": "2026-07-10", "word": "underscore", "pos": "v.", "zh": "強調，突出", "en": "The recent economic downturn underscores the need for sound financial planning.", "zhEx": "近期的經濟衰退突顯了健全財務規劃的必要性。"}, {"date": "2026-07-10", "word": "nexus", "pos": "n.", "zh": "連結點，核心", "en": "The city's central station is a nexus for various transportation lines.", "zhEx": "這座城市的中央車站是各種交通路線的連結核心。"}, {"date": "2026-07-09", "word": "cascade", "pos": "n.", "zh": "級聯；瀑布狀的連續過程", "en": "The domino effect created a cascade of events that led to the system's failure.", "zhEx": "骨牌效應引發了一連串事件，最終導致系統失效。"}, {"date": "2026-07-09", "word": "oxidizes", "pos": "v.", "zh": "氧化", "en": "Iron oxidizes when exposed to oxygen and moisture, forming rust.", "zhEx": "鐵暴露在氧氣與水分中會氧化，形成鐵鏽。"}, {"date": "2026-07-09", "word": "subsequently", "pos": "adv.", "zh": "隨後；接著", "en": "The initial proposal was approved, and subsequently, the detailed plans were drawn up.", "zhEx": "最初的提案獲得核准，隨後便擬定了詳細計畫。"}, {"date": "2026-07-09", "word": "embedded", "pos": "adj.", "zh": "嵌入的；內置的", "en": "The journalist was embedded with the troops to report on their daily operations.", "zhEx": "這位記者隨軍採訪，以報導部隊的日常行動。"}, {"date": "2026-07-09", "word": "progressively", "pos": "adv.", "zh": "逐漸地；日益", "en": "The patient's condition worsened progressively despite the medical intervention.", "zhEx": "儘管有醫療介入，病患的病情仍逐漸惡化。"}, {"date": "2026-07-09", "word": "harnessed", "pos": "v.", "zh": "利用；駕馭（能量、資源等）", "en": "Scientists are trying to find new ways to harness solar energy for electricity.", "zhEx": "科學家正努力尋找利用太陽能發電的新方法。"}, {"date": "2026-07-09", "word": "establishing", "pos": "v.", "zh": "建立；確立", "en": "The company is focused on establishing a strong market presence in Asia.", "zhEx": "這家公司專注於在亞洲建立穩固的市場地位。"}, {"date": "2026-07-09", "word": "electrochemical gradient", "pos": "phr.", "zh": "電化學梯度", "en": "Neurons utilize an electrochemical gradient across their membrane to transmit signals.", "zhEx": "神經元利用細胞膜上的電化學梯度來傳遞訊號。"}, {"date": "2026-07-09", "word": "myriad", "pos": "adj.", "zh": "無數的；大量的", "en": "There are myriad stars visible in the night sky away from city lights.", "zhEx": "遠離城市燈光的夜空中，可以看見無數的星星。"}, {"date": "2026-07-08", "word": "ephemeral", "pos": "adj.", "zh": "短暫的；轉瞬即逝的", "en": "The beauty of cherry blossoms is ephemeral, lasting only a few weeks each spring.", "zhEx": "櫻花之美是短暫的，每年春天只持續幾週。"}, {"date": "2026-07-08", "word": "utilizing", "pos": "v.", "zh": "利用；使用", "en": "The chef demonstrated how to cook a delicious meal utilizing only seasonal ingredients.", "zhEx": "這位主廚示範了如何只用當季食材烹調出美味的一餐。"}, {"date": "2026-07-08", "word": "intense", "pos": "adj.", "zh": "強烈的；劇烈的", "en": "She felt an intense pressure to perform well on the final exam.", "zhEx": "她感受到強烈的壓力，希望在期末考中表現良好。"}, {"date": "2026-07-08", "word": "successors", "pos": "n.", "zh": "繼任者；接班人", "en": "The company's founders hoped their successors would continue their legacy of innovation.", "zhEx": "公司創辦人希望他們的繼任者能延續創新的傳承。"}, {"date": "2026-07-08", "word": "markedly", "pos": "adv.", "zh": "顯著地；明顯地", "en": "After implementing the new policy, customer satisfaction improved markedly.", "zhEx": "實施新政策後，顧客滿意度顯著提升。"}, {"date": "2026-07-08", "word": "diverged", "pos": "v.", "zh": "分歧；偏離", "en": "The two friends' career paths diverged significantly after college.", "zhEx": "這兩位朋友的職涯道路在大學畢業後出現明顯分歧。"}, {"date": "2026-07-08", "word": "conventions", "pos": "n.", "zh": "常規；習俗；慣例", "en": "Breaking from traditional conventions, the designer created a truly unique fashion collection.", "zhEx": "這位設計師打破傳統慣例，創作出真正獨特的時尚系列。"}, {"date": "2026-07-08", "word": "methodical", "pos": "adj.", "zh": "有條不紊的；有方法的", "en": "The detective approached the complex case with a methodical investigation.", "zhEx": "這位偵探以有條不紊的調查方式來處理這起複雜的案件。"}, {"date": "2026-07-08", "word": "deconstructed", "pos": "v.", "zh": "解構；分析", "en": "Literary critics often deconstruct texts to reveal their underlying themes and biases.", "zhEx": "文學評論家經常解構文本，以揭示其潛藏的主題與偏見。"}, {"date": "2026-07-08", "word": "theoretical", "pos": "adj.", "zh": "理論的；推想的", "en": "Her research explores the theoretical implications of quantum physics for everyday life.", "zhEx": "她的研究探討量子物理對日常生活的理論意涵。"}, {"date": "2026-07-07", "word": "thrived", "pos": "v.", "zh": "繁榮；興盛", "en": "Despite the harsh desert environment, the ancient city of Petra thrived as a major trade hub.", "zhEx": "儘管沙漠環境嚴酷，古城佩特拉仍作為重要貿易樞紐而繁榮發展。"}, {"date": "2026-07-07", "word": "corpus", "pos": "n.", "zh": "文集；總體資料；語料庫", "en": "Linguists often use a large corpus of text to study language patterns and usage.", "zhEx": "語言學家經常使用大型文本語料庫來研究語言的模式與用法。"}, {"date": "2026-07-07", "word": "iconography", "pos": "n.", "zh": "圖像學；肖像學", "en": "The iconography of religious art often reveals profound theological concepts.", "zhEx": "宗教藝術的圖像學經常揭示深刻的神學概念。"}, {"date": "2026-07-07", "word": "ceramic", "pos": "adj.", "zh": "陶瓷的", "en": "The museum displayed a stunning collection of ancient Greek ceramic pottery.", "zhEx": "這座博物館展出了一批令人驚豔的古希臘陶器收藏。"}, {"date": "2026-07-07", "word": "unearthed", "pos": "v.", "zh": "發掘；出土", "en": "Archaeologists unearthed a perfectly preserved Roman mosaic in the ancient ruins.", "zhEx": "考古學家在古代遺跡中發掘出一幅保存完好的羅馬馬賽克。"}, {"date": "2026-07-07", "word": "exceedingly", "pos": "adv.", "zh": "非常地；極度地", "en": "The task proved exceedingly difficult, requiring months of dedicated effort.", "zhEx": "這項任務證明極為困難，需要數月專心投入。"}, {"date": "2026-07-07", "word": "painstakingly", "pos": "adv.", "zh": "辛勤地；煞費苦心地", "en": "The artist painstakingly painted every tiny detail of the miniature portrait.", "zhEx": "這位藝術家煞費苦心地畫出這幅微型肖像的每一個細節。"}, {"date": "2026-07-07", "word": "decipher", "pos": "v.", "zh": "破譯；解讀", "en": "Scientists are working to decipher the complex genetic code of the virus.", "zhEx": "科學家正努力破譯這種病毒複雜的基因密碼。"}, {"date": "2026-07-07", "word": "motifs", "pos": "n.", "zh": "主題；圖案", "en": "The designer incorporated floral motifs throughout her new textile collection.", "zhEx": "這位設計師在她的新紡織系列中融入了花卉圖案。"}, {"date": "2026-07-07", "word": "pivotal", "pos": "adj.", "zh": "關鍵的；重要的", "en": "The discovery of penicillin was a pivotal moment in the history of medicine.", "zhEx": "盤尼西林的發現是醫學史上一個關鍵時刻。"}, {"date": "2026-07-06", "word": "initiated", "pos": "v.", "zh": "啟動，開始", "en": "The new government program was initiated to address pressing social issues.", "zhEx": "這項新的政府計畫是為了解決迫切的社會議題而啟動的。"}, {"date": "2026-07-06", "word": "profound", "pos": "adj.", "zh": "深遠的，深刻的", "en": "The discovery of gravity had a profound impact on the understanding of the universe.", "zhEx": "重力的發現對人類理解宇宙產生了深遠的影響。"}, {"date": "2026-07-06", "word": "laboriously", "pos": "adv.", "zh": "費力地，艱苦地", "en": "The archaeologists laboriously excavated the ancient ruins, inch by inch.", "zhEx": "考古學家一吋一吋地費力挖掘這座古代遺跡。"}, {"date": "2026-07-06", "word": "rendering", "pos": "v.", "zh": "使成為，導致 (在特定語境中)", "en": "Poor insulation in old houses often results in significant heat loss, rendering them inefficient.", "zhEx": "老舊房屋隔熱不良常導致大量熱能流失，使其效能低落。"}, {"date": "2026-07-06", "word": "drastically", "pos": "adv.", "zh": "劇烈地，大幅度地", "en": "To meet the new environmental regulations, the factory had to drastically reduce its emissions.", "zhEx": "為符合新的環保法規，這家工廠必須大幅減少排放量。"}, {"date": "2026-07-06", "word": "exponentially", "pos": "adv.", "zh": "指數級地，幾何級數地", "en": "With the rise of the internet, the amount of available information has grown exponentially.", "zhEx": "隨著網路興起，可取得的資訊量呈指數級成長。"}, {"date": "2026-07-06", "word": "democratizing", "pos": "v.", "zh": "使民主化 (在此指普及化)", "en": "The internet has played a key role in democratizing access to education globally.", "zhEx": "網路在使全球教育資源普及化方面扮演了關鍵角色。"}, {"date": "2026-07-06", "word": "fostering", "pos": "v.", "zh": "培養，促進", "en": "Universities aim to foster critical thinking and intellectual curiosity among their students.", "zhEx": "大學致力於在學生中培養批判性思考與求知慾。"}, {"date": "2026-07-06", "word": "discourse", "pos": "n.", "zh": "論述，對話", "en": "The public discourse around climate change has intensified in recent years.", "zhEx": "近年來，關於氣候變遷的公共論述日益激烈。"}, {"date": "2026-07-06", "word": "propagation", "pos": "n.", "zh": "傳播，散佈", "en": "The rapid propagation of misinformation through social media is a growing concern.", "zhEx": "錯誤資訊透過社群媒體迅速傳播，日益令人擔憂。"}, {"date": "2026-07-05", "word": "compelling", "pos": "adj.", "zh": "引人注目的，有說服力的", "en": "The lawyer presented a compelling argument that convinced the jury of his client's innocence.", "zhEx": "這位律師提出了一個令人信服的論點，說服陪審團相信其當事人無罪。"}, {"date": "2026-07-05", "word": "administrative", "pos": "adj.", "zh": "行政的，管理的", "en": "She has a strong background in administrative duties, making her an ideal candidate for the office manager position.", "zhEx": "她在行政事務方面有豐富的經驗，是辦公室經理職位的理想人選。"}, {"date": "2026-07-05", "word": "craftsmanship", "pos": "n.", "zh": "工藝，技藝", "en": "The antique watch was admired for its intricate craftsmanship and precise movements.", "zhEx": "這只古董錶因其精緻的工藝與精準的機芯而備受讚賞。"}, {"date": "2026-07-05", "word": "expansive", "pos": "adj.", "zh": "廣闊的，廣泛的", "en": "The company has an expansive network of distributors across several continents.", "zhEx": "這家公司在數個大陸擁有廣泛的經銷網絡。"}, {"date": "2026-07-05", "word": "interval", "pos": "n.", "zh": "期間，間隔", "en": "There was a short interval between the two acts of the play, allowing audience members to stretch their legs.", "zhEx": "這齣戲的兩幕之間有一段短暫的間隔，讓觀眾可以起身活動一下。"}, {"date": "2026-07-05", "word": "downturn", "pos": "n.", "zh": "衰退，低迷", "en": "The recent economic downturn has led to significant job losses in the manufacturing sector.", "zhEx": "近期的經濟衰退導致製造業出現大量的失業潮。"}, {"date": "2026-07-05", "word": "climatic", "pos": "adj.", "zh": "氣候的", "en": "Scientists are studying the long-term climatic patterns to predict future weather events.", "zhEx": "科學家正研究長期的氣候模式，以預測未來的天氣事件。"}, {"date": "2026-07-05", "word": "migration", "pos": "n.", "zh": "遷徙，移居", "en": "The annual migration of monarch butterflies across North America is a remarkable natural phenomenon.", "zhEx": "帝王蝶每年橫越北美洲的遷徙是一項驚人的自然現象。"}, {"date": "2026-07-05", "word": "interruption", "pos": "n.", "zh": "中斷，打擾", "en": "Constant interruptions during his presentation made it difficult for the speaker to maintain his train of thought.", "zhEx": "簡報過程中不斷被打斷，使講者難以維持思路。"}, {"date": "2026-07-05", "word": "prevailing", "pos": "adj.", "zh": "普遍的，盛行的", "en": "Despite the prevailing opinion, the artist continued to experiment with new styles.", "zhEx": "儘管與普遍看法相左，這位藝術家仍持續嘗試新的風格。"}, {"date": "2026-07-04", "word": "framing effect", "pos": "phr.", "zh": "框架效應 (心理學上指資訊呈現方式影響決策的現象)", "en": "The company utilized the framing effect to make their new product seem more appealing by highlighting its benefits rather than its costs.", "zhEx": "這家公司利用框架效應，透過強調產品的優點而非成本，使新產品顯得更具吸引力。"}, {"date": "2026-07-04", "word": "cognitive bias", "pos": "phr.", "zh": "認知偏誤 (系統性思考錯誤，影響決策判斷)", "en": "Confirmation bias is a common cognitive bias where people favor information that confirms their existing beliefs.", "zhEx": "確認偏誤是一種常見的認知偏誤，人們傾向偏好能證實自身既有信念的資訊。"}, {"date": "2026-07-04", "word": "swayed", "pos": "v.", "zh": "動搖；說服 (使改變觀點或決定)", "en": "The jury was finally swayed by the compelling evidence presented by the prosecution.", "zhEx": "陪審團最終被檢方提出的有力證據所說服。"}, {"date": "2026-07-04", "word": "phrasing", "pos": "n.", "zh": "措辭；措詞方式", "en": "Careful phrasing is essential in legal documents to avoid ambiguity.", "zhEx": "謹慎的措辭對法律文件而言至關重要，以避免產生歧義。"}, {"date": "2026-07-04", "word": "underlying", "pos": "adj.", "zh": "潛在的；根本的", "en": "Researchers are trying to understand the underlying causes of the disease.", "zhEx": "研究人員正試圖理解這種疾病的潛在成因。"}, {"date": "2026-07-04", "word": "statistical outcome", "pos": "phr.", "zh": "統計結果", "en": "The statistical outcome of the survey revealed a significant increase in public support for the new policy.", "zhEx": "這項調查的統計結果顯示，民眾對新政策的支持度顯著上升。"}, {"date": "2026-07-04", "word": "risk assessment", "pos": "phr.", "zh": "風險評估", "en": "Before starting a new project, a thorough risk assessment is usually conducted to identify potential problems.", "zhEx": "在開始一項新專案之前，通常會進行徹底的風險評估，以找出潛在問題。"}, {"date": "2026-07-04", "word": "preference formation", "pos": "phr.", "zh": "偏好形成", "en": "Cultural background plays a significant role in the preference formation for certain types of food.", "zhEx": "文化背景在特定食物偏好的形成上扮演重要角色。"}, {"date": "2026-07-04", "word": "irrational", "pos": "adj.", "zh": "不理性的；不合理的", "en": "His irrational fear of flying prevented him from traveling overseas.", "zhEx": "他對搭飛機不理性的恐懼使他無法出國旅行。"}, {"date": "2026-07-04", "word": "linguistic", "pos": "adj.", "zh": "語言的；語言學的", "en": "Studying different languages helps one understand the diverse linguistic structures of the world.", "zhEx": "學習不同語言有助於理解世界上多樣的語言結構。"}, {"date": "2026-07-03", "word": "crucial", "pos": "adj.", "zh": "關鍵的，極重要的", "en": "Effective communication is crucial for successful teamwork.", "zhEx": "有效的溝通對成功的團隊合作至關重要。"}, {"date": "2026-07-03", "word": "accelerate", "pos": "v.", "zh": "加速", "en": "The company decided to accelerate its expansion into new markets.", "zhEx": "這家公司決定加速拓展新市場。"}, {"date": "2026-07-03", "word": "consumed", "pos": "v.", "zh": "被消耗，用盡", "en": "The old car consumed a large amount of fuel during the long journey.", "zhEx": "這輛舊車在長途旅程中消耗了大量燃料。"}, {"date": "2026-07-03", "word": "efficiency", "pos": "n.", "zh": "效率", "en": "The new machinery significantly improved the factory's production efficiency.", "zhEx": "這台新機器大幅提升了工廠的生產效率。"}, {"date": "2026-07-03", "word": "stems from", "pos": "phr.", "zh": "源於，來自於", "en": "Her passion for environmental conservation stems from her childhood experiences in nature.", "zhEx": "她對環境保育的熱情源自於她童年在大自然中的經歷。"}, {"date": "2026-07-03", "word": "substrates", "pos": "n.", "zh": "受質，反應物", "en": "In a chemical reaction, enzymes act upon specific substrates to form products.", "zhEx": "在化學反應中，酵素作用於特定的受質以形成產物。"}, {"date": "2026-07-03", "word": "optimum", "pos": "adj.", "zh": "最佳的，最理想的", "en": "For plant growth, the soil needs to be at the optimum pH level.", "zhEx": "對植物生長而言，土壤需要維持在最理想的酸鹼值。"}, {"date": "2026-07-03", "word": "denaturation", "pos": "n.", "zh": "變性（指蛋白質等生物大分子結構的破壞）", "en": "Cooking eggs causes the denaturation of the proteins in the egg white.", "zhEx": "烹煮雞蛋會導致蛋白中的蛋白質變性。"}, {"date": "2026-07-03", "word": "inhibition", "pos": "n.", "zh": "抑制，阻礙", "en": "The drug works by inhibition of viral replication within host cells.", "zhEx": "這種藥物透過抑制病毒在宿主細胞內複製而發揮作用。"}, {"date": "2026-07-02", "word": "prominence", "pos": "n.", "zh": "顯著；卓越；重要性", "en": "The artist's work gained prominence after being featured in a major museum exhibition.", "zhEx": "這位藝術家的作品在一場大型博物館展覽中亮相後聲名大噪。"}, {"date": "2026-07-02", "word": "tenet", "pos": "n.", "zh": "宗旨；信條；教義", "en": "A core tenet of democracy is the belief in individual rights and freedoms.", "zhEx": "民主的核心信條之一是相信個人的權利與自由。"}, {"date": "2026-07-02", "word": "devoid of", "pos": "phr.", "zh": "缺乏；沒有", "en": "The desert landscape was devoid of any visible signs of life.", "zhEx": "這片沙漠地景完全看不到任何生命的跡象。"}, {"date": "2026-07-02", "word": "predetermined", "pos": "adj.", "zh": "預先決定的；命中註定的", "en": "The outcome of the experiment was not predetermined, allowing for genuine discovery.", "zhEx": "這項實驗的結果並非預先決定，因此得以真正有所發現。"}, {"date": "2026-07-02", "word": "asserts", "pos": "v.", "zh": "斷言；堅稱", "en": "The report asserts that climate change is primarily driven by human activities.", "zhEx": "這份報告斷言氣候變遷主要是由人類活動所驅動的。"}, {"date": "2026-07-02", "word": "accountable", "pos": "adj.", "zh": "負有責任的；應作解釋的", "en": "Public officials are accountable to the citizens they serve.", "zhEx": "公職人員對其所服務的公民負有責任。"}, {"date": "2026-07-02", "word": "grapple with", "pos": "phr.", "zh": "努力應對；搏鬥", "en": "Many new students grapple with the challenge of managing their time effectively.", "zhEx": "許多新生都在努力應對有效管理時間的挑戰。"}, {"date": "2026-07-02", "word": "indifferent", "pos": "adj.", "zh": "漠不關心的；冷淡的", "en": "The committee remained indifferent to the public's pleas for change.", "zhEx": "該委員會對民眾要求改變的呼籲始終漠不關心。"}, {"date": "2026-07-02", "word": "cosmos", "pos": "n.", "zh": "宇宙", "en": "Astronomers continue to explore the mysteries of the vast cosmos.", "zhEx": "天文學家持續探索浩瀚宇宙的奧秘。"}, {"date": "2026-07-01", "word": "seminal", "pos": "adj.", "zh": "開創性的；具重大影響的", "en": "His seminal work on quantum physics laid the groundwork for future discoveries.", "zhEx": "他在量子物理上的開創性研究為未來的發現奠定了基礎。"}, {"date": "2026-07-01", "word": "conflicting", "pos": "adj.", "zh": "衝突的；矛盾的", "en": "The committee members had conflicting opinions on the budget allocation.", "zhEx": "委員會成員對預算分配有著相互衝突的意見。"}, {"date": "2026-07-01", "word": "discomfort", "pos": "n.", "zh": "不適；不舒服", "en": "She felt a sense of discomfort when discussing her personal issues in public.", "zhEx": "在公開場合談論個人問題讓她感到不自在。"}, {"date": "2026-07-01", "word": "tension", "pos": "n.", "zh": "張力；緊張（狀態）", "en": "The diplomatic tension between the two nations has been steadily increasing.", "zhEx": "兩國之間的外交緊張情勢持續升高。"}, {"date": "2026-07-01", "word": "manifest", "pos": "v.", "zh": "顯現；表現", "en": "The symptoms of the disease usually manifest within a few days.", "zhEx": "這種疾病的症狀通常會在幾天內顯現。"}, {"date": "2026-07-01", "word": "selectively", "pos": "adv.", "zh": "有選擇性地", "en": "Consumers often selectively choose products based on their brand loyalty.", "zhEx": "消費者常根據品牌忠誠度有選擇性地挑選產品。"}, {"date": "2026-07-01", "word": "dissonance", "pos": "n.", "zh": "不和諧；不一致（特指認知失調中的心理不協調）", "en": "The artist intentionally created dissonance in his music to evoke strong emotions.", "zhEx": "這位藝術家刻意在音樂中製造不和諧感，以喚起強烈的情緒。"}, {"date": "2026-07-01", "word": "magnitude", "pos": "n.", "zh": "巨大；重要性；（問題的）嚴重程度", "en": "The magnitude of the natural disaster required immediate international aid.", "zhEx": "這場天災的嚴重程度需要國際立即伸出援手。"}, {"date": "2026-07-01", "word": "principles", "pos": "n.", "zh": "原則；行為準則", "en": "She refused to compromise her artistic principles for commercial success.", "zhEx": "她拒絕為了商業成功而妥協自己的藝術原則。"}, {"date": "2026-07-01", "word": "circuitous", "pos": "adj.", "zh": "迂迴的；繞道的", "en": "The GPS led us on a circuitous route through narrow country roads.", "zhEx": "GPS導航讓我們繞了一條迂迴的路，穿過狹窄的鄉間小路。"}];
+
+function escapeHTML(s){
+  return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+}
+
+function highlight(ex, word){
+  const escaped = escapeHTML(ex);
+  const escWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp("(" + escWord + ")", "i");
+  return escaped.replace(re, "<mark>$1</mark>");
+}
+
+function fmtDateHeading(d){
+  const [y,m,day] = d.split("-");
+  return `${m}/${day}`;
+}
+
+const dates = [...new Set(VOCAB.map(v => v.date))].sort();
+
+document.getElementById('totalCount').textContent = VOCAB.length;
+
+// Tabs
+const tabBar = document.getElementById('tabBar');
+function makeTab(label, count, filterVal, active){
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (active ? ' active' : '');
+  btn.dataset.filter = filterVal;
+  btn.innerHTML = `${label}<span class="n">${count}</span>`;
+  btn.onclick = () => setFilter(filterVal);
+  return btn;
+}
+tabBar.appendChild(makeTab('全部', VOCAB.length, 'all', true));
+dates.forEach(d => {
+  const count = VOCAB.filter(v => v.date === d).length;
+  tabBar.appendChild(makeTab(fmtDateHeading(d), count, d, false));
+});
+
+function setFilter(val){
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === val);
+  });
+  document.querySelectorAll('.date-section').forEach(sec => {
+    sec.style.display = (val === 'all' || sec.dataset.date === val) ? '' : 'none';
+  });
+}
+
+// Main content
+const main = document.getElementById('main');
+dates.forEach(d => {
+  const words = VOCAB.filter(v => v.date === d);
+  const section = document.createElement('section');
+  section.className = 'date-section';
+  section.dataset.date = d;
+
+  const heading = document.createElement('div');
+  heading.className = 'date-heading';
+  heading.innerHTML = `<span class="d">${fmtDateHeading(d)}</span><span class="c">${words.length} words</span>`;
+  section.appendChild(heading);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  words.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'flashcard';
+    card.tabIndex = 0;
+    card.setAttribute('role','button');
+    card.setAttribute('aria-label', `Flashcard for ${v.word}`);
+    card.innerHTML = `
+      <div class="flashcard-inner">
+        <div class="card-face card-front">
+          <div class="front-top">
+            <button class="speak-btn front-speak" aria-label="Pronounce ${escapeHTML(v.word)}">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+            </button>
+          </div>
+          <div class="front-word">${escapeHTML(v.word)}</div>
+          <div class="flip-hint">點擊翻面 ⟳</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-top">
+            <div>
+              <p class="back-word">${escapeHTML(v.word)}</p>
+              <span class="pos-badge">${escapeHTML(v.pos)}</span>
+            </div>
+            <button class="speak-btn word-speak" aria-label="Pronounce ${escapeHTML(v.word)}">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+            </button>
+          </div>
+          <p class="zh-meaning">${escapeHTML(v.zh)}</p>
+          <div class="example-row">
+            <div class="example-text">
+              <p class="example-en">${highlight(v.en, v.word)}</p>
+              <p class="example-zh">${escapeHTML(v.zhEx)}</p>
+            </div>
+            <button class="speak-btn ex-speak" aria-label="Pronounce example sentence">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.speak-btn')) return;
+      card.classList.toggle('flipped');
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('flipped');
+      }
+    });
+
+    const frontBtn = card.querySelector('.front-speak');
+    frontBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(v.word, frontBtn); });
+    const wordBtn = card.querySelector('.word-speak');
+    wordBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(v.word, wordBtn); });
+    const exBtn = card.querySelector('.ex-speak');
+    exBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(v.en, exBtn); });
+
+    grid.appendChild(card);
+  });
+
+  section.appendChild(grid);
+  main.appendChild(section);
+});
+
+// Text-to-speech
+let voices = [];
+function loadVoices(){ voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if (window.speechSynthesis){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+} else {
+  document.getElementById('ttsNote').style.display = 'block';
+  document.querySelectorAll('.speak-btn').forEach(b => { b.disabled = true; b.style.opacity = 0.35; b.style.cursor = 'not-allowed'; });
+}
+
+function speak(text, btn){
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = 0.92;
+  const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang && v.lang.startsWith('en'));
+  if (enVoice) utter.voice = enVoice;
+  document.querySelectorAll('.speak-btn.playing').forEach(b => b.classList.remove('playing'));
+  btn.classList.add('playing');
+  utter.onend = () => btn.classList.remove('playing');
+  utter.onerror = () => btn.classList.remove('playing');
+  window.speechSynthesis.speak(utter);
+}
+
+// Bubbles background
+const bubbleLayer = document.getElementById('bubbles');
+const BUBBLE_COUNT = 22;
+for (let i = 0; i < BUBBLE_COUNT; i++){
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  const size = 4 + Math.random() * 14;
+  b.style.width = size + 'px';
+  b.style.height = size + 'px';
+  b.style.left = Math.random() * 100 + 'vw';
+  b.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+  const duration = 10 + Math.random() * 16;
+  b.style.animationDuration = duration + 's';
+  b.style.animationDelay = (-Math.random() * duration) + 's';
+  bubbleLayer.appendChild(b);
+}
+</script>
+</body>
+</html>
