@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>詞彙誌 Lexicon Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2430;
+    --ink-2:#242F3D;
+    --paper:#F3ECD8;
+    --paper-2:#EAE1C7;
+    --paper-line:#D8CCA6;
+    --gold:#C9982B;
+    --gold-dim:#8f6b1c;
+    --teal:#5B8A93;
+    --rust:#B4552F;
+    --text-dark:#23201A;
+    --text-dim:#5c5646;
+    --text-light:#F3ECD8;
+    --text-light-dim:#A9B0BC;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text-light);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 24px 40px;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(201,152,43,0.18), transparent 55%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+    border-bottom:1px solid rgba(243,236,216,0.08);
+    overflow:hidden;
+  }
+  .hero-inner{
+    max-width:920px;
+    margin:0 auto;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(34px,5.5vw,54px);
+    line-height:1.05;
+    margin:0 0 10px;
+    color:var(--text-light);
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--text-light-dim);
+  }
+  .hero-sub{
+    font-size:15px;
+    color:var(--text-light-dim);
+    max-width:46ch;
+    line-height:1.6;
+    margin:0;
+  }
+  .count-block{
+    text-align:right;
+    flex-shrink:0;
+  }
+  .count-num{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:clamp(56px,9vw,88px);
+    line-height:0.85;
+    color:var(--gold);
+    font-variant-numeric:tabular-nums;
+  }
+  .count-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-light-dim);
+    margin-top:6px;
+  }
+
+  /* ---------- TABS ---------- */
+  nav.tabs{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:rgba(27,36,48,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(243,236,216,0.08);
+    padding:14px 24px;
+  }
+  .tabs-inner{
+    max-width:920px;
+    margin:0 auto;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    background:transparent;
+    border:1px solid rgba(243,236,216,0.18);
+    color:var(--text-light-dim);
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .tab-btn:hover{
+    color:var(--text-light);
+    border-color:rgba(243,236,216,0.4);
+  }
+  .tab-btn.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .tab-btn .n{
+    opacity:0.65;
+    margin-left:4px;
+  }
+  .tab-btn.active .n{ opacity:0.55; }
+
+  /* ---------- MAIN ---------- */
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:40px 24px 80px;
+  }
+  .date-section{ margin-bottom:44px; }
+  .date-heading{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:0 0 18px;
+    padding-bottom:8px;
+    border-bottom:1px dashed rgba(243,236,216,0.18);
+  }
+  .date-heading .d{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--text-light);
+  }
+  .date-heading .c{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--text-light-dim);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(270px,1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--paper);
+    color:var(--text-dark);
+    border-radius:3px;
+    padding:18px 18px 16px;
+    position:relative;
+    box-shadow:0 1px 0 rgba(0,0,0,0.25), 0 8px 18px -10px rgba(0,0,0,0.5);
+    border:1px solid var(--paper-line);
+    transform:rotate(var(--rot,0deg));
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .card:hover{
+    transform:rotate(0deg) translateY(-2px);
+    box-shadow:0 2px 0 rgba(0,0,0,0.25), 0 14px 26px -12px rgba(0,0,0,0.55);
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0; left:16px;
+    width:34px; height:10px;
+    background:rgba(201,152,43,0.35);
+    border:1px solid rgba(201,152,43,0.5);
+    transform:translateY(-50%) rotate(-2deg);
+  }
+  .card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .headword{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:21px;
+    line-height:1.2;
+    margin:0;
+  }
+  .pos{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.04em;
+    color:#fff;
+    background:var(--teal);
+    padding:2px 7px;
+    border-radius:3px;
+    white-space:nowrap;
+    margin-top:3px;
+  }
+  .speak-btn{
+    border:none;
+    background:var(--ink);
+    color:var(--gold);
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .speak-btn:hover{ background:var(--gold-dim); transform:scale(1.06); }
+  .speak-btn:active{ transform:scale(0.94); }
+  .speak-btn.playing{ background:var(--gold); color:var(--ink); }
+  .speak-btn svg{ width:14px; height:14px; }
+
+  .zh{
+    font-size:15px;
+    color:var(--text-dim);
+    margin:2px 0 10px;
+  }
+  .example-row{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    border-top:1px dashed var(--paper-line);
+    padding-top:10px;
+  }
+  .example{
+    font-size:13.5px;
+    line-height:1.55;
+    color:#3a352a;
+    margin:0;
+    flex:1;
+  }
+  .speak-btn.small{
+    width:24px;
+    height:24px;
+    margin-top:1px;
+  }
+  .speak-btn.small svg{ width:12px; height:12px; }
+  .example mark{
+    background:none;
+    color:var(--rust);
+    font-weight:600;
+    text-decoration:underline;
+    text-decoration-color:rgba(180,85,47,0.4);
+    text-decoration-thickness:2px;
+    text-underline-offset:2px;
+  }
+
+  footer{
+    text-align:center;
+    padding:28px 24px 40px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--text-light-dim);
+    letter-spacing:0.04em;
+  }
+
+  .no-tts-note{
+    display:none;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--rust);
+    text-align:center;
+    padding:6px 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">TOEFL_Vocab_Log · 2026.06.27 – 06.30</p>
+      <h1>詞彙誌<br><em>Lexicon Log</em></h1>
+      <p class="hero-sub">四天累積的單字紀錄，按日期分卡；點喇叭圖示可朗讀發音。</p>
+    </div>
+    <div class="count-block">
+      <div class="count-num" id="totalCount">0</div>
+      <div class="count-label">words logged</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabBar"></div>
+</nav>
+
+<p class="no-tts-note" id="ttsNote">此瀏覽器不支援語音朗讀（Web Speech API），發音按鈕暫不可用。</p>
+
+<main id="main"></main>
+
+<footer>cyanlee1147 / toefl-hub · generated log</footer>
+
+<script>
+const VOCAB = [
+  {date:"2026-06-27", word:"metafiction", pos:"n.", zh:"後設小說（一種小說寫作技巧，其內容自覺地評論或提醒讀者關於小說的虛構性）", ex:"The novel is a brilliant example of metafiction, as the characters often discuss the author's writing process."},
+  {date:"2026-06-27", word:"intertextuality", pos:"n.", zh:"互文性（文本之間相互引用、指涉或對話的關係）", ex:"Her poetry is rich in intertextuality, drawing heavily on classical mythology and Shakespearean plays."},
+  {date:"2026-06-27", word:"temporal distortion", pos:"phr.", zh:"時間扭曲（在敘事中不按線性順序呈現時間，使時間感模糊或錯亂）", ex:"The film uses temporal distortion to heighten the sense of confusion and memory loss experienced by the protagonist."},
+  {date:"2026-06-27", word:"authoritative voice", pos:"phr.", zh:"權威聲音（被視為可靠、可信或具有專業知識的敘述者或觀點）", ex:"In academic writing, it is crucial to establish an authoritative voice through well-supported arguments."},
+  {date:"2026-06-27", word:"objective reality", pos:"phr.", zh:"客觀現實（不依賴個人觀點、感受或信念而獨立存在的真實世界）", ex:"Many philosophical debates revolve around the nature of objective reality and human perception."},
+  {date:"2026-06-27", word:"foreground", pos:"v.", zh:"突顯；強調", ex:"The artist chose to foreground the vibrant colors in the painting, making them the central focus."},
+  {date:"2026-06-27", word:"constructedness", pos:"n.", zh:"建構性；構築性（指某物並非自然存在，而是由社會、文化或人類思想所創造或塑造的特質）", ex:"The essay explores the constructedness of gender roles in different societies."},
+  {date:"2026-06-27", word:"self-reflexivity", pos:"n.", zh:"自我指涉；自我反思（指作品、理論等回溯並評論其自身形式、創造過程或性質的特質）", ex:"Modern art often exhibits self-reflexivity, inviting viewers to consider the act of creation itself."},
+  {date:"2026-06-27", word:"playful ambiguity", pos:"phr.", zh:"玩味曖昧；遊戲性模糊（刻意製造多種可能的意義，並以此帶來趣味或挑戰讀者的解讀）", ex:"The poet's use of playful ambiguity allows for diverse interpretations of her work."},
+
+  {date:"2026-06-28", word:"revolutionized", pos:"v.", zh:"徹底改變；革新", ex:"The internet has revolutionized the way people communicate and access information."},
+  {date:"2026-06-28", word:"proximity", pos:"n.", zh:"接近；鄰近", ex:"The house's proximity to the beach made it very desirable for vacationers."},
+  {date:"2026-06-28", word:"exerts", pos:"v.", zh:"施加；發揮（影響、力量等）", ex:"The manager exerts considerable influence over the decision-making process."},
+  {date:"2026-06-28", word:"infer", pos:"v.", zh:"推斷；推論", ex:"From the forensic evidence, the detectives were able to infer the sequence of events."},
+  {date:"2026-06-28", word:"periodic", pos:"adj.", zh:"週期的；定期的", ex:"The region experiences periodic droughts, which greatly affect agriculture."},
+  {date:"2026-06-28", word:"spectral lines", pos:"n. phr.", zh:"光譜線", ex:"Analysis of the star's spectral lines can reveal its chemical composition."},
+  {date:"2026-06-28", word:"dimming", pos:"n.", zh:"變暗；光線減弱", ex:"The dimming of the stage lights signaled the start of the play."},
+  {date:"2026-06-28", word:"vantage point", pos:"n. phr.", zh:"有利位置；觀察點", ex:"From our vantage point on the hill, we had a clear view of the entire city."},
+  {date:"2026-06-28", word:"orientation", pos:"n.", zh:"方向；方位；定位", ex:"The building's orientation was designed to maximize natural light throughout the day."},
+
+  {date:"2026-06-29", word:"remarkable", pos:"adj.", zh:"顯著的，非凡的", ex:"The scientist made a remarkable discovery that changed our understanding of the universe."},
+  {date:"2026-06-29", word:"internationalism", pos:"n.", zh:"國際主義", ex:"The era was marked by a spirit of internationalism, with nations collaborating on global issues."},
+  {date:"2026-06-29", word:"prosperity", pos:"n.", zh:"繁榮，昌盛", ex:"Economic policies aimed at ensuring long-term prosperity for the country."},
+  {date:"2026-06-29", word:"collapse", pos:"n.", zh:"崩潰，瓦解", ex:"The sudden collapse of the bridge left many questions unanswered."},
+  {date:"2026-06-29", word:"momentous", pos:"adj.", zh:"重大的，重要的", ex:"The signing of the peace treaty was a momentous occasion for both nations."},
+  {date:"2026-06-29", word:"disruption", pos:"n.", zh:"中斷，擾亂", ex:"The severe storm caused significant disruption to travel plans across the region."},
+  {date:"2026-06-29", word:"singular", pos:"adj.", zh:"單一的，獨特的", ex:"The detective noted a singular detail that might solve the mystery."},
+  {date:"2026-06-29", word:"consensus", pos:"n.", zh:"共識，一致意見", ex:"After a lengthy debate, the committee finally reached a consensus on the new policy."},
+
+  {date:"2026-06-30", word:"associated with", pos:"phr.", zh:"與...相關聯", ex:"High cholesterol levels are often associated with an increased risk of heart disease."},
+  {date:"2026-06-30", word:"academic painting", pos:"phr.", zh:"學院派繪畫", ex:"During the 19th century, academic painting adhered strictly to classical themes and polished techniques."},
+  {date:"2026-06-30", word:"fleeting", pos:"adj.", zh:"短暫的", ex:"She caught a fleeting glimpse of the rare bird before it flew away."},
+  {date:"2026-06-30", word:"perception", pos:"n.", zh:"感知", ex:"Public perception of the company improved after their latest environmental initiatives."},
+  {date:"2026-06-30", word:"prioritizing", pos:"v.", zh:"優先考慮", ex:"The government is prioritizing economic growth over environmental protection in its new policy."},
+  {date:"2026-06-30", word:"depiction", pos:"n.", zh:"描繪", ex:"The artist's depiction of the cityscape was both realistic and emotionally resonant."},
+  {date:"2026-06-30", word:"compositions", pos:"n.", zh:"構圖", ex:"The photographer carefully arranged the elements to create balanced and dynamic compositions."},
+  {date:"2026-06-30", word:"faced scorn", pos:"phr.", zh:"遭到輕蔑", ex:"His unconventional ideas initially faced scorn from his conservative colleagues."},
+  {date:"2026-06-30", word:"resonated with", pos:"phr.", zh:"與...產生共鳴", ex:"The speaker's personal story of overcoming adversity resonated with many members of the audience."},
+  {date:"2026-06-30", word:"paving the way for", pos:"phr.", zh:"為...鋪平道路", ex:"The invention of the printing press was crucial, paving the way for widespread literacy and the Renaissance."},
+];
+
+function escapeHTML(s){
+  return s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+}
+
+function highlight(ex, word){
+  const escaped = escapeHTML(ex);
+  const escWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp("(" + escWord + ")", "i");
+  return escaped.replace(re, "<mark>$1</mark>");
+}
+
+function fmtDateHeading(d){
+  const [y,m,day] = d.split("-");
+  return `${m}/${day}`;
+}
+
+const dates = [...new Set(VOCAB.map(v => v.date))].sort();
+
+document.getElementById('totalCount').textContent = VOCAB.length;
+
+// Tabs
+const tabBar = document.getElementById('tabBar');
+function makeTab(label, count, filterVal, active){
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (active ? ' active' : '');
+  btn.dataset.filter = filterVal;
+  btn.innerHTML = `${label}<span class="n">${count}</span>`;
+  btn.onclick = () => setFilter(filterVal);
+  return btn;
+}
+tabBar.appendChild(makeTab('全部 All', VOCAB.length, 'all', true));
+dates.forEach(d => {
+  const count = VOCAB.filter(v => v.date === d).length;
+  tabBar.appendChild(makeTab(fmtDateHeading(d), count, d, false));
+});
+
+function setFilter(val){
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === val);
+  });
+  document.querySelectorAll('.date-section').forEach(sec => {
+    sec.style.display = (val === 'all' || sec.dataset.date === val) ? '' : 'none';
+  });
+}
+
+// Main content
+const main = document.getElementById('main');
+let cardIndex = 0;
+dates.forEach(d => {
+  const words = VOCAB.filter(v => v.date === d);
+  const section = document.createElement('section');
+  section.className = 'date-section';
+  section.dataset.date = d;
+
+  const heading = document.createElement('div');
+  heading.className = 'date-heading';
+  heading.innerHTML = `<span class="d">${fmtDateHeading(d)}</span><span class="c">${words.length} words</span>`;
+  section.appendChild(heading);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  words.forEach(v => {
+    cardIndex++;
+    const rot = (cardIndex % 2 === 0 ? 1 : -1) * (0.4 + (cardIndex % 3) * 0.25);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--rot', rot + 'deg');
+    card.innerHTML = `
+      <div class="card-top">
+        <div>
+          <p class="headword">${escapeHTML(v.word)}</p>
+          <span class="pos">${escapeHTML(v.pos)}</span>
+        </div>
+        <button class="speak-btn" aria-label="Pronounce ${escapeHTML(v.word)}">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+        </button>
+      </div>
+      <p class="zh">${escapeHTML(v.zh)}</p>
+      <div class="example-row">
+        <p class="example">${highlight(v.ex, v.word)}</p>
+        <button class="speak-btn small" aria-label="Pronounce example sentence">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+        </button>
+      </div>
+    `;
+    const wordBtn = card.querySelector('.speak-btn:not(.small)');
+    wordBtn.addEventListener('click', () => speak(v.word, wordBtn));
+    const exBtn = card.querySelector('.speak-btn.small');
+    exBtn.addEventListener('click', () => speak(v.ex, exBtn));
+    grid.appendChild(card);
+  });
+
+  section.appendChild(grid);
+  main.appendChild(section);
+});
+
+// Text-to-speech
+let voices = [];
+function loadVoices(){ voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if (window.speechSynthesis){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+} else {
+  document.getElementById('ttsNote').style.display = 'block';
+  document.querySelectorAll('.speak-btn').forEach(b => { b.disabled = true; b.style.opacity = 0.35; b.style.cursor = 'not-allowed'; });
+}
+
+function speak(text, btn){
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = 0.92;
+  const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang && v.lang.startsWith('en'));
+  if (enVoice) utter.voice = enVoice;
+  document.querySelectorAll('.speak-btn.playing').forEach(b => b.classList.remove('playing'));
+  btn.classList.add('playing');
+  utter.onend = () => btn.classList.remove('playing');
+  utter.onerror = () => btn.classList.remove('playing');
+  window.speechSynthesis.speak(utter);
+}
+</script>
+</body>
+</html>
