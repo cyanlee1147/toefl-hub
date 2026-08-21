@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>咖啡館詞典 Coffee Shop Lexicon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --roast:#F5E9D8;
+    --roast2:#EFDFC6;
+    --roast3:#E8D5B5;
+    --crema:#FFFBF3;
+    --parchment:#FFFBF3;
+    --cherry:#B5651D;
+    --cherry-dim:#8C4E17;
+    --caramel:#A9702E;
+    --moss:#7A5A3E;
+    --ink:#3A2415;
+    --ink-dim:#7A5A3E;
+    --text-light:#4A2E1D;
+    --text-light-dim:#8A6B4E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% -5%, rgba(169,112,46,0.10), transparent 55%),
+      linear-gradient(180deg, var(--roast) 0%, var(--roast2) 50%, var(--roast3) 100%);
+    background-attachment:fixed;
+    color:var(--text-light);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- STEAM ---------- */
+  .steam-layer{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .steam{
+    position:absolute;
+    bottom:-10vh;
+    width:3px;
+    border-radius:3px;
+    background:linear-gradient(180deg, rgba(74,46,29,0.0), rgba(74,46,29,0.16), rgba(74,46,29,0.0));
+    filter:blur(2px);
+    animation:steamRise linear infinite;
+  }
+  @keyframes steamRise{
+    0%{ transform:translateY(0) translateX(0) scaleY(0.6); opacity:0; }
+    12%{ opacity:0.5; }
+    50%{ transform:translateY(-55vh) translateX(var(--sway,14px)) scaleY(1.1); }
+    88%{ opacity:0.2; }
+    100%{ transform:translateY(-105vh) translateX(calc(var(--sway,14px) * -1)) scaleY(1.3); opacity:0; }
+  }
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;
+    z-index:1;
+    padding:60px 24px 0;
+  }
+  .hero-inner{
+    max-width:960px;
+    margin:0 auto;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:32px;
+    flex-wrap:wrap;
+    padding-bottom:40px;
+  }
+  .eyebrow{
+    font-family:'Caveat',cursive;
+    font-weight:600;
+    font-size:22px;
+    color:var(--caramel);
+    margin:0 0 6px;
+    letter-spacing:0.02em;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(32px,5.2vw,50px);
+    line-height:1.08;
+    margin:0 0 10px;
+    color:var(--text-light);
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--text-light-dim);
+  }
+  .hero-sub{
+    font-size:14.5px;
+    color:var(--text-light-dim);
+    max-width:48ch;
+    line-height:1.65;
+    margin:0;
+  }
+  .count-block{ text-align:right; flex-shrink:0; }
+  .count-num{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:clamp(52px,8.5vw,80px);
+    line-height:0.85;
+    color:var(--caramel);
+    font-variant-numeric:tabular-nums;
+    text-shadow:0 0 22px rgba(204,146,67,0.3);
+  }
+  .count-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-light-dim);
+    margin-top:6px;
+  }
+
+  /* stitched divider like a burlap sack seam */
+  .stitch-divider{
+    max-width:960px;
+    margin:0 auto;
+    height:0;
+    border-top:2px dashed rgba(74,46,29,0.2);
+  }
+
+  /* ---------- TABS ---------- */
+  nav.tabs{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:rgba(245,233,216,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(74,46,29,0.12);
+    padding:14px 24px;
+  }
+  .tabs-inner{
+    max-width:960px;
+    margin:0 auto;
+    display:flex;
+    gap:8px;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:thin;
+    padding-bottom:2px;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    background:transparent;
+    border:1px solid rgba(74,46,29,0.2);
+    color:var(--text-light-dim);
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:border-color .15s ease, color .15s ease, background .15s ease;
+  }
+  .tab-btn:hover{ color:var(--text-light); border-color:rgba(74,46,29,0.45); }
+  .tab-btn.active{
+    background:var(--caramel);
+    border-color:var(--caramel);
+    color:#FFFBF3;
+    font-weight:600;
+  }
+  .tab-btn .n{ opacity:0.65; margin-left:4px; }
+  .tab-btn.active .n{ opacity:0.55; }
+
+  /* ---------- MAIN ---------- */
+  main{
+    position:relative;
+    z-index:1;
+    max-width:960px;
+    margin:0 auto;
+    padding:36px 24px 90px;
+  }
+  .date-section{ margin-bottom:46px; }
+  .date-heading{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin:0 0 18px;
+    padding-bottom:8px;
+    border-bottom:1px dashed rgba(74,46,29,0.18);
+  }
+  .date-heading .d{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    color:var(--text-light);
+  }
+  .date-heading .c{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--text-light-dim);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:16px;
+  }
+
+  /* ---------- FLIP CARD ---------- */
+  .flashcard{
+    perspective:1200px;
+    height:170px;
+    cursor:pointer;
+  }
+  .flashcard-inner{
+    position:relative;
+    width:100%;
+    height:100%;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner{ transform:rotateY(180deg); }
+
+  .card-face{
+    position:absolute;
+    inset:0;
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
+    border-radius:10px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .card-front{
+    background:
+      radial-gradient(circle at 85% 15%, rgba(255,223,177,0.18), transparent 55%),
+      linear-gradient(160deg, #8A5A34, #6B4226);
+    border:1px solid rgba(74,46,29,0.15);
+    justify-content:space-between;
+    box-shadow:0 10px 22px -14px rgba(74,46,29,0.35), inset 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .front-top{ display:flex; justify-content:flex-end; }
+  .front-top .speak-btn{
+    background:rgba(58,36,21,0.55);
+    color:#F3DFC0;
+  }
+  .front-top .speak-btn:hover{ background:var(--cherry); color:#fff; }
+  .front-word{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:21px;
+    line-height:1.25;
+    color:#FBF1DE;
+    margin:auto 0;
+  }
+  .flip-hint{
+    font-family:'Caveat',cursive;
+    font-size:15px;
+    color:#D8B98E;
+    text-align:right;
+  }
+
+  .card-back{
+    background:var(--parchment);
+    color:var(--ink);
+    transform:rotateY(180deg);
+    border:1px solid #e3cfa4;
+    box-shadow:0 10px 22px -14px rgba(0,0,0,0.5);
+    overflow-y:auto;
+  }
+  .back-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .back-word{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:17px;
+    line-height:1.2;
+    margin:0;
+  }
+  .pos-badge{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.03em;
+    color:#fff;
+    background:var(--moss);
+    padding:2px 6px;
+    border-radius:3px;
+    white-space:nowrap;
+    margin-top:2px;
+    display:inline-block;
+  }
+  .speak-btn{
+    border:none;
+    background:#6B4226;
+    color:#F3DFC0;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .speak-btn:hover{ background:var(--cherry-dim); transform:scale(1.08); }
+  .speak-btn:active{ transform:scale(0.92); }
+  .speak-btn.playing{ background:var(--cherry); color:#fff; }
+  .speak-btn svg{ width:12px; height:12px; }
+
+  .zh-meaning{
+    font-size:13px;
+    color:var(--ink-dim);
+    margin:4px 0 8px;
+    line-height:1.4;
+  }
+  .example-row{
+    display:flex;
+    align-items:flex-start;
+    gap:6px;
+    border-top:1px dashed #e3cfa4;
+    padding-top:8px;
+    margin-top:auto;
+  }
+  .example-text{ flex:1; min-width:0; }
+  .example-en{
+    font-size:11.5px;
+    line-height:1.45;
+    color:#3d2a17;
+    margin:0 0 3px;
+  }
+  .example-en mark{
+    background:none;
+    color:var(--cherry-dim);
+    font-weight:600;
+    text-decoration:underline;
+    text-decoration-color:rgba(125,46,32,0.4);
+    text-decoration-thickness:2px;
+    text-underline-offset:2px;
+  }
+  .example-zh{
+    font-size:11px;
+    line-height:1.4;
+    color:#8a7256;
+    margin:0;
+  }
+
+  footer{
+    position:relative;
+    z-index:1;
+    text-align:center;
+    padding:28px 24px 40px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--text-light-dim);
+    letter-spacing:0.04em;
+  }
+
+  .no-tts-note{
+    display:none;
+    position:relative;
+    z-index:1;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--cherry);
+    text-align:center;
+    padding:6px 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="steam-layer" id="steamLayer"></div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">☕ TOEFL_Vocab_Log · 08.01 – 08.18</p>
+      <h1>咖啡館詞典<br><em>Coffee Shop Lexicon</em></h1>
+      <p class="hero-sub">八月累積的單字，像手沖咖啡一樣慢慢萃取。點卡片翻面看中文與例句，點喇叭聽發音。</p>
+    </div>
+    <div class="count-block">
+      <div class="count-num" id="totalCount">0</div>
+      <div class="count-label">words logged</div>
+    </div>
+  </div>
+  <div class="stitch-divider"></div>
+</header>
+
+<nav class="tabs">
+  <div class="tabs-inner" id="tabBar"></div>
+</nav>
+
+<p class="no-tts-note" id="ttsNote">此瀏覽器不支援語音朗讀（Web Speech API），發音按鈕暫不可用。</p>
+
+<main id="main"></main>
+
+<footer>cyanlee1147 / toefl-hub · generated log</footer>
+
+<script>
+const VOCAB = [{"date": "2026-08-18", "word": "enduring legacy", "pos": "phr.", "zh": "持久的遺產", "en": "The philosopher's enduring legacy continues to influence modern thought centuries later.", "zhEx": "這位哲學家持久的遺產，在幾個世紀後仍持續影響著現代思想。"}, {"date": "2026-08-18", "word": "utilitarian", "pos": "adj.", "zh": "實用的；功利的", "en": "The design of the new office building is strictly utilitarian, prioritizing function over aesthetics.", "zhEx": "這棟新辦公大樓的設計完全走實用路線，重視功能勝過美觀。"}, {"date": "2026-08-18", "word": "hydraulics", "pos": "n.", "zh": "水利學；液壓學", "en": "Modern construction equipment often relies on hydraulics for powerful and precise movements.", "zhEx": "現代建築機具經常依賴液壓系統，來達成強而有力且精準的動作。"}, {"date": "2026-08-18", "word": "gradient", "pos": "n.", "zh": "坡度；傾斜度", "en": "Cyclists struggled to climb the steep gradient of the mountain road.", "zhEx": "自行車騎士費力地爬上這條山路陡峭的坡度。"}, {"date": "2026-08-18", "word": "stagnation", "pos": "n.", "zh": "停滯；不流動", "en": "Economic stagnation can lead to high unemployment rates and reduced consumer spending.", "zhEx": "經濟停滯可能導致高失業率與消費支出減少。"}, {"date": "2026-08-18", "word": "conduits", "pos": "n.", "zh": "導管；渠道", "en": "Electrical conduits protect wiring in walls and ceilings from damage.", "zhEx": "電線導管能保護牆壁與天花板內的線路免受損壞。"}, {"date": "2026-08-18", "word": "traversed", "pos": "v.", "zh": "橫越；穿過", "en": "Explorers traversed the dense jungle for weeks before reaching the ancient ruins.", "zhEx": "探險家們橫越茂密的叢林數週，才抵達古老的遺跡。"}, {"date": "2026-08-18", "word": "subterranean", "pos": "adj.", "zh": "地下的", "en": "The city has an extensive subterranean network of subway tunnels.", "zhEx": "這座城市擁有龐大的地下地鐵隧道網絡。"}, {"date": "2026-08-18", "word": "underpinning", "pos": "v.", "zh": "支撐；鞏固（某物的基礎）", "en": "Strong educational systems are crucial for underpinning a nation's economic growth.", "zhEx": "健全的教育體系對於支撐一個國家的經濟成長至關重要。"}, {"date": "2026-08-16", "word": "legitimation", "pos": "n.", "zh": "合法化；正當化", "en": "The government sought international legitimation for its recent policy changes.", "zhEx": "政府為其近期的政策變動尋求國際上的正當性。"}, {"date": "2026-08-16", "word": "authority", "pos": "n.", "zh": "權威；權力", "en": "The local council has the authority to approve building permits.", "zhEx": "地方議會有權核准建築許可。"}, {"date": "2026-08-16", "word": "artisanal", "pos": "adj.", "zh": "工匠的；手工藝的", "en": "The artisanal bread from the bakery is made with traditional methods.", "zhEx": "這家麵包店的手工麵包是以傳統方法製作的。"}, {"date": "2026-08-16", "word": "awe", "pos": "n.", "zh": "敬畏；驚嘆", "en": "The ancient ruins filled the tourists with a sense of awe.", "zhEx": "這些古老的遺跡讓遊客充滿敬畏之感。"}, {"date": "2026-08-16", "word": "motives", "pos": "n.", "zh": "動機；目的", "en": "The detective questioned the suspect about his possible motives for the crime.", "zhEx": "偵探審問嫌犯，追問他犯案的可能動機。"}, {"date": "2026-08-16", "word": "consequently", "pos": "adv.", "zh": "因此；結果是", "en": "She missed her flight; consequently, she had to reschedule her entire trip.", "zhEx": "她錯過了班機，因此不得不重新安排整趟旅程。"}, {"date": "2026-08-15", "word": "originating", "pos": "v.", "zh": "起源於", "en": "The tradition of exchanging gifts at weddings originated in ancient Rome.", "zhEx": "婚禮上互贈禮物的傳統起源於古羅馬。"}, {"date": "2026-08-15", "word": "inadequately", "pos": "adv.", "zh": "不足地，不充分地", "en": "The old infrastructure was inadequately equipped to handle the city's rapid growth.", "zhEx": "舊有的基礎建設設備不足，無法應付這座城市的快速成長。"}, {"date": "2026-08-15", "word": "replicate", "pos": "v.", "zh": "複製，重現", "en": "Scientists are trying to replicate the experimental results in a different lab.", "zhEx": "科學家正試圖在另一間實驗室中重現這項實驗結果。"}, {"date": "2026-08-15", "word": "evoke", "pos": "v.", "zh": "喚起，引起", "en": "The old photograph evoked strong memories of my childhood.", "zhEx": "這張舊照片喚起了我童年的強烈回憶。"}, {"date": "2026-08-15", "word": "mimetic", "pos": "adj.", "zh": "模仿的，仿效的", "en": "Classical Greek sculpture often pursued a mimetic ideal of human form.", "zhEx": "古典希臘雕塑經常追求對人體形態的模仿理想。"}, {"date": "2026-08-15", "word": "ineffable", "pos": "adj.", "zh": "不可言喻的，難以表達的", "en": "The beauty of the aurora borealis was an ineffable experience.", "zhEx": "北極光之美是一種難以言喻的體驗。"}, {"date": "2026-08-14", "word": "peopling", "pos": "n.", "zh": "居住、殖民", "en": "The peopling of remote islands often involved impressive seafaring capabilities.", "zhEx": "偏遠島嶼的人口遷入往往涉及驚人的航海能力。"}, {"date": "2026-08-14", "word": "enduring", "pos": "adj.", "zh": "持久的、不朽的", "en": "The pyramid stands as an enduring symbol of ancient Egyptian civilization.", "zhEx": "金字塔屹立著，是古埃及文明持久不朽的象徵。"}, {"date": "2026-08-14", "word": "hypothesis", "pos": "n.", "zh": "假說、假設", "en": "Scientists are testing a new hypothesis about the cause of the disease.", "zhEx": "科學家正在測試一項關於此疾病成因的新假說。"}, {"date": "2026-08-14", "word": "exposed", "pos": "v.", "zh": "暴露、顯露", "en": "The low tide exposed the sandbars, making navigation difficult.", "zhEx": "退潮使沙洲露出水面，讓航行變得困難。"}, {"date": "2026-08-14", "word": "migrate", "pos": "v.", "zh": "遷徙、移居", "en": "Birds typically migrate south for the winter to warmer climates.", "zhEx": "鳥類通常會在冬天遷徙到南方較溫暖的氣候區。"}, {"date": "2026-08-14", "word": "projectile points", "pos": "n. phr.", "zh": "投射點 (如箭頭、矛尖)", "en": "Archaeologists found numerous ancient projectile points at the excavation site, indicating hunting activity.", "zhEx": "考古學家在挖掘現場發現大量古代投射點，顯示曾有狩獵活動。"}, {"date": "2026-08-14", "word": "indigenous", "pos": "adj.", "zh": "本土的、原產的", "en": "Many indigenous cultures have deep connections to their ancestral lands.", "zhEx": "許多原住民文化與其祖先的土地有著深厚的連結。"}, {"date": "2026-08-14", "word": "dogma", "pos": "n.", "zh": "教條、信條", "en": "Challenging established dogma is often a crucial step in scientific progress.", "zhEx": "挑戰既有教條往往是科學進步的關鍵一步。"}, {"date": "2026-08-13", "word": "exoplanets", "pos": "n.", "zh": "太陽系外行星", "en": "Scientists are increasingly finding evidence of water on various exoplanets, raising hopes for extraterrestrial life.", "zhEx": "科學家在多顆太陽系外行星上發現越來越多水的證據，提升了對地外生命的期望。"}, {"date": "2026-08-13", "word": "speculation", "pos": "n.", "zh": "推測，猜測", "en": "The origins of the universe are still subject to much scientific speculation.", "zhEx": "宇宙的起源至今仍是許多科學推測的對象。"}, {"date": "2026-08-13", "word": "celestial bodies", "pos": "phr.", "zh": "天體", "en": "Comets and asteroids are fascinating celestial bodies that occasionally visit our inner solar system.", "zhEx": "彗星與小行星是迷人的天體，偶爾會造訪太陽系內側。"}, {"date": "2026-08-13", "word": "radial velocity", "pos": "phr.", "zh": "徑向速度", "en": "Astronomers use the radial velocity method to detect planets that are too small or too far to be directly imaged.", "zhEx": "天文學家利用徑向速度法，偵測那些太小或太遠而無法直接成像的行星。"}, {"date": "2026-08-13", "word": "gravitational pull", "pos": "phr.", "zh": "萬有引力，引力作用", "en": "The Moon's gravitational pull is responsible for the Earth's ocean tides.", "zhEx": "月球的引力作用是地球海洋潮汐的成因。"}, {"date": "2026-08-13", "word": "Doppler shift", "pos": "phr.", "zh": "都卜勒頻移", "en": "The detection of a Doppler shift in light from distant galaxies provides evidence for the expansion of the universe.", "zhEx": "偵測到遙遠星系光線中的都卜勒頻移，為宇宙膨脹提供了證據。"}, {"date": "2026-08-13", "word": "transit method", "pos": "phr.", "zh": "凌日法", "en": "NASA's Kepler space telescope successfully discovered thousands of exoplanets using the transit method.", "zhEx": "NASA的克卜勒太空望遠鏡運用凌日法，成功發現了數千顆系外行星。"}, {"date": "2026-08-13", "word": "habitability", "pos": "n.", "zh": "宜居性", "en": "Researchers are investigating the habitability of Mars, focusing on the presence of liquid water and a stable atmosphere.", "zhEx": "研究人員正在調查火星的宜居性，聚焦於液態水與穩定大氣的存在。"}, {"date": "2026-08-12", "word": "expansion", "pos": "n.", "zh": "擴張；膨脹", "en": "The company announced a major expansion into Asian markets.", "zhEx": "這家公司宣布將大幅擴張進入亞洲市場。"}, {"date": "2026-08-12", "word": "unified", "pos": "v.", "zh": "統一；聯合", "en": "The new constitution unified the various states into a single nation.", "zhEx": "新憲法將各個邦統一成為單一國家。"}, {"date": "2026-08-12", "word": "bureaucracy", "pos": "n.", "zh": "官僚體制；官僚政治", "en": "Dealing with the government bureaucracy can be a frustrating experience.", "zhEx": "應付政府的官僚體制可能是令人沮喪的經驗。"}, {"date": "2026-08-12", "word": "standardized", "pos": "adj.", "zh": "標準化的", "en": "The educational system aims to provide standardized tests for all students.", "zhEx": "教育體系旨在為所有學生提供標準化的測驗。"}, {"date": "2026-08-12", "word": "lingua franca", "pos": "phr.", "zh": "通用語", "en": "English often serves as the lingua franca in international business.", "zhEx": "英語常在國際商務中作為通用語言。"}, {"date": "2026-08-12", "word": "retained", "pos": "v.", "zh": "保留；維持", "en": "Despite the changes, the old building retained much of its original charm.", "zhEx": "儘管經過改變，這棟老建築仍保留了大部分原有的魅力。"}, {"date": "2026-08-12", "word": "demise", "pos": "n.", "zh": "滅亡；死亡", "en": "The invention of the automobile led to the demise of horse-drawn carriages.", "zhEx": "汽車的發明導致了馬車的消亡。"}, {"date": "2026-08-11", "word": "philosophical movement", "pos": "phr.", "zh": "哲學運動", "en": "The Enlightenment was a powerful philosophical movement that emphasized reason and individualism.", "zhEx": "啟蒙運動是一場強大的哲學運動，強調理性與個人主義。"}, {"date": "2026-08-11", "word": "flourishing", "pos": "v.", "zh": "蓬勃發展", "en": "Despite economic difficulties, the local art scene is flourishing, with new galleries opening every month.", "zhEx": "儘管經濟困難，當地藝術圈仍蓬勃發展，每個月都有新畫廊開幕。"}, {"date": "2026-08-11", "word": "challenges", "pos": "v.", "zh": "挑戰", "en": "The new policy challenges existing norms regarding data privacy.", "zhEx": "這項新政策挑戰了現有的資料隱私規範。"}, {"date": "2026-08-11", "word": "inherent meaning", "pos": "phr.", "zh": "內在意義", "en": "Many symbols derive their inherent meaning from cultural context.", "zhEx": "許多符號的內在意義源自於其文化脈絡。"}, {"date": "2026-08-11", "word": "predetermined purpose", "pos": "phr.", "zh": "預定目的", "en": "Some believe that life has a predetermined purpose, while others argue it is self-created.", "zhEx": "有些人相信生命有預定的目的，也有人主張目的是自己創造的。"}, {"date": "2026-08-11", "word": "encapsulated", "pos": "v.", "zh": "概括；濃縮", "en": "The artist's entire philosophy is encapsulated in this single masterpiece.", "zhEx": "這位藝術家的整套哲學思想，都濃縮在這幅傑作之中。"}, {"date": "2026-08-11", "word": "assertion", "pos": "n.", "zh": "主張；斷言", "en": "The scientist made a bold assertion about the new discovery, but lacked sufficient proof.", "zhEx": "這位科學家對這項新發現做出大膽的主張，但缺乏充分的證據。"}, {"date": "2026-08-11", "word": "essence", "pos": "n.", "zh": "本質", "en": "The poem captures the essence of human longing and despair.", "zhEx": "這首詩捕捉了人類渴望與絕望的本質。"}, {"date": "2026-08-10", "word": "hydrothermal vents", "pos": "phr.", "zh": "熱液噴口", "en": "Scientists discovered new species near newly formed hydrothermal vents on the ocean floor.", "zhEx": "科學家在海底新形成的熱液噴口附近發現了新物種。"}, {"date": "2026-08-10", "word": "chemosynthesis", "pos": "n.", "zh": "化學合成", "en": "Unlike photosynthesis, chemosynthesis does not require sunlight to produce organic compounds.", "zhEx": "與光合作用不同，化學合成不需要陽光就能產生有機化合物。"}, {"date": "2026-08-10", "word": "microorganisms", "pos": "n.", "zh": "微生物", "en": "Some microorganisms are beneficial for digestion, while others can cause diseases.", "zhEx": "有些微生物有助於消化，但也有些會引發疾病。"}, {"date": "2026-08-10", "word": "oxidize", "pos": "v.", "zh": "氧化", "en": "Iron tends to oxidize when exposed to air and moisture, forming rust.", "zhEx": "鐵暴露在空氣與濕氣中容易氧化，形成鐵鏽。"}, {"date": "2026-08-10", "word": "invertebrates", "pos": "n.", "zh": "無脊椎動物", "en": "Insects, worms, and jellyfish are all examples of invertebrates, lacking a backbone.", "zhEx": "昆蟲、蠕蟲和水母都是無脊椎動物的例子，牠們都沒有脊椎。"}, {"date": "2026-08-10", "word": "trophosome", "pos": "n.", "zh": "營養體 (管蟲體內共生細菌的器官)", "en": "The trophosome of the tube worm houses billions of bacteria essential for its survival.", "zhEx": "管蟲的營養體內棲息著數十億對其生存至關重要的細菌。"}, {"date": "2026-08-10", "word": "symbiosis", "pos": "n.", "zh": "共生關係", "en": "The relationship between fungi and algae in lichen is a classic example of symbiosis.", "zhEx": "地衣中真菌與藻類的關係，是共生關係的經典範例。"}, {"date": "2026-08-10", "word": "obligate mutualism", "pos": "phr.", "zh": "專性互利共生", "en": "Obligate mutualism implies that neither species can survive without the other, a necessity for both partners.", "zhEx": "專性互利共生意味著兩個物種缺一不可，彼此都是對方生存的必要條件。"}, {"date": "2026-08-10", "word": "sustenance", "pos": "n.", "zh": "維持，生計；養分", "en": "The indigenous people relied on hunting and gathering for their daily sustenance.", "zhEx": "這些原住民依靠狩獵與採集來維持日常生計。"}, {"date": "2026-08-08", "word": "altered", "pos": "v.", "zh": "改變；變更", "en": "His career path was dramatically altered after he discovered his passion for astrophysics.", "zhEx": "在發現自己對天文物理的熱情後，他的職涯道路發生了劇烈的改變。"}, {"date": "2026-08-08", "word": "established conventions", "pos": "phr.", "zh": "既定規範；公認慣例", "en": "Modernist writers often challenged the established conventions of novel writing, such as linear narratives.", "zhEx": "現代主義作家經常挑戰小說寫作既定的規範，例如線性敘事手法。"}, {"date": "2026-08-08", "word": "pictorial representation", "pos": "phr.", "zh": "繪畫再現；圖像表達", "en": "Cave paintings provide an early form of pictorial representation of ancient human life and animals.", "zhEx": "洞穴壁畫提供了早期以圖像呈現古代人類生活與動物的形式。"}, {"date": "2026-08-08", "word": "transient effects", "pos": "phr.", "zh": "瞬時效果；轉瞬即逝的影響", "en": "Capturing the transient effects of light on water is a challenging task for many photographers.", "zhEx": "捕捉光線在水面上瞬息萬變的效果，對許多攝影師來說是一項挑戰。"}, {"date": "2026-08-08", "word": "atmosphere", "pos": "n.", "zh": "氛圍；氣氛", "en": "The old library had a quiet, scholarly atmosphere, perfect for deep study.", "zhEx": "這座老圖書館有種安靜、書卷氣的氛圍，非常適合深度研讀。"}, {"date": "2026-08-08", "word": "canvases", "pos": "n.", "zh": "畫布 (複數)", "en": "Many of Van Gogh's most famous canvases are displayed in museums around the world.", "zhEx": "梵谷許多最著名的畫作，如今展示於世界各地的博物館中。"}, {"date": "2026-08-08", "word": "provoked", "pos": "v.", "zh": "引起；激起", "en": "The new policy change provoked widespread debate among citizens and politicians alike.", "zhEx": "這項新政策的改變引發了市民與政治人物廣泛的辯論。"}, {"date": "2026-08-07", "word": "geoglyphs", "pos": "n.", "zh": "地畫", "en": "The desert landscape of Chile is also home to ancient geoglyphs depicting animals and human figures.", "zhEx": "智利的沙漠地景中，也存在著描繪動物與人形的古老地畫。"}, {"date": "2026-08-07", "word": "colossal", "pos": "adj.", "zh": "巨大的，龐大的", "en": "The construction of the dam was a colossal undertaking that required years of planning and labor.", "zhEx": "這座水壩的建造是一項浩大的工程，需要多年的規劃與勞力。"}, {"date": "2026-08-07", "word": "rudimentary", "pos": "adj.", "zh": "粗略的，初步的；未發展完全的", "en": "The early settlers built rudimentary shelters from logs and mud to protect themselves from the elements.", "zhEx": "早期的移民用原木和泥土搭建簡陋的住所，以抵禦自然環境。"}, {"date": "2026-08-07", "word": "captivate", "pos": "v.", "zh": "吸引，使著迷", "en": "Her storytelling ability could captivate an audience for hours with vivid descriptions and engaging plots.", "zhEx": "她說故事的能力能以生動的描述與引人入勝的情節，讓觀眾著迷數小時。"}, {"date": "2026-08-07", "word": "perennial", "pos": "adj.", "zh": "持久的，長期的；終年的", "en": "The problem of poverty remains a perennial issue that governments worldwide continue to address.", "zhEx": "貧窮問題仍是一個長年存在的議題，全球各國政府持續努力解決。"}, {"date": "2026-08-07", "word": "imperatives", "pos": "n.", "zh": "要務，必要條件", "en": "In times of crisis, public safety and rapid communication become the most urgent imperatives.", "zhEx": "在危機時刻，公共安全與快速溝通成為最迫切的要務。"}, {"date": "2026-08-07", "word": "degradation", "pos": "n.", "zh": "退化，惡化；降級", "en": "Soil degradation due to intensive farming practices is a major concern for environmentalists.", "zhEx": "因密集農耕造成的土壤退化，是環保人士主要的擔憂之一。"}, {"date": "2026-08-07", "word": "conservation", "pos": "n.", "zh": "保護，保存", "en": "Wildlife conservation efforts are crucial for maintaining biodiversity and ecological balance.", "zhEx": "野生動物保育工作對維持生物多樣性與生態平衡至關重要。"}, {"date": "2026-08-06", "word": "illogical", "pos": "adj.", "zh": "不合邏輯的；不合理的", "en": "It was illogical to assume that correlation implied causation without further proof.", "zhEx": "在沒有進一步證據的情況下，假設相關性代表因果關係是不合邏輯的。"}, {"date": "2026-08-06", "word": "heuristics", "pos": "n.", "zh": "啟發式方法；探索性學習法", "en": "Many problem-solving strategies rely on simple heuristics to find a quick, though not always optimal, solution.", "zhEx": "許多解決問題的策略依賴簡單的啟發式方法，快速找出解答，但不一定是最佳解。"}, {"date": "2026-08-06", "word": "predisposition", "pos": "n.", "zh": "傾向；素質", "en": "There is a genetic predisposition to certain medical conditions within the family.", "zhEx": "這個家族對某些疾病有基因上的傾向。"}, {"date": "2026-08-06", "word": "detrimental", "pos": "adj.", "zh": "有害的；不利的", "en": "Smoking has a detrimental effect on lung health over time.", "zhEx": "長期吸菸對肺部健康有不良的影響。"}, {"date": "2026-08-06", "word": "omnipresent", "pos": "adj.", "zh": "無處不在的；普遍存在的", "en": "In the digital age, advertising has become an omnipresent force in our daily lives.", "zhEx": "在數位時代，廣告已成為我們日常生活中無所不在的力量。"}, {"date": "2026-08-06", "word": "mitigate", "pos": "v.", "zh": "減輕；緩和", "en": "The government is implementing policies to mitigate the effects of climate change.", "zhEx": "政府正在實施政策，以減輕氣候變遷的影響。"}, {"date": "2026-08-06", "word": "metacognition", "pos": "n.", "zh": "後設認知；對認知的認知", "en": "Developing strong metacognition skills helps students monitor and regulate their own learning processes.", "zhEx": "培養良好的後設認知能力，有助於學生監控並調節自己的學習過程。"}, {"date": "2026-08-05", "word": "transition", "pos": "n.", "zh": "過渡；轉變", "en": "The company is undergoing a major transition to renewable energy sources.", "zhEx": "這家公司正經歷轉型，改用再生能源。"}, {"date": "2026-08-05", "word": "Baroque era", "pos": "phr.", "zh": "巴洛克時期", "en": "Many grand cathedrals built during the Baroque era feature elaborate ornamentation.", "zhEx": "許多建於巴洛克時期的宏偉大教堂，都以精緻繁複的裝飾為特色。"}, {"date": "2026-08-05", "word": "aesthetic values", "pos": "phr.", "zh": "美學價值；審美觀", "en": "Contemporary art challenges traditional aesthetic values by exploring unconventional forms.", "zhEx": "當代藝術透過探索非傳統的形式，挑戰傳統的美學價值。"}, {"date": "2026-08-05", "word": "compositional practice", "pos": "phr.", "zh": "作曲實踐；作曲方法", "en": "Her thesis examines how new technologies have influenced modern compositional practice.", "zhEx": "她的論文探討新科技如何影響現代的作曲實踐。"}, {"date": "2026-08-05", "word": "intricate counterpoint", "pos": "phr.", "zh": "複雜對位法", "en": "Bach's fugues are renowned for their masterly use of intricate counterpoint.", "zhEx": "巴哈的賦格曲以其精湛運用複雜對位法而聞名。"}, {"date": "2026-08-05", "word": "favored", "pos": "v.", "zh": "偏愛；傾向於", "en": "The audience clearly favored the second performance, applauding enthusiastically.", "zhEx": "觀眾明顯較偏愛第二場表演，熱烈鼓掌。"}, {"date": "2026-08-05", "word": "structural transparency", "pos": "phr.", "zh": "結構清晰度；結構透明度", "en": "Architects often aim for structural transparency in modern building designs to emphasize openness.", "zhEx": "建築師在現代建築設計中經常追求結構透明度，以強調開放感。"}, {"date": "2026-08-05", "word": "Enlightenment ideals", "pos": "phr.", "zh": "啟蒙理想", "en": "The Declaration of Independence was heavily influenced by Enlightenment ideals of individual rights.", "zhEx": "《獨立宣言》深受啟蒙時代個人權利理想的影響。"}, {"date": "2026-08-05", "word": "bridge figures", "pos": "phr.", "zh": "橋樑人物", "en": "Leonardo da Vinci is often seen as a bridge figure between the late Medieval and early Renaissance periods.", "zhEx": "達文西經常被視為連結中世紀晚期與文藝復興早期的橋樑人物。"}, {"date": "2026-08-05", "word": "dense polyphony", "pos": "phr.", "zh": "密集複音音樂", "en": "Renaissance madrigals are characterized by their rich harmonies and often dense polyphony.", "zhEx": "文藝復興時期的牧歌以豐富的和聲，以及經常出現的密集複音音樂為特色。"}, {"date": "2026-08-04", "word": "unifying", "pos": "adj.", "zh": "整合的，統一的", "en": "A shared vision can be a powerful unifying force for a diverse team.", "zhEx": "共同的願景能成為凝聚多元團隊的強大力量。"}, {"date": "2026-08-04", "word": "phenomena", "pos": "n.", "zh": "現象 (plural of phenomenon)", "en": "Many atmospheric phenomena, like rainbows, can be explained by physics.", "zhEx": "許多大氣現象，例如彩虹，都能用物理學來解釋。"}, {"date": "2026-08-04", "word": "fractured", "pos": "v.", "zh": "破裂，斷裂", "en": "The ancient vase was fractured into dozens of small pieces.", "zhEx": "這只古花瓶碎裂成數十個小碎片。"}, {"date": "2026-08-04", "word": "diverge", "pos": "v.", "zh": "分離，發散", "en": "Their opinions began to diverge on the best course of action.", "zhEx": "他們對於最佳行動方案的意見開始出現分歧。"}, {"date": "2026-08-04", "word": "converge", "pos": "v.", "zh": "聚合，會合", "en": "Several roads converge at the town square, making it a busy intersection.", "zhEx": "好幾條道路在小鎮廣場交會，使其成為繁忙的交叉口。"}, {"date": "2026-08-04", "word": "subduction zones", "pos": "phr.", "zh": "隱沒帶", "en": "Many of the world's deep ocean trenches are located near subduction zones.", "zhEx": "世界上許多深海海溝都位於隱沒帶附近。"}, {"date": "2026-08-04", "word": "facilitated", "pos": "v.", "zh": "促進，使便利", "en": "The new software facilitated collaboration among remote team members.", "zhEx": "這套新軟體促進了遠端團隊成員之間的協作。"}, {"date": "2026-08-04", "word": "magma", "pos": "n.", "zh": "岩漿", "en": "When magma erupts onto the Earth's surface, it is known as lava.", "zhEx": "當岩漿噴發到地表時，就被稱為熔岩。"}, {"date": "2026-08-03", "word": "progenitor", "pos": "n.", "zh": "開創者；始祖", "en": "The invention of the steam engine is considered the progenitor of the Industrial Revolution.", "zhEx": "蒸汽機的發明被視為工業革命的開創者。"}, {"date": "2026-08-03", "word": "subsistence", "pos": "n.", "zh": "生存；生計", "en": "Many rural communities rely on farming for their subsistence.", "zhEx": "許多鄉村社區依靠農業維持生計。"}, {"date": "2026-08-03", "word": "commissioned", "pos": "v.", "zh": "委託製作；訂購", "en": "The art collector commissioned a renowned sculptor to create a custom piece for his garden.", "zhEx": "這位藝術收藏家委託一位知名雕塑家為他的花園創作一件訂製作品。"}, {"date": "2026-08-03", "word": "intricately", "pos": "adv.", "zh": "錯綜複雜地；精細地", "en": "The artisan intricately wove the threads to create a beautiful tapestry.", "zhEx": "這位工匠精細地編織絲線，創作出一幅美麗的掛毯。"}, {"date": "2026-08-03", "word": "anthropomorphic", "pos": "adj.", "zh": "擬人化的", "en": "Many children's stories feature anthropomorphic animals that talk and behave like humans.", "zhEx": "許多兒童故事都以擬人化的動物為主角，牠們會說話並表現得像人類。"}, {"date": "2026-08-03", "word": "permeated", "pos": "v.", "zh": "滲透；遍及", "en": "The smell of freshly baked bread permeated the entire house.", "zhEx": "剛烤好的麵包香氣瀰漫了整棟房子。"}, {"date": "2026-08-02", "word": "transient", "pos": "adj.", "zh": "短暫的，轉瞬即逝的", "en": "The beauty of a sunset is often described as transient, lasting only a few precious moments.", "zhEx": "夕陽之美常被形容為短暫的，只持續幾個珍貴的片刻。"}, {"date": "2026-08-02", "word": "derided", "pos": "v.", "zh": "嘲笑，譏諷", "en": "His unconventional ideas were initially derided by his peers, but later proved to be innovative.", "zhEx": "他非傳統的想法起初被同儕嘲笑，但後來證明相當創新。"}, {"date": "2026-08-02", "word": "convention", "pos": "n.", "zh": "慣例，常規", "en": "Breaking with literary convention, the author decided to write the novel from multiple perspectives.", "zhEx": "這位作者打破文學慣例，決定以多重視角來寫這部小說。"}, {"date": "2026-08-02", "word": "reshaped", "pos": "v.", "zh": "重新塑造，改變", "en": "The invention of the internet has fundamentally reshaped how people communicate and access information.", "zhEx": "網路的發明從根本上重塑了人們溝通與取得資訊的方式。"}, {"date": "2026-08-02", "word": "autonomy", "pos": "n.", "zh": "自主性，獨立", "en": "The students were given more autonomy in choosing their research topics, fostering greater engagement.", "zhEx": "學生在選擇研究主題上獲得更多自主權，促進了更高的投入度。"}, {"date": "2026-08-02", "word": "expressive", "pos": "adj.", "zh": "有表現力的，善於表達的", "en": "Her dance performance was incredibly expressive, conveying a wide range of emotions without words.", "zhEx": "她的舞蹈表演極具表現力，無需言語就能傳達豐富的情感。"}, {"date": "2026-08-01", "word": "heuristic", "pos": "n.", "zh": "啟發式方法；探索式方法", "en": "Developing a simple heuristic can help solve complex problems more quickly, even if it doesn't guarantee the optimal solution.", "zhEx": "建立一個簡單的啟發式方法，能幫助更快解決複雜問題，即使不保證是最佳解。"}, {"date": "2026-08-01", "word": "skewed", "pos": "adj.", "zh": "歪曲的；有偏差的", "en": "The survey results were skewed because the sample population was not representative of the entire demographic.", "zhEx": "這項調查的結果出現偏差，因為樣本族群並不能代表整體人口。"}, {"date": "2026-08-01", "word": "evidence", "pos": "n.", "zh": "證據；證明", "en": "Detectives are still gathering evidence to support their theory about the crime.", "zhEx": "偵探仍在蒐集證據，以支持他們對這起犯罪的推論。"}, {"date": "2026-08-01", "word": "disregarding", "pos": "v.", "zh": "不理會；忽視", "en": "The driver was ticketed for disregarding the stop sign.", "zhEx": "這名駕駛因無視停車標誌而被開罰單。"}, {"date": "2026-08-01", "word": "phenomenon", "pos": "n.", "zh": "現象", "en": "The aurora borealis is a beautiful natural phenomenon visible in polar regions.", "zhEx": "北極光是一種美麗的自然現象，可在極地地區觀察到。"}, {"date": "2026-08-01", "word": "solidifies", "pos": "v.", "zh": "鞏固；使堅固", "en": "Winning the championship game solidifies the team's reputation as one of the best.", "zhEx": "贏得冠軍賽鞏固了這支隊伍作為頂尖球隊之一的聲譽。"}, {"date": "2026-08-01", "word": "obstruct", "pos": "v.", "zh": "阻礙；妨礙", "en": "Fallen trees can obstruct the road, making it impassable.", "zhEx": "倒下的樹木可能阻礙道路，使其無法通行。"}];
+
+function escapeHTML(s){
+  return s.replace(/[&<>]/g, c => ({'&':'&lt;','>':'&gt;','&':'&amp;'}[c] || c));
+}
+function escapeHTMLSafe(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function highlight(ex, word){
+  const escaped = escapeHTMLSafe(ex);
+  const escWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp("(" + escWord + ")", "i");
+  return escaped.replace(re, "<mark>$1</mark>");
+}
+
+function fmtDateHeading(d){
+  const [y,m,day] = d.split("-");
+  return `${m}/${day}`;
+}
+
+const dates = [...new Set(VOCAB.map(v => v.date))].sort();
+
+document.getElementById('totalCount').textContent = VOCAB.length;
+
+// Tabs
+const tabBar = document.getElementById('tabBar');
+function makeTab(label, count, filterVal, active){
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn' + (active ? ' active' : '');
+  btn.dataset.filter = filterVal;
+  btn.innerHTML = `${label}<span class="n">${count}</span>`;
+  btn.onclick = () => setFilter(filterVal);
+  return btn;
+}
+tabBar.appendChild(makeTab('全部', VOCAB.length, 'all', true));
+dates.forEach(d => {
+  const count = VOCAB.filter(v => v.date === d).length;
+  tabBar.appendChild(makeTab(fmtDateHeading(d), count, d, false));
+});
+
+function setFilter(val){
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === val);
+  });
+  document.querySelectorAll('.date-section').forEach(sec => {
+    sec.style.display = (val === 'all' || sec.dataset.date === val) ? '' : 'none';
+  });
+}
+
+// Main content
+const main = document.getElementById('main');
+dates.forEach(d => {
+  const words = VOCAB.filter(v => v.date === d);
+  const section = document.createElement('section');
+  section.className = 'date-section';
+  section.dataset.date = d;
+
+  const heading = document.createElement('div');
+  heading.className = 'date-heading';
+  heading.innerHTML = `<span class="d">${fmtDateHeading(d)}</span><span class="c">${words.length} words</span>`;
+  section.appendChild(heading);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  words.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'flashcard';
+    card.tabIndex = 0;
+    card.setAttribute('role','button');
+    card.setAttribute('aria-label', `Flashcard for ${v.word}`);
+    card.innerHTML = `
+      <div class="flashcard-inner">
+        <div class="card-face card-front">
+          <div class="front-top">
+            <button class="speak-btn front-speak" aria-label="Pronounce ${escapeHTMLSafe(v.word)}">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+            </button>
+          </div>
+          <div class="front-word">${escapeHTMLSafe(v.word)}</div>
+          <div class="flip-hint">點擊翻面 ⟳</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-top">
+            <div>
+              <p class="back-word">${escapeHTMLSafe(v.word)}</p>
+              <span class="pos-badge">${escapeHTMLSafe(v.pos)}</span>
+            </div>
+            <button class="speak-btn word-speak" aria-label="Pronounce ${escapeHTMLSafe(v.word)}">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+            </button>
+          </div>
+          <p class="zh-meaning">${escapeHTMLSafe(v.zh)}</p>
+          <div class="example-row">
+            <div class="example-text">
+              <p class="example-en">${highlight(v.en, v.word)}</p>
+              <p class="example-zh">${escapeHTMLSafe(v.zhEx)}</p>
+            </div>
+            <button class="speak-btn ex-speak" aria-label="Pronounce example sentence">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2A4.5 4.5 0 0 0 14 7.97v8.05A4.48 4.48 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.speak-btn')) return;
+      card.classList.toggle('flipped');
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('flipped');
+      }
+    });
+
+    const frontBtn = card.querySelector('.front-speak');
+    frontBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(v.word, frontBtn); });
+    const wordBtn = card.querySelector('.word-speak');
+    wordBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(v.word, wordBtn); });
+    const exBtn = card.querySelector('.ex-speak');
+    exBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(v.en, exBtn); });
+
+    grid.appendChild(card);
+  });
+
+  section.appendChild(grid);
+  main.appendChild(section);
+});
+
+// Text-to-speech
+let voices = [];
+function loadVoices(){ voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if (window.speechSynthesis){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+} else {
+  document.getElementById('ttsNote').style.display = 'block';
+  document.querySelectorAll('.speak-btn').forEach(b => { b.disabled = true; b.style.opacity = 0.35; b.style.cursor = 'not-allowed'; });
+}
+
+function speak(text, btn){
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-US';
+  utter.rate = 0.92;
+  const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang && v.lang.startsWith('en'));
+  if (enVoice) utter.voice = enVoice;
+  document.querySelectorAll('.speak-btn.playing').forEach(b => b.classList.remove('playing'));
+  btn.classList.add('playing');
+  utter.onend = () => btn.classList.remove('playing');
+  utter.onerror = () => btn.classList.remove('playing');
+  window.speechSynthesis.speak(utter);
+}
+
+// Steam background
+const steamLayer = document.getElementById('steamLayer');
+const STEAM_COUNT = 14;
+for (let i = 0; i < STEAM_COUNT; i++){
+  const s = document.createElement('div');
+  s.className = 'steam';
+  const height = 60 + Math.random() * 90;
+  s.style.height = height + 'px';
+  s.style.left = Math.random() * 100 + 'vw';
+  s.style.setProperty('--sway', (10 + Math.random() * 26) + 'px');
+  const duration = 14 + Math.random() * 18;
+  s.style.animationDuration = duration + 's';
+  s.style.animationDelay = (-Math.random() * duration) + 's';
+  steamLayer.appendChild(s);
+}
+</script>
+</body>
+</html>
