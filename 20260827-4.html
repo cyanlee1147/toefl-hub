@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOEIC 800+ 練習 — 08/27</title>
+<style>
+  :root{
+    --bg:#f6f5f0;
+    --card:#ffffff;
+    --ink:#2b2a26;
+    --sub:#6b6a63;
+    --accent:#3f6f4f;
+    --accent-light:#e7f0e8;
+    --line:#e5e3db;
+    --wrong:#b3452c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","Segoe UI",system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    padding:24px 14px 60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+  header{margin-bottom:24px;}
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 4px;
+    letter-spacing:.02em;
+  }
+  header .date{color:var(--sub);font-size:.9rem;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 20px 22px;
+    margin-bottom:18px;
+    box-shadow:0 1px 3px rgba(0,0,0,.03);
+  }
+  .card h2{
+    font-size:1.05rem;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--accent);
+  }
+  .word-item{
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .word-item:last-child{border-bottom:none;}
+  .word-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .word{font-weight:700;font-size:1.05rem;}
+  .pos{color:var(--sub);font-size:.85rem;}
+  .zh{color:var(--ink);}
+  .speak-btn{
+    border:none;
+    background:var(--accent-light);
+    color:var(--accent);
+    width:32px;height:32px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:.95rem;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .12s ease, background .12s ease;
+    flex-shrink:0;
+  }
+  .speak-btn:hover{background:#d9e9db;}
+  .speak-btn:active{transform:scale(.92);}
+  .example{
+    margin-top:6px;
+    color:var(--sub);
+    font-size:.92rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .example .speak-btn{width:26px;height:26px;font-size:.8rem;}
+  .grammar-block{
+    background:var(--accent-light);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:10px;
+    font-size:.92rem;
+  }
+  .sent-line{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:6px 0;
+  }
+  .sent-line.correct{color:var(--accent);}
+  .sent-line.wrong{color:var(--wrong);}
+  .passage{
+    font-size:.98rem;
+    background:#fbfaf6;
+    border-left:3px solid var(--accent);
+    padding:14px 16px;
+    border-radius:6px;
+  }
+  .passage-header{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+  }
+  .qitem{margin-bottom:18px;}
+  .qitem:last-child{margin-bottom:0;}
+  .qtext{
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .options{display:flex;flex-direction:column;gap:6px;}
+  .opt{
+    text-align:left;
+    padding:9px 12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    font-size:.92rem;
+    color:var(--ink);
+    transition:background .12s;
+  }
+  .opt:hover{background:#f2f1ea;}
+  .opt.correct{background:var(--accent-light);border-color:var(--accent);color:var(--accent);font-weight:600;}
+  .opt.wrong{background:#f7e6e1;border-color:var(--wrong);color:var(--wrong);}
+  .explain{
+    margin-top:8px;
+    font-size:.88rem;
+    color:var(--sub);
+    display:none;
+    padding:10px 12px;
+    background:var(--bg);
+    border-radius:8px;
+  }
+  .explain.show{display:block;}
+  .tip-box{
+    margin-top:16px;
+    padding:12px 14px;
+    background:var(--accent-light);
+    border-radius:10px;
+    font-size:.9rem;
+  }
+  footer{
+    text-align:center;
+    color:var(--sub);
+    font-size:.8rem;
+    margin-top:20px;
+  }
+  .speed-control{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.85rem;
+    color:var(--sub);
+    margin-bottom:16px;
+  }
+  .speed-control select{
+    padding:4px 8px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+  }
+  .badge{
+    font-size:.7rem;
+    color:var(--sub);
+    background:var(--bg);
+    padding:2px 8px;
+    border-radius:10px;
+    border:1px solid var(--line);
+  }
+  .flip-card{
+    perspective:1200px;
+    cursor:pointer;
+  }
+  .flip-inner{
+    position:relative;
+    width:100%;
+    min-height:170px;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flip-card.flipped .flip-inner{
+    transform:rotateY(180deg);
+  }
+  .flip-face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .flip-back{
+    transform:rotateY(180deg);
+  }
+  .flip-back .passage{
+    border-left-color:#8a7a4e;
+    background:#faf7ef;
+  }
+  .flip-hint{
+    text-align:center;
+    font-size:.78rem;
+    color:var(--sub);
+    margin-top:8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🌱 TOEIC 800+ 每日練習</h1>
+    <div class="date">2026年8月27日</div>
+  </header>
+
+  <div class="speed-control">
+    🔊 發音速度：
+    <select id="rateSelect">
+      <option value="0.7">慢速</option>
+      <option value="0.9" selected>正常</option>
+      <option value="1.1">稍快</option>
+    </select>
+    <span class="badge">點喇叭圖示聽發音</span>
+  </div>
+
+  <!-- 1. Vocabulary -->
+  <div class="card">
+    <h2>📚 實用字彙</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="implement">🔊</button>
+        <span class="word">implement</span>
+        <span class="pos">(v.)</span>
+        <span class="zh">實施、執行</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="implement a new policy">🔊</button>
+        implement a new policy — 實施新政策
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="allocate">🔊</button>
+        <span class="word">allocate</span>
+        <span class="pos">(v.)</span>
+        <span class="zh">分配</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="allocate resources to a project">🔊</button>
+        allocate resources to a project — 為專案分配資源
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="promptly">🔊</button>
+        <span class="word">promptly</span>
+        <span class="pos">(adv.)</span>
+        <span class="zh">迅速地、立即</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="respond promptly">🔊</button>
+        respond promptly — 迅速回覆
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="be eligible for">🔊</button>
+        <span class="word">be eligible for</span>
+        <span class="zh">符合……資格</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="be eligible for a refund">🔊</button>
+        be eligible for a refund — 符合退款資格
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="in accordance with">🔊</button>
+        <span class="word">in accordance with</span>
+        <span class="zh">依照、根據</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="in accordance with company policy">🔊</button>
+        in accordance with company policy — 依照公司政策
+      </div>
+    </div>
+  </div>
+
+  <!-- 1b. Extra Vocabulary -->
+  <div class="card">
+    <h2>📚 詞彙延伸：Self-fulfilling Prophecy</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="self-fulfilling prophecy">🔊</button>
+        <span class="word">self-fulfilling prophecy</span>
+        <span class="zh">自我應驗預言</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="Her belief that she would fail the interview led her to be so nervous that she indeed performed poorly.">🔊</button>
+      </div>
+      <div class="example" style="margin-top:2px;">
+        Her belief that she would fail the interview led her to be so nervous that she indeed performed poorly.
+      </div>
+      <div class="example" style="color:var(--ink);">
+        她相信面試會失敗，這讓她極度緊張，結果她真的表現得很差。
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Pygmalion effect">🔊</button>
+        <span class="word">Pygmalion effect</span>
+        <span class="zh">皮格馬利翁效應</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="The teacher's high expectations for her students often led to their improved academic performance.">🔊</button>
+      </div>
+      <div class="example" style="margin-top:2px;">
+        The teacher's high expectations for her students often led to their improved academic performance.
+      </div>
+      <div class="example" style="color:var(--ink);">
+        老師對學生的高度期望，往往會促使他們提升學業表現。
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="expectation">🔊</button>
+        <span class="word">expectation</span>
+        <span class="pos">(n.)</span>
+        <span class="zh">預期</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="His low expectations for the project made him less motivated to work hard on it.">🔊</button>
+      </div>
+      <div class="example" style="margin-top:2px;">
+        His low expectations for the project made him less motivated to work hard on it.
+      </div>
+      <div class="example" style="color:var(--ink);">
+        他對這個專案的低預期讓他缺乏努力工作的動力。
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Grammar -->
+  <div class="card">
+    <h2>✏️ 文法重點：despite 與 although</h2>
+    <div class="grammar-block">
+      <strong>despite</strong> + 名詞／V-ing　　<strong>although</strong> + 主詞 + 動詞
+    </div>
+
+    <div class="sent-line correct">
+      <button class="speak-btn" data-text="Despite the delay, the project was completed on time.">🔊</button>
+      Despite the delay, the project was completed on time.
+    </div>
+    <div class="sent-line correct">
+      <button class="speak-btn" data-text="Although the shipment was delayed, it arrived before Friday.">🔊</button>
+      Although the shipment was delayed, it arrived before Friday.
+    </div>
+    <div class="sent-line wrong">
+      ❌ Despite the shipment was delayed
+    </div>
+    <div class="sent-line correct">
+      <button class="speak-btn" data-text="Despite the shipment being delayed.">🔊</button>
+      ✅ Despite the shipment being delayed
+    </div>
+  </div>
+
+  <!-- 3. Passage -->
+  <div class="card">
+    <h2>📄 短文</h2>
+    <div class="passage-header">
+      <span class="badge">點卡片翻面看中文，或點喇叭朗讀</span>
+      <button class="speak-btn" id="playPassage">🔊</button>
+    </div>
+    <div class="flip-card" id="passageFlip">
+      <div class="flip-inner">
+        <div class="flip-face flip-front">
+          <div class="passage" id="passageText">
+            Due to scheduled maintenance, the customer service system will be unavailable from 8:00 P.M. to 10:00 P.M. on Friday. Although employees will not be able to access customer records during this period, they may continue responding to general inquiries by e-mail. All pending requests should be processed promptly once the system is restored.
+          </div>
+          <div class="flip-hint">👆 點卡片看中文翻譯</div>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="passage passage-zh">
+            由於系統排定進行維護，客服系統將於週五晚上 8:00 至 10:00 停止服務。雖然員工在此期間將無法讀取客戶紀錄，但仍可繼續透過電子郵件回覆一般性詢問。系統恢復運作後，所有待處理的請求應立即處理。
+          </div>
+          <div class="flip-hint">👆 點卡片看英文原文</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Questions -->
+  <div class="card">
+    <h2>❓ 題目（點選作答，答對答錯都會顯示解析）</h2>
+
+    <div class="qitem" data-answer="B">
+      <div class="qtext">
+        <button class="speak-btn" data-text="Why will the system be unavailable?">🔊</button>
+        1. Why will the system be unavailable?
+      </div>
+      <div class="options">
+        <button class="opt" data-key="A">A. It is being replaced.</button>
+        <button class="opt" data-key="B">B. Maintenance is scheduled.</button>
+        <button class="opt" data-key="C">C. Customer records were lost.</button>
+        <button class="opt" data-key="D">D. Employees are attending training.</button>
+      </div>
+      <div class="explain">B — scheduled maintenance 表示系統因例行維護而停用。</div>
+    </div>
+
+    <div class="qitem" data-answer="C">
+      <div class="qtext">
+        <button class="speak-btn" data-text="What can employees do while the system is unavailable?">🔊</button>
+        2. What can employees do while the system is unavailable?
+      </div>
+      <div class="options">
+        <button class="opt" data-key="A">A. Access customer records</button>
+        <button class="opt" data-key="B">B. Process refund requests</button>
+        <button class="opt" data-key="C">C. Answer general questions by e-mail</button>
+        <button class="opt" data-key="D">D. Repair the system</button>
+      </div>
+      <div class="explain">C — 文中指出員工仍可透過電子郵件回覆一般詢問。</div>
+    </div>
+
+    <div class="qitem" data-answer="C">
+      <div class="qtext">
+        <button class="speak-btn" data-text="All applications must be submitted the stated procedures.">🔊</button>
+        3. All applications must be submitted _____ the stated procedures.
+      </div>
+      <div class="options">
+        <button class="opt" data-key="A">A. according</button>
+        <button class="opt" data-key="B">B. accordance</button>
+        <button class="opt" data-key="C">C. in accordance with</button>
+        <button class="opt" data-key="D">D. complying</button>
+      </div>
+      <div class="explain">C — 固定搭配為 in accordance with，意思是「依照」。</div>
+    </div>
+
+    <div class="qitem" data-answer="B">
+      <div class="qtext">
+        <button class="speak-btn" data-text="Despite receiving several complaints, the company did not change its policy.">🔊</button>
+        4. _____ receiving several complaints, the company did not change its policy.
+      </div>
+      <div class="options">
+        <button class="opt" data-key="A">A. Although</button>
+        <button class="opt" data-key="B">B. Despite</button>
+        <button class="opt" data-key="C">C. Because</button>
+        <button class="opt" data-key="D">D. Therefore</button>
+      </div>
+      <div class="explain">B — 後面是動名詞 receiving，因此使用 despite；although 後面必須接完整子句。</div>
+    </div>
+
+    <div class="tip-box">
+      💡 答題技巧：看到介系詞後，先確認後面應接名詞或 V-ing；若後面有完整的「主詞＋動詞」，才考慮 although。
+    </div>
+  </div>
+
+  <footer>發音使用瀏覽器內建語音合成（Web Speech API），效果依裝置與瀏覽器而異。</footer>
+</div>
+
+<script>
+  const rateSelect = document.getElementById('rateSelect');
+
+  function speak(text){
+    if(!('speechSynthesis' in window)){
+      alert('此瀏覽器不支援語音朗讀功能');
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = parseFloat(rateSelect.value);
+    // Try to pick an English voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en'));
+    if(enVoice) utter.voice = enVoice;
+    window.speechSynthesis.speak(utter);
+  }
+
+  document.querySelectorAll('.speak-btn[data-text]').forEach(btn=>{
+    btn.addEventListener('click', ()=> speak(btn.dataset.text));
+  });
+
+  document.getElementById('playPassage').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    speak(document.getElementById('passageText').textContent.trim());
+  });
+
+  // Flip card interaction
+  const passageFlip = document.getElementById('passageFlip');
+  passageFlip.addEventListener('click', ()=>{
+    passageFlip.classList.toggle('flipped');
+  });
+
+  // Quiz interaction
+  document.querySelectorAll('.qitem').forEach(item=>{
+    const answer = item.dataset.answer;
+    const opts = item.querySelectorAll('.opt');
+    const explain = item.querySelector('.explain');
+    opts.forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        if(item.dataset.answered) return;
+        item.dataset.answered = "1";
+        opts.forEach(o=>{
+          if(o.dataset.key === answer){
+            o.classList.add('correct');
+          } else if(o === opt){
+            o.classList.add('wrong');
+          }
+        });
+        explain.classList.add('show');
+      });
+    });
+  });
+
+  // Preload voices (some browsers load async)
+  if('speechSynthesis' in window){
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+</script>
+</body>
+</html>
