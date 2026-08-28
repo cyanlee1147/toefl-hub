@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理學英文詞彙</title>
+<style>
+  :root{
+    --bg:#f5f4f8;
+    --card:#ffffff;
+    --ink:#2b2a33;
+    --sub:#6c6a76;
+    --accent:#5b4e8c;
+    --accent-light:#ece8f7;
+    --line:#e4e2ea;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","Segoe UI",system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    padding:24px 14px 60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+  header{margin-bottom:24px;}
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 4px;
+    letter-spacing:.02em;
+  }
+  header .sub{color:var(--sub);font-size:.9rem;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 20px 22px;
+    margin-bottom:18px;
+    box-shadow:0 1px 3px rgba(0,0,0,.03);
+  }
+  .card h2{
+    font-size:1.05rem;
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--accent);
+  }
+  .word-item{
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .word-item:last-child{border-bottom:none;}
+  .word-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .word{font-weight:700;font-size:1.05rem;}
+  .zh{color:var(--accent);font-weight:600;}
+  .speak-btn{
+    border:none;
+    background:var(--accent-light);
+    color:var(--accent);
+    width:32px;height:32px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:.95rem;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .12s ease, background .12s ease;
+    flex-shrink:0;
+  }
+  .speak-btn:hover{background:#ddd6f0;}
+  .speak-btn:active{transform:scale(.92);}
+  .def{
+    margin-top:6px;
+    font-size:.92rem;
+    color:var(--ink);
+  }
+  .example{
+    margin-top:8px;
+    color:var(--sub);
+    font-size:.9rem;
+    background:var(--bg);
+    padding:8px 10px;
+    border-radius:8px;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .example .speak-btn{width:26px;height:26px;font-size:.8rem;flex-shrink:0;margin-top:1px;}
+  .example-text{flex:1;}
+  .example-en{color:var(--ink);}
+  .example-zh{color:var(--sub);margin-top:2px;}
+  .speed-control{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.85rem;
+    color:var(--sub);
+    margin-bottom:16px;
+  }
+  .speed-control select{
+    padding:4px 8px;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+  }
+  .badge{
+    font-size:.7rem;
+    color:var(--sub);
+    background:var(--bg);
+    padding:2px 8px;
+    border-radius:10px;
+    border:1px solid var(--line);
+  }
+  footer{
+    text-align:center;
+    color:var(--sub);
+    font-size:.8rem;
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🧠 心理學英文詞彙</h1>
+    <div class="sub">Psychology Vocabulary — 認知偏誤、社會心理學與依附理論</div>
+  </header>
+
+  <div class="speed-control">
+    🔊 發音速度：
+    <select id="rateSelect">
+      <option value="0.7">慢速</option>
+      <option value="0.9" selected>正常</option>
+      <option value="1.1">稍快</option>
+    </select>
+    <span class="badge">點喇叭圖示聽發音</span>
+  </div>
+
+  <!-- Group 1: Cognitive Bias basics -->
+  <div class="card">
+    <h2>🔍 認知偏誤基礎</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Confirmation Bias">🔊</button>
+        <span class="word">Confirmation Bias</span>
+        <span class="zh">確認偏誤</span>
+      </div>
+      <div class="def">人們傾向於尋找、解釋和記憶那些支持自己已有信念的資訊，同時忽略或不重視與自己信念不符的資訊的認知偏差。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="She only reads news articles that support her political views, demonstrating a strong confirmation bias.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">She only reads news articles that support her political views, demonstrating a strong confirmation bias.</div>
+          <div class="example-zh">她只閱讀支持自己政治觀點的新聞文章，顯示出強烈的確認偏誤。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Cognitive Bias">🔊</button>
+        <span class="word">Cognitive Bias</span>
+        <span class="zh">認知偏誤</span>
+      </div>
+      <div class="def">一種系統性的思維模式偏離理性或正確判斷的傾向，通常是由於信息處理中的捷徑造成的。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="Many common errors in decision-making stem from various cognitive biases.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Many common errors in decision-making stem from various cognitive biases.</div>
+          <div class="example-zh">許多常見的決策錯誤源自於各種認知偏誤。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Falsification">🔊</button>
+        <span class="word">Falsification</span>
+        <span class="zh">證偽</span>
+      </div>
+      <div class="def">證明一個理論、假說或陳述是錯誤的行為或過程。在科學方法中，這是一個重要的原則。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="A key principle of the scientific method is the possibility of falsification, where a hypothesis can be disproven by evidence.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">A key principle of the scientific method is the possibility of falsification, where a hypothesis can be disproven by evidence.</div>
+          <div class="example-zh">科學方法的一個關鍵原則是證偽的可能性，即假說可以被證據推翻。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group 2: Social psychology -->
+  <div class="card">
+    <h2>👥 社會心理學：旁觀者效應</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Bystander Effect">🔊</button>
+        <span class="word">Bystander Effect</span>
+        <span class="zh">旁觀者效應</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="The bystander effect suggests that individuals are less likely to offer help to a victim when other people are present.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">The bystander effect suggests that individuals are less likely to offer help to a victim when other people are present.</div>
+          <div class="example-zh">旁觀者效應指出，當有他人在場時，個人較不可能向受害者提供幫助。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Diffusion of Responsibility">🔊</button>
+        <span class="word">Diffusion of Responsibility</span>
+        <span class="zh">責任分散</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="The larger the group, the greater the diffusion of responsibility among its members.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">The larger the group, the greater the diffusion of responsibility among its members.</div>
+          <div class="example-zh">團體越大，成員之間的責任分散程度就越高。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Pluralistic Ignorance">🔊</button>
+        <span class="word">Pluralistic Ignorance</span>
+        <span class="zh">多數無知</span>
+      </div>
+      <div class="example">
+        <button class="speak-btn" data-text="Pluralistic ignorance can lead people to mistakenly believe that their private thoughts are different from the group's, preventing them from acting.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Pluralistic ignorance can lead people to mistakenly believe that their private thoughts are different from the group's, preventing them from acting.</div>
+          <div class="example-zh">多數無知會導致人們錯誤地認為自己的私下想法與群體不同，從而阻止他們採取行動。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group 3: Cognitive Dissonance -->
+  <div class="card">
+    <h2>⚖️ 認知失調與態度</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Cognitive Dissonance">🔊</button>
+        <span class="word">Cognitive Dissonance</span>
+        <span class="zh">認知失調</span>
+      </div>
+      <div class="def">當個人同時持有兩個或多個相互衝突的信念、想法、態度或行為時，會感到一種不愉快的心理緊張狀態。這種不適感促使個體去減少這種衝突。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="After buying an expensive car, she ignored negative reviews to reduce her cognitive dissonance about the purchase.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">After buying an expensive car, she ignored negative reviews to reduce her cognitive dissonance about the purchase.</div>
+          <div class="example-zh">買了昂貴的車後，為了減少對這項購買的認知失調，她忽略了負面評論。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Attitude Change">🔊</button>
+        <span class="word">Attitude Change</span>
+        <span class="zh">態度改變</span>
+      </div>
+      <div class="def">透過說服、學習或經歷，個體對某事物、觀念或人物的評價、情感或行為傾向發生轉變的過程。這是減少認知失調的一種常見方式。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="The marketing campaign aimed to achieve attitude change towards sustainable products.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">The marketing campaign aimed to achieve attitude change towards sustainable products.</div>
+          <div class="example-zh">該行銷活動旨在實現對永續產品的態度改變。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Rationalization">🔊</button>
+        <span class="word">Rationalization</span>
+        <span class="zh">合理化</span>
+      </div>
+      <div class="def">一種心理防衛機制，個體為自己的不合理行為或感受提出看似合乎邏輯但實際上並非真實的理由。這有助於維持自我形象並減少認知失調。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="He rationalized his decision to skip the gym by claiming he was too busy, even though he spent an hour watching TV.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">He rationalized his decision to skip the gym by claiming he was too busy, even though he spent an hour watching TV.</div>
+          <div class="example-zh">他為自己不去健身房的決定找藉口，聲稱自己太忙，儘管他花了一個小時看電視。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group 4: Anchoring & Heuristics -->
+  <div class="card">
+    <h2>⚓ 錨定效應與捷思法</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Anchoring Effect">🔊</button>
+        <span class="word">Anchoring Effect</span>
+        <span class="zh">錨定效應</span>
+      </div>
+      <div class="def">指人們在進行判斷時，會過度依賴最先得到的資訊（錨點），即使該資訊不具相關性。這個初始的錨點會影響後續的決策與估計。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="The initial high price tag created an anchoring effect, making the subsequent discounted price seem like a great deal.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">The initial high price tag created an anchoring effect, making the subsequent discounted price seem like a great deal.</div>
+          <div class="example-zh">最初的高標價產生了錨定效應，使得隨後的折扣價看起來像是個大優惠。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Heuristics">🔊</button>
+        <span class="word">Heuristics</span>
+        <span class="zh">捷思法</span>
+      </div>
+      <div class="def">指人們在解決問題或做出判斷時，所使用的一種簡化心智策略或經驗法則。這些心智捷徑有助於快速做決定，但有時也可能導致偏誤。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="Using heuristics often allows for quick decision-making, but it can also lead to systematic errors.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Using heuristics often allows for quick decision-making, but it can also lead to systematic errors.</div>
+          <div class="example-zh">使用捷思法通常能快速做出決策，但也可能導致系統性錯誤。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group 5: Self-fulfilling prophecy -->
+  <div class="card">
+    <h2>🔮 自我應驗預言與期望</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Self-fulfilling prophecy">🔊</button>
+        <span class="word">Self-fulfilling Prophecy</span>
+        <span class="zh">自我應驗預言</span>
+      </div>
+      <div class="def">指一個最初是錯誤的預期，因為人們對它的信念和隨後的行為，最終導致這個預期成真。它說明了信念如何塑造我們的現實。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="Her belief that she would fail the interview led her to be so nervous that she indeed performed poorly.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Her belief that she would fail the interview led her to be so nervous that she indeed performed poorly.</div>
+          <div class="example-zh">她相信面試會失敗，這讓她極度緊張，結果她真的表現得很差。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Pygmalion effect">🔊</button>
+        <span class="word">Pygmalion Effect</span>
+        <span class="zh">皮格馬利翁效應</span>
+      </div>
+      <div class="def">一種自我應驗預言的特殊形式，指較高期望會導致更好的績效。這個效應常見於教育或管理情境中，說明了期望的力量。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="The teacher's high expectations for her students often led to their improved academic performance.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">The teacher's high expectations for her students often led to their improved academic performance.</div>
+          <div class="example-zh">老師對學生的高度期望，往往會促使他們提升學業表現。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Expectation">🔊</button>
+        <span class="word">Expectation</span>
+        <span class="zh">預期</span>
+      </div>
+      <div class="def">指對未來某事件或結果的相信或希望。它是一種主觀的信念，能影響個人的情緒和行為。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="His low expectations for the project made him less motivated to work hard on it.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">His low expectations for the project made him less motivated to work hard on it.</div>
+          <div class="example-zh">他對這個專案的低預期讓他缺乏努力工作的動力。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Group 6: Attachment Theory -->
+  <div class="card">
+    <h2>🤝 依附理論</h2>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Attachment Theory">🔊</button>
+        <span class="word">Attachment Theory</span>
+        <span class="zh">依附理論</span>
+      </div>
+      <div class="def">心理學中解釋人類如何形成和維持人際關係的理論。它探討了早期童年經驗，特別是與主要照顧者的互動，對個體未來情感和社交發展的影響。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="Attachment theory suggests that early childhood experiences significantly impact adult relationship patterns.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Attachment theory suggests that early childhood experiences significantly impact adult relationship patterns.</div>
+          <div class="example-zh">依附理論認為，早期童年經驗對成年後的關係模式有顯著影響。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Secure Attachment">🔊</button>
+        <span class="word">Secure Attachment</span>
+        <span class="zh">安全依附</span>
+      </div>
+      <div class="def">指個體在童年時期與主要照顧者建立了穩定且信任的關係。擁有安全依附的人在成人關係中通常能自在地表達情感，並相信他人的愛與支持。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="Individuals with secure attachment tend to have healthier and more stable romantic relationships.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Individuals with secure attachment tend to have healthier and more stable romantic relationships.</div>
+          <div class="example-zh">擁有安全依附的個體往往擁有更健康、更穩定的浪漫關係。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="word-item">
+      <div class="word-row">
+        <button class="speak-btn" data-text="Insecure Attachment">🔊</button>
+        <span class="word">Insecure Attachment</span>
+        <span class="zh">不安全依附</span>
+      </div>
+      <div class="def">包含焦慮矛盾型和逃避型等依附模式，源於童年時期與照顧者互動的不穩定或缺乏。這類依附類型的人在關係中常感到焦慮、害怕被拋棄，或傾向於迴避親密。</div>
+      <div class="example">
+        <button class="speak-btn" data-text="Insecure attachment styles can manifest as a fear of commitment or excessive need for reassurance in relationships.">🔊</button>
+        <div class="example-text">
+          <div class="example-en">Insecure attachment styles can manifest as a fear of commitment or excessive need for reassurance in relationships.</div>
+          <div class="example-zh">不安全依附類型可能表現為對承諾的恐懼或在關係中過度尋求認可。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>發音使用瀏覽器內建語音合成（Web Speech API），效果依裝置與瀏覽器而異。</footer>
+</div>
+
+<script>
+  const rateSelect = document.getElementById('rateSelect');
+
+  function speak(text){
+    if(!('speechSynthesis' in window)){
+      alert('此瀏覽器不支援語音朗讀功能');
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = parseFloat(rateSelect.value);
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en'));
+    if(enVoice) utter.voice = enVoice;
+    window.speechSynthesis.speak(utter);
+  }
+
+  document.querySelectorAll('.speak-btn[data-text]').forEach(btn=>{
+    btn.addEventListener('click', ()=> speak(btn.dataset.text));
+  });
+
+  if('speechSynthesis' in window){
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+</script>
+</body>
+</html>
