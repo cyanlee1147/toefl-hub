@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TOEIC Part 5 筆記 121–123</title>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#ffffff; --text:#1f2328; --muted:#6b7280;
+  --accent:#2563eb; --accent-soft:#e8efff; --ok:#15803d; --ok-soft:#e7f6ec;
+  --bad:#b91c1c; --bad-soft:#fdecec;
+  --warn:#b45309; --warn-soft:#fdf3e2; --border:#e5e2da; --hover:#f1efe9;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#16181d; --card:#1f232a; --text:#e6e8eb; --muted:#9aa3ad;
+    --accent:#7aa2ff; --accent-soft:#25304a; --ok:#5fd38a; --ok-soft:#1d3327;
+    --bad:#ff8a8a; --bad-soft:#3a1f22;
+    --warn:#f2b45c; --warn-soft:#3a2e1c; --border:#2e333b; --hover:#262b33;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  line-height:1.65;}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 60px}
+h1{font-size:1.6rem;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+h2{font-size:1.2rem;margin:36px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:14px 0}
+.qnum{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:1px 9px;font-weight:700;margin-right:8px}
+.q{font-size:1.05rem;font-weight:500;margin:0}
+.blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--accent);text-align:center;color:var(--accent);font-weight:700;padding:0 4px}
+.opts{display:flex;flex-direction:column;gap:6px;margin:14px 0 4px}
+.opt{display:flex;align-items:center;gap:8px;text-align:left;width:100%;
+  background:transparent;color:var(--text);border:1px solid var(--border);border-radius:8px;
+  padding:9px 12px;font-size:1rem;cursor:pointer;font-family:inherit}
+.opt:hover:not(:disabled){background:var(--hover)}
+.opt:disabled{cursor:default}
+.opt .zh{color:var(--muted);font-size:.92rem;display:none}
+.answered .opt .zh{display:inline}
+.opt .mark{margin-left:auto;font-weight:700}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.correct .zh{color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.opt.wrong .zh{color:var(--bad)}
+.result{font-weight:700;margin:10px 0 0;display:none}
+.result.ok{color:var(--ok)} .result.bad{color:var(--bad)}
+.explain{display:none}
+.answered .explain,.answered .result{display:block}
+.trans{background:var(--accent-soft);border-radius:8px;padding:10px 12px;margin:10px 0}
+.tip{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:6px;padding:10px 12px;margin:10px 0}
+.tip b{color:var(--warn)}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.score{font-weight:700;color:var(--accent)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:.95rem;cursor:pointer;font-family:inherit}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+td.w{font-weight:600;white-space:nowrap}
+.pos{color:var(--muted);font-size:.85rem}
+.table-scroll{overflow-x:auto}
+.spk{background:transparent;border:1px solid var(--border);border-radius:50%;width:30px;height:30px;
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);
+  vertical-align:middle;margin-left:6px;padding:0;flex:none}
+.spk:hover{background:var(--accent-soft)}
+.spk.playing{background:var(--accent);color:#fff;border-color:var(--accent)}
+.spk svg{width:16px;height:16px}
+.rate{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>TOEIC Part 5 學習筆記</h1>
+  <p class="sub">題目 121–123｜點選答案即時對答・單字・文法重點</p>
+
+  <div class="bar">
+    <span class="score" id="score">得分：0 / 3</span>
+    <button class="btn" id="reset">重新作答</button>
+    <label class="rate">語速
+      <select id="rate">
+        <option value="0.7">慢</option>
+        <option value="0.9" selected>一般</option>
+        <option value="1.1">快</option>
+      </select>
+    </label>
+  </div>
+
+  <h2>一、題目練習</h2>
+
+  <div class="card question" data-answer="C">
+    <p class="q"><span class="qnum">121</span>The waiter was very <span class="blank" data-word="apologetic">&nbsp;</span> since the food wasn't being served in a timely manner.</p>
+    <div class="opts">
+      <button class="opt" data-k="A">(A) appropriate <span class="zh">合適的</span><span class="mark"></span></button>
+      <button class="opt" data-k="B">(B) succinct <span class="zh">簡潔的</span><span class="mark"></span></button>
+      <button class="opt" data-k="C">(C) apologetic <span class="zh">抱歉的、致歉的</span><span class="mark"></span></button>
+      <button class="opt" data-k="D">(D) competent <span class="zh">有能力的、勝任的</span><span class="mark"></span></button>
+    </div>
+    <p class="result"></p>
+    <div class="explain">
+      <div class="trans">服務生非常<b>抱歉</b>，因為餐點沒有及時送上。</div>
+      <div class="tip"><b>解題關鍵：</b>since（因為）後面是「上菜不及時」→ 服務生的反應應該是「道歉」。這是語意題，看因果關係。</div>
+    </div>
+  </div>
+
+  <div class="card question" data-answer="B">
+    <p class="q"><span class="qnum">122</span><span class="blank" data-word="Given that">&nbsp;</span> the product warranty has expired, Jassen Manufacturing will not repair the customer's item for free.</p>
+    <div class="opts">
+      <button class="opt" data-k="A">(A) As though <span class="zh">彷彿、好像</span><span class="mark"></span></button>
+      <button class="opt" data-k="B">(B) Given that <span class="zh">考慮到、既然</span><span class="mark"></span></button>
+      <button class="opt" data-k="C">(C) Besides <span class="zh">此外、而且</span><span class="mark"></span></button>
+      <button class="opt" data-k="D">(D) Nevertheless <span class="zh">然而、儘管如此</span><span class="mark"></span></button>
+    </div>
+    <p class="result"></p>
+    <div class="explain">
+      <div class="trans"><b>既然</b>產品保固已經到期，Jassen 製造公司將不會免費維修顧客的物品。</div>
+      <div class="tip"><b>解題關鍵：</b>空格後接「完整子句 + 逗號 + 完整子句」，需要<b>連接詞</b>，且語意是「原因 → 結果」。
+        <br>・Nevertheless、Besides 是<b>副詞</b>，不能連接兩個子句 → 文法先刪。
+        <br>・As though 語意不通。→ 答案 Given that（= because / since）。</div>
+    </div>
+  </div>
+
+  <div class="card question" data-answer="C">
+    <p class="q"><span class="qnum">123</span>Over the past decade, much <span class="blank" data-word="progress">&nbsp;</span> has been made in stem cell research, leading to many medical breakthroughs.</p>
+    <div class="opts">
+      <button class="opt" data-k="A">(A) approval <span class="zh">贊同、批准</span><span class="mark"></span></button>
+      <button class="opt" data-k="B">(B) efficiency <span class="zh">效率</span><span class="mark"></span></button>
+      <button class="opt" data-k="C">(C) progress <span class="zh">進步、進展</span><span class="mark"></span></button>
+      <button class="opt" data-k="D">(D) preference <span class="zh">偏好</span><span class="mark"></span></button>
+    </div>
+    <p class="result"></p>
+    <div class="explain">
+      <div class="trans">過去十年來，幹細胞研究已有許多<b>進展</b>，帶來許多醫學突破。</div>
+      <div class="tip"><b>解題關鍵：</b>固定搭配 <b>make progress</b>（取得進展），被動式即 progress has been made。
+        <br>・much + 不可數名詞：progress 是不可數名詞 ✔</div>
+    </div>
+  </div>
+
+  <h2>二、單字整理</h2>
+  <div class="card table-scroll">
+    <table>
+      <tr><th>單字</th><th>詞性</th><th>中文</th><th>相關／延伸</th></tr>
+      <tr><td class="w">appropriate</td><td class="pos">adj.</td><td>合適的、恰當的</td><td>inappropriate 不恰當的</td></tr>
+      <tr><td class="w">succinct</td><td class="pos">adj.</td><td>簡潔的、簡明扼要的</td><td>= concise</td></tr>
+      <tr><td class="w">apologetic</td><td class="pos">adj.</td><td>抱歉的、致歉的</td><td>apologize (v.)、apology (n.)</td></tr>
+      <tr><td class="w">competent</td><td class="pos">adj.</td><td>有能力的、勝任的</td><td>competence (n.)；≠ competitive 有競爭力的</td></tr>
+      <tr><td class="w">in a timely manner</td><td class="pos">phr.</td><td>及時地</td><td>= promptly / on time</td></tr>
+      <tr><td class="w">warranty</td><td class="pos">n.</td><td>保固（書）</td><td>under warranty 在保固期內</td></tr>
+      <tr><td class="w">expire</td><td class="pos">v.</td><td>到期、失效</td><td>expiration date 到期日</td></tr>
+      <tr><td class="w">repair</td><td class="pos">v./n.</td><td>維修</td><td>repair shop 維修店</td></tr>
+      <tr><td class="w">as though</td><td class="pos">conj.</td><td>彷彿、好像</td><td>= as if</td></tr>
+      <tr><td class="w">given that</td><td class="pos">conj.</td><td>考慮到、既然</td><td>= since / considering that</td></tr>
+      <tr><td class="w">besides</td><td class="pos">adv./prep.</td><td>此外、而且；除了…之外</td><td>≠ beside 在…旁邊</td></tr>
+      <tr><td class="w">nevertheless</td><td class="pos">adv.</td><td>然而、儘管如此</td><td>= nonetheless / however（副詞，不能接子句）</td></tr>
+      <tr><td class="w">approval</td><td class="pos">n.</td><td>贊同、批准</td><td>approve (v.) 核准；approve of 贊同</td></tr>
+      <tr><td class="w">efficiency</td><td class="pos">n.</td><td>效率</td><td>efficient (adj.)</td></tr>
+      <tr><td class="w">progress</td><td class="pos">n.（不可數）</td><td>進步、進展</td><td>make progress 取得進展</td></tr>
+      <tr><td class="w">preference</td><td class="pos">n.</td><td>偏好</td><td>prefer (v.)、preferable (adj.)</td></tr>
+      <tr><td class="w">stem cell</td><td class="pos">n.</td><td>幹細胞</td><td></td></tr>
+      <tr><td class="w">breakthrough</td><td class="pos">n.</td><td>突破</td><td>make a breakthrough</td></tr>
+    </table>
+  </div>
+
+  <h2>三、文法重點速記</h2>
+  <div class="card">
+    <p><b>1. 連接詞 vs. 副詞</b>（122 題）<br>
+    兩個子句要用<b>連接詞</b>接：because, since, given that, although, as though…<br>
+    <b>Nevertheless / However / Besides / Therefore</b> 是副詞，只能「句子. Nevertheless, 句子.」或用分號。</p>
+    <p><b>2. much + 不可數名詞</b>（123 題）<br>
+    much progress / much information / much advice ✔；可數名詞用 many。</p>
+    <p><b>3. 語意題看因果</b>（121 題）<br>
+    since / because / given that 前後是因果關係，用來推空格語意。</p>
+  </div>
+</div>
+
+<script>
+const questions=[...document.querySelectorAll('.question')];
+const scoreEl=document.getElementById('score');
+let score=0;
+
+function updateScore(){
+  const done=questions.filter(q=>q.classList.contains('answered')).length;
+  scoreEl.textContent=`得分：${score} / ${questions.length}`+(done===questions.length?'　🎉 全部完成':'');
+}
+
+questions.forEach(q=>{
+  const ans=q.dataset.answer;
+  const blank=q.querySelector('.blank');
+  const result=q.querySelector('.result');
+  q.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(q.classList.contains('answered')) return;
+      q.classList.add('answered');
+      const right=btn.dataset.k===ans;
+      q.querySelectorAll('.opt').forEach(b=>{
+        b.disabled=true;
+        if(b.dataset.k===ans){b.classList.add('correct');b.querySelector('.mark').textContent='✓';}
+      });
+      if(right){
+        score++;
+        result.textContent='✓ 答對了！';
+        result.className='result ok';
+      }else{
+        btn.classList.add('wrong');
+        btn.querySelector('.mark').textContent='✗';
+        result.textContent=`✗ 答錯了，正確答案是 (${ans})`;
+        result.className='result bad';
+      }
+      blank.textContent=blank.dataset.word;
+      updateScore();
+    });
+  });
+});
+
+/* ===== 發音（瀏覽器內建語音） ===== */
+const ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>';
+const synth=window.speechSynthesis;
+let enVoice=null, currentBtn=null;
+function pickVoice(){
+  const vs=synth?synth.getVoices():[];
+  enVoice=vs.find(v=>/en-US/i.test(v.lang)&&/Google|Samantha|Aria|Jenny|Natural/i.test(v.name))
+       ||vs.find(v=>/en-US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;
+}
+if(synth){pickVoice();synth.onvoiceschanged=pickVoice;}
+
+function speak(text,btn){
+  if(!synth){alert('這個瀏覽器不支援語音朗讀，建議用 Chrome 或 Safari 開啟。');return;}
+  const same=currentBtn===btn&&synth.speaking;
+  synth.cancel();
+  if(currentBtn) currentBtn.classList.remove('playing');
+  currentBtn=null;
+  if(same) return; // 再按一次 = 停止
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US'; if(enVoice) u.voice=enVoice;
+  u.rate=parseFloat(document.getElementById('rate').value);
+  u.onend=u.onerror=()=>{btn.classList.remove('playing'); if(currentBtn===btn) currentBtn=null;};
+  btn.classList.add('playing'); currentBtn=btn;
+  synth.speak(u);
+}
+function makeSpk(getText,label){
+  const b=document.createElement('button');
+  b.className='spk'; b.type='button'; b.innerHTML=ICON; b.title=label; b.setAttribute('aria-label',label);
+  b.addEventListener('click',e=>{e.stopPropagation(); speak(getText(),b);});
+  return b;
+}
+
+// 題目：未作答時空格念 "blank"，作答後念完整句子
+questions.forEach(q=>{
+  const p=q.querySelector('.q');
+  p.appendChild(makeSpk(()=>{
+    const c=p.cloneNode(true);
+    c.querySelector('.qnum').remove();
+    c.querySelectorAll('.spk').forEach(x=>x.remove());
+    const bl=c.querySelector('.blank');
+    bl.textContent=q.classList.contains('answered')?bl.dataset.word:' blank ';
+    return c.textContent.replace(/\s+/g,' ').trim();
+  },'朗讀題目'));
+});
+
+// 單字表
+document.querySelectorAll('td.w').forEach(td=>{
+  const word=td.textContent.trim();
+  td.appendChild(makeSpk(()=>word,'朗讀 '+word));
+});
+
+document.getElementById('reset').addEventListener('click',()=>{
+  score=0;
+  questions.forEach(q=>{
+    q.classList.remove('answered');
+    q.querySelector('.blank').innerHTML='&nbsp;';
+    const r=q.querySelector('.result'); r.textContent=''; r.className='result';
+    q.querySelectorAll('.opt').forEach(b=>{
+      b.disabled=false; b.classList.remove('correct','wrong');
+      b.querySelector('.mark').textContent='';
+    });
+  });
+  updateScore();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
