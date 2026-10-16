@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lush Metta Beads 多篇閱讀教學與測驗</title>
+<style>
+:root{
+  --bg:#f6f4ef;--card:#ffffff;--ink:#1f2328;--muted:#6b7280;--line:#e5e1d8;
+  --accent:#2f6f5e;--accent-soft:#e3efe9;--warn:#b45309;--warn-soft:#fdf2e3;
+  --ok:#15803d;--ok-soft:#e6f4ea;--bad:#b91c1c;--bad-soft:#fdecec;--hl:#fff3b0;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#16181b;--card:#1f2226;--ink:#e8e6e1;--muted:#9aa0a6;--line:#33373c;
+  --accent:#6cc3a8;--accent-soft:#203a33;--warn:#f0a85a;--warn-soft:#3a2c1c;
+  --ok:#5fd08a;--ok-soft:#1c3324;--bad:#f07a7a;--bad-soft:#3a1f1f;--hl:#4a4320;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.7}
+header{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line)}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 0 8px}
+h1{font-size:1.1rem;margin:0;flex:1 1 auto}
+.ctrl{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.ctrl select,.ctrl input{accent-color:var(--accent)}
+.ctrl select{max-width:160px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:2px 4px}
+nav{display:flex;gap:4px;overflow-x:auto}
+nav button{border:0;background:none;color:var(--muted);padding:8px 14px;font-size:.95rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+main{padding:20px 0 60px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h2{margin:0 0 4px;font-size:1.05rem}
+.tag{display:inline-block;font-size:.75rem;background:var(--accent-soft);color:var(--accent);padding:1px 8px;border-radius:99px;margin-bottom:10px}
+.sent{display:flex;gap:8px;padding:6px 4px;border-radius:8px}
+.sent.playing{background:var(--hl)}
+.sent .en{font-family:Georgia,"Times New Roman",serif;font-size:1.06rem}
+.sent .zh{display:block;color:var(--muted);font-size:.9rem}
+.zh{cursor:pointer;border-radius:6px;padding:0 4px;margin-left:-4px;user-select:none}
+.zh:hover{background:var(--accent-soft)}
+.zh.off .zt{display:none}
+.zh.off::before{content:"👁 點此顯示中文";font-size:.8rem;color:var(--accent);opacity:.8}
+.w{cursor:pointer;border-radius:3px}
+.w:hover{background:var(--accent-soft)}
+.w.say{background:var(--hl)}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:.9rem}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.pri:hover{opacity:.9;color:#fff}
+.spk{flex:0 0 auto;border:0;background:var(--accent-soft);color:var(--accent);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9rem;line-height:30px;padding:0}
+.spk:hover{filter:brightness(.95)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.tip{font-size:.85rem;color:var(--muted);margin:0 0 12px}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:.8rem}
+td.term{font-family:Georgia,serif;font-weight:600;white-space:nowrap}
+td .ex{color:var(--muted);font-family:Georgia,serif;font-size:.88rem}
+.gram h3{font-size:.98rem;margin:14px 0 4px;color:var(--accent)}
+.gram p{margin:4px 0}
+.gram .eg{font-family:Georgia,serif;background:var(--accent-soft);padding:6px 10px;border-radius:8px;display:flex;gap:8px;align-items:center}
+.note{background:var(--warn-soft);border-left:4px solid var(--warn);padding:12px 14px;border-radius:8px;font-size:.92rem}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.qh{display:flex;gap:8px;align-items:flex-start}
+.qn{font-weight:700;color:var(--accent);flex:0 0 auto}
+.qt{flex:1;font-family:Georgia,serif;font-size:1.02rem}
+.opts{margin-top:10px;display:grid;gap:6px}
+.opt{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px 8px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{accent-color:var(--accent)}
+.opt .ot{flex:1;font-family:Georgia,serif}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.exp{display:none;margin-top:10px;font-size:.9rem;padding:10px 12px;border-radius:8px;background:var(--accent-soft)}
+.done .exp{display:block}
+.score{font-size:1.1rem;font-weight:700;padding:14px;text-align:center;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:none;margin-bottom:14px}
+.ref{display:inline-block;font-size:.75rem;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:0 8px;margin-left:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <h1>📿 Lush Metta Beads｜多篇閱讀教學＋測驗</h1>
+      <div class="ctrl">語速 <input type="range" id="rate" min="0.5" max="1.3" step="0.1" value="0.9"><span id="rateV">0.9</span></div>
+      <div class="ctrl">口音 <select id="voice"></select></div>
+      <button class="btn" onclick="stopAll()">⏹ 停止</button>
+    </div>
+    <nav>
+      <button class="on" data-tab="read">① 文章</button>
+      <button data-tab="vocab">② 單字片語</button>
+      <button data-tab="gram">③ 文法與解題</button>
+      <button data-tab="quiz">④ 測驗</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 文章 -->
+  <section id="read" class="on">
+    <p class="tip">點任一單字可聽單字發音；點 🔊 聽整句；用上方按鈕播放整篇。</p>
+    <div class="bar">
+      <button class="btn" id="toggleZh">隱藏中文翻譯</button>
+    </div>
+    <div id="passages"></div>
+  </section>
+
+  <!-- 單字 -->
+  <section id="vocab">
+    <div class="card">
+      <h2>重點單字與片語</h2>
+      <p class="tip">點 🔊 聽單字，點例句旁 🔊 聽例句（例句皆出自文章）。</p>
+      <table><thead><tr><th></th><th>單字／片語</th><th>意思與文中例句</th></tr></thead><tbody id="vocabBody"></tbody></table>
+    </div>
+  </section>
+
+  <!-- 文法 -->
+  <section id="gram">
+    <div class="card gram" id="gramBox"></div>
+    <div class="card">
+      <h2>多篇閱讀解題策略</h2>
+      <p>這組題型是典型的「三篇閱讀」（多益 Part 7）：<b>網站廣告 → 臉書公告 → 律師來信</b>。作答時：</p>
+      <p>1. 先看題目問哪一篇（the web page / the announcement / the e-mail），再回到那篇找證據。<br>
+      2. <b>NOT 題</b>：把四個選項逐一在文中刪去，剩下沒提到的就是答案。<br>
+      3. <b>同義詞題</b>：把選項代回原句，看語意是否通順。<br>
+      4. <b>跨篇題</b>：通常需要結合兩篇資訊，例如律師怎麼知道這件事（第三篇）＋貼文是誰發的（第二篇）。</p>
+    </div>
+    <div class="note">
+      <b>💡 延伸思辨：這封律師信可疑嗎？</b><br>
+      雖然測驗不會問，但值得注意：自稱事務所卻用免費的 <code>@gmail.com</code> 信箱、主動招攬生意、要求「先撤下警告貼文」、強調 <i>ASAP</i>、要先付調查費，而且只接受 email 溝通——這些都是常見詐騙（或利益衝突）警訊。讀英文郵件時，留意語氣與請求是否合理，也是閱讀能力的一部分。
+    </div>
+  </section>
+
+  <!-- 測驗 -->
+  <section id="quiz">
+    <div class="score" id="score"></div>
+    <p class="tip">每題可按 🔊 聽題目，選項旁 🔊 聽選項；「▶ 題目＋選項」會依序朗讀全部。</p>
+    <div id="quizBox"></div>
+    <div class="bar">
+      <button class="btn pri" onclick="submitQuiz()">交卷看答案</button>
+      <button class="btn" onclick="resetQuiz()">重新作答</button>
+    </div>
+  </section>
+</main>
+
+<script>
+/* ========= 資料 ========= */
+const PASSAGES = [
+ {title:"Text 1｜Web Page（網站廣告）", tag:"Lush Metta Beads 官網", s:[
+  ["Welcome!","歡迎光臨！"],
+  ["Lush Metta Beads offers the world's largest selection of beads for DIY jewelry making.","Lush Metta Beads 提供全世界種類最多的 DIY 飾品製作用珠子。"],
+  ["Browse over 25,000 beads on our website and get ready to make your own necklaces, bracelets, anklets, earrings and so on.","在我們的網站上瀏覽超過 25,000 種珠子，準備好製作你自己的項鍊、手環、腳鍊、耳環等等。"],
+  ["We are based in Lithuania but we can ship worldwide and there is no minimum order size.","我們位於立陶宛，但可寄送全球，而且沒有最低訂購量。"],
+  ["We also offer custom artisan creations and repairs.","我們也提供客製化手工創作與修復服務。"],
+  ["If you don't know where to start, our expert craftsmen can choose the best combination of beads to suit your needs or fix up any old or damaged jewelry that you hold dear.","如果你不知道從何開始，我們的專業工匠可以挑選最符合你需求的珠子組合，或修好任何你珍視的舊飾品或損壞飾品。"],
+  ["Lush Metta Beads partners with the local community charity Clothes for Kids, which provides much needed clothing for underprivileged children.","Lush Metta Beads 與當地社區慈善機構 Clothes for Kids 合作，該機構為弱勢兒童提供急需的衣物。"],
+  ["20% of all our earnings go directly to supporting their compassionate programs.","我們所有收入的 20% 直接用於支持他們充滿愛心的計畫。"],
+  ["Click here to begin your search for the best beads today!","立即點這裡，開始尋找最棒的珠子吧！"]
+ ]},
+ {title:"Text 2｜Facebook Announcement（臉書公告）", tag:"Clothes for Kids・May 22 at 1:22pm", s:[
+  ["An important general announcement to all of our followers: There is a private company in Lithuania called Lush Metta Beads that claims on their website to be partnered with our organization.","給所有追蹤者的重要公告：立陶宛有一家名為 Lush Metta Beads 的私人公司，在其網站上聲稱與我們組織有合作關係。"],
+  ["We were surprised and shocked to see this because we have no relationship whatsoever with this company, and we had never even heard of them until one of our family members brought this to our attention.","看到這件事我們既驚訝又震驚，因為我們和這家公司毫無任何關係；在我們的一位家人提醒我們之前，我們甚至從沒聽過這家公司。"],
+  ["We have tried multiple times to contact the company via telephone and email, but to no avail.","我們已多次嘗試透過電話與電子郵件聯絡該公司，但都徒勞無功。"],
+  ["Please do not support this company by purchasing from them, and please do us a favor by sharing this status so we can inform the general public.","請不要向這家公司購買來支持他們，也請幫個忙分享這則動態，讓我們能告知社會大眾。"],
+  ["Thanks and have a wonderful day.","謝謝大家，祝有美好的一天。"]
+ ]},
+ {title:"Text 3｜E-mail（律師來信）", tag:"From: Timothy Paulauskas", s:[
+  ["Dear Clothes for Kids,","親愛的 Clothes for Kids："],
+  ["My name is Mr. Paulauskas and I am a lawyer based in Vienna.","我是 Paulauskas 先生，一位在維也納執業的律師。"],
+  ["I recently came across your Facebook post regarding a false partnership claimed by Lush Metta Beads in Lithuania after it was shared by one of my friends.","我最近在一位朋友分享後，看到了你們那篇關於立陶宛 Lush Metta Beads 謊稱合作關係的臉書貼文。"],
+  ["I specialize in international disputes and have handled several cases similar to this in the past.","我專精國際糾紛，過去也處理過數件類似的案子。"],
+  ["I would like to offer you my services in bringing this pesky problem to an end as soon as possible.","我想提供我的服務，協助你們盡快結束這個惱人的問題。"],
+  ["My first step would be to assist you to take legal action against Lush Metta Beads, since they have already ignored your requests to take down the false claims.","我的第一步會是協助你們對 Lush Metta Beads 採取法律行動，因為他們已經無視你們要求撤下不實聲明的請求。"],
+  ["However, for the time being, I would strongly advise you to take down your post on Facebook and anywhere else that you have posted it.","不過目前，我強烈建議你們撤下臉書上以及其他任何地方發布的這則貼文。"],
+  ["While you may feel that it is important to warn the public about this company, doing so may hurt you in the long run.","雖然你們可能覺得提醒大眾注意這家公司很重要，但長遠來看，這麼做可能會對你們不利。"],
+  ["It is better that we conduct a thorough, legal investigation first and touch base with the company in question.","最好是我們先進行徹底、合法的調查，並與這家相關公司取得聯繫。"],
+  ["I can assist you with both these matters should you hire me.","如果你們聘請我，這兩件事我都能協助。"],
+  ["For cases such as this, I charge a base investigation fee of 150 euros plus 10% of any amount obtained via a successful lawsuit.","像這類案件，我收取 150 歐元的基本調查費，外加勝訴所獲金額的 10%。"],
+  ["Please let me know if you'd like me to proceed with the case.","如果希望我接手處理此案，請告訴我。"],
+  ["I'd suggest that we conduct this discussion via email.","我建議我們透過電子郵件進行討論。"],
+  ["Please contact me ASAP at tpaulauskasassociates@gmail.com.","請盡快透過 tpaulauskasassociates@gmail.com 與我聯繫。"]
+ ]}
+];
+
+const VOCAB = [
+ ["selection","n. 可供選擇的種類／範圍","the world's largest selection of beads"],
+ ["browse","v. 瀏覽","Browse over 25,000 beads on our website"],
+ ["anklet","n. 腳鍊","necklaces, bracelets, anklets, earrings"],
+ ["ship worldwide","寄送全球","we can ship worldwide"],
+ ["minimum order","最低訂購量","there is no minimum order size"],
+ ["artisan","adj./n. 手工藝的；工匠","custom artisan creations and repairs"],
+ ["craftsman","n. 工匠（複數 craftsmen）","our expert craftsmen"],
+ ["hold dear","珍視、珍愛","jewelry that you hold dear"],
+ ["partner with","與…合作","Lush Metta Beads partners with the local community charity"],
+ ["charity","n. 慈善機構","the local community charity Clothes for Kids"],
+ ["underprivileged","adj. 弱勢的、貧困的","clothing for underprivileged children"],
+ ["compassionate","adj. 有同情心的、充滿愛心的","their compassionate programs"],
+ ["claim","v. 聲稱","claims on their website to be partnered with our organization"],
+ ["whatsoever","adv. （用於否定）絲毫、任何","we have no relationship whatsoever with this company"],
+ ["bring to one's attention","使某人注意到","brought this to our attention"],
+ ["to no avail","徒勞無功","but to no avail"],
+ ["the general public","社會大眾","so we can inform the general public"],
+ ["come across","偶然看到、碰到","I recently came across your Facebook post"],
+ ["specialize in","專精於","I specialize in international disputes"],
+ ["dispute","n. 糾紛、爭議","international disputes"],
+ ["pesky","adj. 惱人的、討厭的","this pesky problem"],
+ ["take legal action","採取法律行動","take legal action against Lush Metta Beads"],
+ ["take down","撤下、移除（貼文）","take down your post on Facebook"],
+ ["for the time being","目前、暫時","for the time being, I would strongly advise you"],
+ ["in the long run","長遠來看","doing so may hurt you in the long run"],
+ ["thorough","adj. 徹底的","a thorough, legal investigation"],
+ ["touch base with","與…聯繫","touch base with the company in question"],
+ ["in question","所談論的、該","the company in question"],
+ ["proceed with","進行、繼續","proceed with the case"],
+ ["lawsuit","n. 訴訟","a successful lawsuit"],
+ ["ASAP","as soon as possible 盡快","Please contact me ASAP"]
+];
+
+const GRAMMAR = [
+ {h:"1. 非限定關係子句：, which ...", p:"逗號後的 which 補充說明前面的名詞（Clothes for Kids），不是用來限定範圍。", eg:"the local community charity Clothes for Kids, which provides much needed clothing for underprivileged children."},
+ {h:"2. 倒裝條件句：should + 主詞 + 原形動詞 = if ...", p:"正式書信常見。should you hire me = if you hire me（若您聘請我）。", eg:"I can assist you with both these matters should you hire me."},
+ {h:"3. 過去完成式 + until：had never ... until ...", p:"表示「在過去某時間點之前從未…」，強調家人告知前完全不知情。", eg:"we had never even heard of them until one of our family members brought this to our attention."},
+ {h:"4. 現在完成式表經驗與持續努力", p:"have tried / have handled 表示到目前為止的經驗或嘗試。", eg:"We have tried multiple times to contact the company via telephone and email, but to no avail."},
+ {h:"5. 動名詞作主詞：doing so", p:"doing so 指前面提到的「警告大眾」這件事，作句子主詞。", eg:"doing so may hurt you in the long run."},
+ {h:"6. It is better that + 子句", p:"表達建議，語氣委婉正式。", eg:"It is better that we conduct a thorough, legal investigation first."}
+];
+
+const QUIZ = [
+ {q:"What is the purpose of the web page?", o:["To recruit volunteers for a charity","To advertise supplies for making jewelry","To announce the opening of a new store","To explain a new shipping policy"], a:1, ref:"Text 1",
+  e:"網站開頭就介紹提供 DIY 飾品製作用的珠子並邀請瀏覽，目的是「廣告飾品製作材料」。"},
+ {q:"What is NOT mentioned as something Lush Metta Beads offers?", o:["Worldwide shipping","Jewelry repairs","Custom designs","Jewelry-making classes"], a:3, ref:"Text 1",
+  e:"NOT 題：ship worldwide（A）、repairs（B）、custom artisan creations（C）都有提到；沒有提到課程，答案 (D)。"},
+ {q:"According to the web page, how much of the company's earnings goes to charity?", o:["10 percent","15 percent","20 percent","25 percent"], a:2, ref:"Text 1",
+  e:"20% of all our earnings go directly to supporting their compassionate programs。注意 10% 是律師收費的陷阱。"},
+ {q:"Why did Clothes for Kids post the announcement?", o:["To thank a business for its donation","To deny a connection with a company","To ask for clothing donations","To announce a new partnership"], a:1, ref:"Text 2",
+  e:"公告說 we have no relationship whatsoever with this company，目的是否認雙方有關係。"},
+ {q:"How did Clothes for Kids learn about Lush Metta Beads?", o:["A family member informed them.","A lawyer contacted them.","They saw an online advertisement.","A customer complained to them."], a:0, ref:"Text 2",
+  e:"one of our family members brought this to our attention → 一位家人告訴他們。"},
+ {q:"What is indicated about Clothes for Kids' attempts to reach Lush Metta Beads?", o:["They visited the company in person.","They received a quick reply.","Their attempts were unsuccessful.","They sent a letter by mail."], a:2, ref:"Text 2",
+  e:"to no avail = 徒勞無功，表示聯絡失敗。他們用的是電話和 email，不是親自拜訪或郵寄。"},
+ {q:"In the e-mail, the word \"pesky\" in paragraph 1, line 4, is closest in meaning to", o:["annoying","expensive","unusual","dangerous"], a:0, ref:"Text 3",
+  e:"同義詞題：pesky problem = 惱人的問題，最接近 annoying。"},
+ {q:"How did Mr. Paulauskas find out about the problem?", o:["He read a news article.","He was hired by Lush Metta Beads.","A friend shared a social media post.","He received a phone call from the charity."], a:2, ref:"Text 2 + 3 跨篇",
+  e:"跨篇題：信中說 after it was shared by one of my friends，而那篇貼文就是 Text 2 的臉書公告。"},
+ {q:"What does Mr. Paulauskas advise Clothes for Kids to do for now?", o:["Contact the police","Remove their online announcement","Buy products from Lush Metta Beads","Call him by telephone"], a:1, ref:"Text 3",
+  e:"for the time being, I would strongly advise you to take down your post → 先撤下網路公告。他也明確要求用 email，而非電話。"},
+ {q:"What is true about Mr. Paulauskas's fees?", o:["He charges nothing unless the case is won.","He charges a fixed fee of 10 euros.","He requires a base fee of 150 euros.","He asks for 20 percent of any amount won."], a:2, ref:"Text 3",
+  e:"a base investigation fee of 150 euros plus 10% of any amount obtained via a successful lawsuit → 基本費 150 歐元＋勝訴金額 10%。"}
+];
+
+/* ========= 語音 ========= */
+const synth = window.speechSynthesis;
+let voices = [], curVoice = null;
+const voiceSel = document.getElementById('voice');
+function loadVoices(){
+  voices = synth.getVoices().filter(v=>/^en/i.test(v.lang));
+  if(!voices.length) return;
+  const keep = voiceSel.value;
+  voiceSel.innerHTML = voices.map((v,i)=>`<option value="${i}">${v.name.replace(/Microsoft |Google /,'')} (${v.lang})</option>`).join('');
+  let idx = keep!=='' && voices[keep] ? keep : voices.findIndex(v=>v.lang==='en-US');
+  if(idx<0) idx=0;
+  voiceSel.value = idx; curVoice = voices[idx];
+}
+loadVoices();
+if(synth && synth.onvoiceschanged!==undefined) synth.onvoiceschanged = loadVoices;
+voiceSel.onchange = ()=> curVoice = voices[voiceSel.value];
+const rateEl = document.getElementById('rate');
+rateEl.oninput = ()=> document.getElementById('rateV').textContent = rateEl.value;
+
+let queueToken = 0;
+function stopAll(){ queueToken++; synth.cancel(); clearMarks(); }
+function clearMarks(){ document.querySelectorAll('.playing,.say').forEach(e=>e.classList.remove('playing','say')); }
+function utter(text, onend){
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = curVoice ? curVoice.lang : 'en-US';
+  if(curVoice) u.voice = curVoice;
+  u.rate = parseFloat(rateEl.value);
+  u.onend = onend; u.onerror = onend;
+  synth.speak(u);
+}
+function speak(text, el){
+  stopAll();
+  if(el) el.classList.add(el.classList.contains('w')?'say':'playing');
+  utter(text, ()=>{ if(el) el.classList.remove('say','playing'); });
+}
+// 依序播放 [{text, el}]
+function speakSeq(items){
+  stopAll(); const tok = queueToken; let i=0;
+  const next = ()=>{
+    clearMarks();
+    if(tok!==queueToken || i>=items.length) return;
+    const it = items[i++];
+    if(it.el){ it.el.classList.add('playing'); it.el.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+    utter(it.text, next);
+  };
+  next();
+}
+
+/* ========= 文章 ========= */
+const esc = s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function wordify(sent){
+  return sent.split(/(\s+)/).map(tok=>{
+    if(/^\s+$/.test(tok)) return tok;
+    const core = tok.replace(/^[^A-Za-z0-9@]+|[^A-Za-z0-9]+$/g,'');
+    if(!core) return esc(tok);
+    const i = tok.indexOf(core);
+    return esc(tok.slice(0,i)) + `<span class="w" data-w="${esc(core)}">${esc(core)}</span>` + esc(tok.slice(i+core.length));
+  }).join('');
+}
+const pBox = document.getElementById('passages');
+PASSAGES.forEach((p,pi)=>{
+  const c = document.createElement('div'); c.className='card';
+  c.innerHTML = `<h2>${p.title}</h2><span class="tag">${p.tag}</span>
+   <div class="bar"><button class="btn pri" data-play="${pi}">▶ 播放整篇</button></div>
+   ${p.s.map((s,si)=>`<div class="sent" id="s${pi}-${si}">
+     <button class="spk" title="朗讀此句" data-sent="${pi}-${si}">🔊</button>
+     <div><span class="en">${wordify(s[0])}</span><span class="zh" title="點一下隱藏／顯示"><span class="zt">${s[1]}</span></span></div></div>`).join('')}`;
+  pBox.appendChild(c);
+});
+pBox.addEventListener('click',e=>{
+  const z = e.target.closest('.zh');
+  if(z){ z.classList.toggle('off'); syncZhBtn(); return; }
+  const w = e.target.closest('.w');
+  if(w){ speak(w.dataset.w, w); return; }
+  const sb = e.target.closest('[data-sent]');
+  if(sb){ const [pi,si]=sb.dataset.sent.split('-'); speak(PASSAGES[pi].s[si][0], document.getElementById(`s${pi}-${si}`)); return; }
+  const pb = e.target.closest('[data-play]');
+  if(pb){ const pi=+pb.dataset.play; speakSeq(PASSAGES[pi].s.map((s,si)=>({text:s[0],el:document.getElementById(`s${pi}-${si}`)}))); }
+});
+const zhBtn = document.getElementById('toggleZh');
+function syncZhBtn(){
+  const allOff = [...pBox.querySelectorAll('.zh')].every(z=>z.classList.contains('off'));
+  zhBtn.textContent = allOff ? '全部顯示中文' : '全部隱藏中文';
+}
+zhBtn.onclick = ()=>{
+  const hide = zhBtn.textContent.startsWith('全部隱藏');
+  pBox.querySelectorAll('.zh').forEach(z=>z.classList.toggle('off', hide));
+  syncZhBtn();
+};
+syncZhBtn();
+
+/* ========= 單字 ========= */
+document.getElementById('vocabBody').innerHTML = VOCAB.map((v,i)=>`<tr>
+  <td><button class="spk" data-v="${i}" data-k="0">🔊</button></td>
+  <td class="term">${v[0]}</td>
+  <td>${v[1]}<div class="ex" style="display:flex;gap:6px;align-items:center;margin-top:4px">
+   <button class="spk" style="width:24px;height:24px;line-height:24px;font-size:.75rem" data-v="${i}" data-k="2">🔊</button><span>${esc(v[2])}</span></div></td></tr>`).join('');
+document.getElementById('vocabBody').addEventListener('click',e=>{
+  const b=e.target.closest('[data-v]'); if(!b) return;
+  const v=VOCAB[b.dataset.v]; let t=v[+b.dataset.k];
+  if(t==='ASAP') t='A. S. A. P.';
+  speak(t, b.closest('tr'));
+});
+
+/* ========= 文法 ========= */
+document.getElementById('gramBox').innerHTML = '<h2>文法重點</h2>' + GRAMMAR.map((g,i)=>`
+  <h3>${g.h}</h3><p>${g.p}</p>
+  <div class="eg"><button class="spk" data-g="${i}">🔊</button><span>${esc(g.eg)}</span></div>`).join('');
+document.getElementById('gramBox').addEventListener('click',e=>{
+  const b=e.target.closest('[data-g]'); if(b) speak(GRAMMAR[b.dataset.g].eg, b.parentElement);
+});
+
+/* ========= 測驗 ========= */
+const L = ['A','B','C','D'];
+const qBox = document.getElementById('quizBox');
+function renderQuiz(){
+  qBox.innerHTML = QUIZ.map((q,qi)=>`
+  <div class="q" id="q${qi}">
+    <div class="qh"><span class="qn">${qi+1}.</span>
+      <span class="qt" id="qt${qi}">${esc(q.q)}<span class="ref">${q.ref}</span></span>
+      <button class="spk" data-qs="${qi}" title="朗讀題目">🔊</button></div>
+    <div class="bar" style="margin:8px 0 0"><button class="btn" data-qall="${qi}">▶ 題目＋選項</button></div>
+    <div class="opts">${q.o.map((o,oi)=>`
+      <label class="opt" id="o${qi}-${oi}">
+        <input type="radio" name="q${qi}" value="${oi}">
+        <span class="ot">(${L[oi]}) ${esc(o)}</span>
+        <button class="spk" data-os="${qi}-${oi}" title="朗讀選項" type="button">🔊</button>
+      </label>`).join('')}</div>
+    <div class="exp">✅ 正確答案：(${L[q.a]})　${q.e}</div>
+  </div>`).join('');
+}
+renderQuiz();
+qBox.addEventListener('click',e=>{
+  const qs=e.target.closest('[data-qs]');
+  if(qs){ e.preventDefault(); const i=+qs.dataset.qs; speak(QUIZ[i].q, document.getElementById('qt'+i)); return; }
+  const os=e.target.closest('[data-os]');
+  if(os){ e.preventDefault(); const [i,j]=os.dataset.os.split('-').map(Number);
+    speak(`${L[j]}. ${QUIZ[i].o[j]}`, document.getElementById(`o${i}-${j}`)); return; }
+  const qa=e.target.closest('[data-qall]');
+  if(qa){ const i=+qa.dataset.qall; const q=QUIZ[i];
+    speakSeq([{text:q.q,el:document.getElementById('qt'+i)}, ...q.o.map((o,j)=>({text:`${L[j]}. ${o}`,el:document.getElementById(`o${i}-${j}`)}))]); }
+});
+function submitQuiz(){
+  let score=0;
+  QUIZ.forEach((q,qi)=>{
+    const sel=document.querySelector(`input[name=q${qi}]:checked`);
+    const box=document.getElementById('q'+qi); box.classList.add('done');
+    q.o.forEach((_,oi)=>document.getElementById(`o${qi}-${oi}`).classList.remove('right','wrong'));
+    document.getElementById(`o${qi}-${q.a}`).classList.add('right');
+    if(sel){ if(+sel.value===q.a) score++; else document.getElementById(`o${qi}-${sel.value}`).classList.add('wrong'); }
+  });
+  const s=document.getElementById('score');
+  s.style.display='block';
+  s.textContent=`得分：${score} / ${QUIZ.length}　${score===QUIZ.length?'🎉 全對！':score>=7?'👍 很不錯！':'💪 看看解析再試一次'}`;
+  s.scrollIntoView({behavior:'smooth'});
+}
+function resetQuiz(){ stopAll(); renderQuiz(); document.getElementById('score').style.display='none'; window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ========= 分頁 ========= */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  stopAll();
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.tab));
+  window.scrollTo({top:0});
+});
+
+if(!('speechSynthesis' in window)) alert('此瀏覽器不支援語音朗讀，建議使用 Chrome、Edge 或 Safari。');
+</script>
+</body>
+</html>
